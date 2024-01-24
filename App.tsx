@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
+import TabNavigator from "./components/Navigation";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
@@ -35,9 +36,7 @@ export default function App() {
     return <Text>Loading...</Text>;
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Gapp</Text>
-    </View>
+    <TabNavigator/>
   );
 }
 
