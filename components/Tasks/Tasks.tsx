@@ -1,22 +1,143 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { GetTimeNow } from "../common/GetTimeNow";
+import { useState } from "react";
+import CurrentTasks from "./Options/CurrentTasks";
+import FinishedTasks from "./Options/FinishedTasks";
+import FailedTasks from "./Options/FailedTasks";
+import Information from "./Options/Information";
+const { width, height } = Dimensions.get("window");
 
 export default function Tasks() {
+  const [activeComponent, setActiveComponent] = useState("");
+
+  const pickComponent = (component: string) => {
+    setActiveComponent(component);
+  };
+
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case "current-task":
+        return <CurrentTasks />;
+      case "failed-task":
+        return <FinishedTasks />;
+      case "finished-task":
+        return <FailedTasks />;
+      case "information":
+        return <Information />;
+      default:
+        return <Text>Wybierz komponent</Text>;
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Tasks</Text>
+    <View style={missionStyles.container}>
+      <View style={missionStyles.left}>
+        <TouchableOpacity
+          style={missionStyles.current}
+          onPress={() => pickComponent("current-task")}
+        >
+          <Text style={missionStyles.text}>Obecne {"\n"}zadania </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={missionStyles.done}
+          onPress={() => pickComponent("failed-task")}
+        >
+          <Text style={missionStyles.text}> Wykonane {"\n"} zadania </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={missionStyles.failture}
+          onPress={() => pickComponent("finished-task")}
+        >
+          <Text style={missionStyles.text}>Popsute {"\n"}zadania </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={missionStyles.information}
+          onPress={() => pickComponent("information")}
+        >
+          <Text style={missionStyles.text}>Informacje {"\n"}ogólne </Text>
+        </TouchableOpacity>
+        <View style={missionStyles.date}>
+          <GetTimeNow />
+        </View>
+      </View>
+      <View style={missionStyles.left}>{renderComponent()}</View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const missionStyles = StyleSheet.create({
   container: {
+    display: "flex",
+    flexDirection: "row",
+    width: (width * 94) / 100,
+    height: (height * 50) / 100,
+    marginTop: 100,
+    marginLeft: (width * 3) / 100,
+    backgroundColor: "rgba(0, 0, 0, 0.726)",
+  },
+  left: {
+    width: "30%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    flex: 2,
+    borderWidth: 0.5,
+    borderColor: "yellow",
+  },
+  right: {
+    width: "50%",
+    height: "100%",
+    flex: 3,
+    // borderWidth: 0.6,
+    // borderColor: "yellow",
+  },
+  current: {
+    height: "20%",
+    position: "relative",
+    flex: 2,
+    borderWidth: 0.5,
+    borderColor: "yellow",
+  },
+  done: {
+    height: "20%",
+    position: "relative",
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    borderWidth: 0.5,
+    borderColor: "yellow",
+  },
+  failture: {
+    height: "20%",
+    position: "relative",
+    flex: 1,
+    borderWidth: 0.5,
+    borderColor: "yellow",
+  },
+  information: {
+    height: "20%",
+    position: "relative",
+    flex: 1,
+    borderWidth: 0.5,
+    borderColor: "yellow",
   },
   text: {
+    color: "white",
+    fontSize: 15,
+    marginLeft: 10,
+    marginTop: 5,
+    marginBottom: 5,
     fontFamily: "gothic-font",
-    fontSize: 22,
+  },
+  date: {
+    height: "20%",
+    position: "relative",
+    flex: 2,
+    borderWidth: 0.5,
+    borderColor: "yellow",
   },
 });
