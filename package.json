@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "expo": "~50.0.3",
+    "expo-font": "^11.10.2",
+    "expo-splash-screen": "^0.26.4",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.7.2",
     "openai": "^4.25.0",
