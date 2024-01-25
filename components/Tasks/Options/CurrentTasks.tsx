@@ -1,4 +1,11 @@
-
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -7,9 +14,12 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
+  TextInput,
+  Button,
 } from "react-native";
 import { Todo } from "../Tasks";
 
+import { FIRESTORE_DB } from "../../../firebaseConfig";
 
 
 
@@ -17,9 +27,27 @@ const { width, height } = Dimensions.get("window");
 
 
 export default function CurrentTasks({todos}:any) {
-  useEffect(() => {
-    console.log(todos)
-  }, []);
+  const [todo, setTodo] = useState<any>("");
+
+  const addTodo = async () => {
+    console.log("ADD");
+    await addDoc(collection(FIRESTORE_DB, "todos"), {
+      title: todo,
+      done: false,
+      description: "To dopiero początek!",
+    });
+    setTodo("");
+  };
+
+  const speak = async () => {
+    console.log("ADD");
+    await addDoc(collection(FIRESTORE_DB, "todos"), {
+      title: todo,
+      done: false,
+      description: "To dopiero początek!",
+    });
+    setTodo("");
+  };
 
 
   const renderTodo = ({ item }: any) => {
@@ -38,14 +66,28 @@ export default function CurrentTasks({todos}:any) {
 
   return (
     todos.length > 0 && (
-      
-      <View style={missionStyles.right}>
+      <>
+      <View>
         <FlatList
           data={todos} 
           renderItem={(item) => renderTodo(item)}
           keyExtractor={(todo: Todo) => todo.id}
         />
+         
       </View>
+      <View style={missionStyles.form}>
+      <TextInput
+        style={missionStyles.input}
+        placeholder="Add new todo"
+        onChangeText={(text: string) => setTodo(text)}
+        value={todo}
+      ></TextInput>
+      <Button onPress={addTodo} title="Add Todo" disabled={todo === ""} />
+      <Button onPress={speak} title="Speak" />
+
+    </View>
+    </>
+
     )
   );
 }
@@ -64,6 +106,8 @@ export const missionStyles = StyleSheet.create({
   form: {
     flexDirection: "row",
     alignItems: "center",
+    position: "absolute",
+    bottom: "0%",
   },
   input: {
     flex: 1,

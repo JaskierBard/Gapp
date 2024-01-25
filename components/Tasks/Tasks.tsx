@@ -105,7 +105,7 @@ export default function Tasks() {
           <GetTimeNow />
         </View>
       </View>
-      <View style={missionStyles.left}>{renderComponent()}</View>
+      <View style={missionStyles.right}>{renderComponent()}</View>
     </View>
   );
 }
