@@ -5,16 +5,55 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { GetTimeNow } from "../common/GetTimeNow";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CurrentTasks from "./Options/CurrentTasks";
 import FinishedTasks from "./Options/FinishedTasks";
 import FailedTasks from "./Options/FailedTasks";
 import Information from "./Options/Information";
-const { width, height } = Dimensions.get("window");
+import { FIRESTORE_DB } from "../../firebaseConfig";
 
+const { width, height } = Dimensions.get("window");
+export interface Todo {
+  title: string;
+  done: boolean;
+  id: string;
+  description: string;
+}
 export default function Tasks() {
   const [activeComponent, setActiveComponent] = useState("");
+
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+
+
+  useEffect(() => {
+    const todoRef = collection(FIRESTORE_DB, "todos");
+
+    const subscriber = onSnapshot(todoRef, {
+      next: (snapshot) => {
+        const todos: Todo[] = [];
+        snapshot.docs.forEach((doc) => {
+          todos.push({
+            id: doc.id,
+            ...doc.data(),
+          } as Todo);
+        });
+        // console.log(todos)
+        setTodos(todos);
+      },
+    });
+    return () => subscriber();
+  }, []);
+
 
   const pickComponent = (component: string) => {
     setActiveComponent(component);
@@ -23,7 +62,7 @@ export default function Tasks() {
   const renderComponent = () => {
     switch (activeComponent) {
       case "current-task":
-        return <CurrentTasks />;
+        return <CurrentTasks todos={todos}/>;
       case "failed-task":
         return <FinishedTasks />;
       case "finished-task":
