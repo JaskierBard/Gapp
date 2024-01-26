@@ -22,12 +22,6 @@ export const TaskDetails = (props: Props) => {
 
   if (props.details) {
     return (
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={props.details !== ""}
-        onRequestClose={closeModal}
-      >
         <View style={main.container}>
           <View
             style={{
@@ -50,15 +44,9 @@ export const TaskDetails = (props: Props) => {
             <Button onPress={closeModal} title="Zamknij"></Button>
           </TouchableOpacity>
         </View>
-      </Modal>
     );
   } else
-    <Modal
-      animationType="none"
-      transparent={true}
-      visible={props.details !== ""}
-      onRequestClose={closeModal}
-    >
+    
       <View style={main.container}>
         <View
           style={{
@@ -76,7 +64,6 @@ export const TaskDetails = (props: Props) => {
           <Button onPress={closeModal} title="Zamknij"></Button>
         </TouchableOpacity>
       </View>
-    </Modal>;
 };
 
 const styles = StyleSheet.create({

@@ -30,62 +30,69 @@ export const AddTask = (props: Props) => {
       done: false,
       description: description,
     });
+    props.cancel;
     setTitle("");
     setDescription("");
-    props.cancel;
   };
 
-  const closeModal = () => {
-    // props.add(false);
-  };
-
-  return (
-    <Modal
-      animationType="none"
-      transparent={true}
-      visible={props.add}
-      onRequestClose={closeModal}
-    >
+  if (props.add) {
+    return (
       <View style={main.container}>
         <View style={styles.form}>
           <TextInput
-            style={styles.input}
+            style={styles.titleInput}
             placeholder="Dodaj tytuł taska"
             onChangeText={(text: string) => setTitle(text)}
             value={title}
           ></TextInput>
           <TextInput
-            style={styles.input}
+            style={styles.descriptionInput}
             placeholder="Dodaj opis"
             onChangeText={(text: string) => setDescription(text)}
             value={description}
           ></TextInput>
-          <Button onPress={addTodo} title="Add Todo" disabled={title === ""} />
-          <Button onPress={props.cancel} title="Anuluj" />
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={addTodo}
+              title="Add Todo"
+              disabled={title === ""}
+            />
+            <Button onPress={props.cancel} title="Anuluj" />
+          </View>
         </View>
       </View>
-    </Modal>
-  );
+    );
+  }
 };
 
 const styles = StyleSheet.create({
   form: {
-    // flexDirection: "row",
-    alignItems: "center",
-    position: "absolute",
-    bottom: "0%",
-  },
-  input: {
     flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "#fff",
+    padding: 16,
+    justifyContent: "center",
   },
-  exit: {
-    position: "absolute",
-    bottom: "2%",
-    left: "35%",
+  titleInput: {
+    color: "white",
+    fontFamily: "gothic-font",
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+    fontSize: 16,
+  },
+  descriptionInput: {
+    color: "white",
+    fontFamily: "gothic-font",
+    height: 120,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+    fontSize: 18,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
