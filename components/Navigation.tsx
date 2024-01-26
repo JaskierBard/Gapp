@@ -1,6 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+
+import { NavigationContainer, useNavigation} from "@react-navigation/native";
 import { Image, TouchableOpacity } from "react-native";
 
 import List from "../components/Tasks/Tasks";
@@ -11,6 +12,7 @@ import Statistics from "../components/Statistics/Statistics";
 import Settings from "./Settings";
 
 import { StyleSheet } from "react-native";
+import Tasks from "../components/Tasks/Tasks";
 
 const NavigateToSettings = () => {
   const navigation = useNavigation();
@@ -42,12 +44,20 @@ const TabNavigator = () => {
             borderBottomWidth: 0,
           },
           headerTransparent: true,
+
+          tabBarStyle: {
+            borderTopWidth: 0.5, // Górne obramowanie
+            borderTopColor: 'yellow', // Kolor górnego obramowania
+            backgroundColor: 'black', // Kolor tła paska nawigacyjnego
+            
+          },
+
         }}
       >
 
         <Tab.Screen
           name="missions"
-          component={List}
+          component={Tasks}
           options={{
             title: "Misje",
             tabBarIcon: () => (
@@ -111,7 +121,9 @@ const TabNavigator = () => {
           }}
         />
       </Tab.Navigator>
+      
     </NavigationContainer>
+    
   );
 };
 

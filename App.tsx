@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import TabNavigator from "./components/Navigation";
+import * as NavigationBar from "expo-navigation-bar";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
@@ -19,7 +20,8 @@ export default function App() {
       try {
         await SplashScreen.preventAutoHideAsync();
         await loadFonts();
-        // Dodaj inne operacje inicjalizacyjne, jeśli są potrzebne
+        NavigationBar.setVisibilityAsync('hidden');
+        await NavigationBar.setBehaviorAsync("inset-swipe");
 
         setIsAppReady(true);
       } catch (error) {
@@ -35,9 +37,5 @@ export default function App() {
   if (!isAppReady) {
     return <Text>Loading...</Text>;
   }
-  return (
-    <TabNavigator/>
-  );
+  return <TabNavigator />;
 }
-
-
