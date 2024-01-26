@@ -18,7 +18,8 @@
     "firebase": "10.7.1",
     "openai": "^4.25.0",
     "react": "18.2.0",
-    "react-native": "0.73.2"
+    "react-native": "0.73.2",
+    "@expo/vector-icons": "^14.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

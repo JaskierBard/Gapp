@@ -4,6 +4,7 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import {
   addDoc,
@@ -13,13 +14,18 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
+import { Ionicons } from '@expo/vector-icons';
+
 import { GetTimeNow } from "../common/GetTimeNow";
 import React, { useEffect, useState } from "react";
-import CurrentTasks from "./Options/CurrentTasks";
+import {CurrentTasks} from "./Options/CurrentTasks";
 import FinishedTasks from "./Options/FinishedTasks";
 import FailedTasks from "./Options/FailedTasks";
 import Information from "./Options/Information";
 import { FIRESTORE_DB } from "../../firebaseConfig";
+import { TaskDetails } from "./TaskDetails";
+import { main, button, background } from "../Styles";
+import { AddTask } from "./AddTask";
 
 const { width, height } = Dimensions.get("window");
 export interface Todo {
@@ -32,6 +38,9 @@ export default function Tasks() {
   const [activeComponent, setActiveComponent] = useState("");
 
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [details, setDetails] = useState<any>("");
+  const [addTaskVisible, setAddTaskVisible] = useState<boolean>(false);
+
 
 
 
@@ -47,12 +56,19 @@ export default function Tasks() {
             ...doc.data(),
           } as Todo);
         });
-        // console.log(todos)
+        // console.log(details)
         setTodos(todos);
       },
     });
     return () => subscriber();
   }, []);
+
+  const showTaskDetails = (data:any) => {
+    setDetails(data)
+  }
+  const cancel = () => {
+    setAddTaskVisible(false)
+  }
 
 
   const pickComponent = (component: string) => {
@@ -62,7 +78,7 @@ export default function Tasks() {
   const renderComponent = () => {
     switch (activeComponent) {
       case "current-task":
-        return <CurrentTasks todos={todos}/>;
+        return <CurrentTasks todos={todos} show={showTaskDetails}/>;
       case "failed-task":
         return <FinishedTasks />;
       case "finished-task":
@@ -75,7 +91,12 @@ export default function Tasks() {
   };
 
   return (
+    <ImageBackground
+    source={require("../../assets/images/background.jpg")}
+    style={background.image}
+  >
     <View style={missionStyles.container}>
+      <TaskDetails details={details} show={showTaskDetails}/>
       <View style={missionStyles.left}>
         <TouchableOpacity
           style={missionStyles.current}
@@ -106,7 +127,22 @@ export default function Tasks() {
         </View>
       </View>
       <View style={missionStyles.right}>{renderComponent()}</View>
+    
+
+      <TouchableOpacity
+       style={button.buttonContainer}
+       onPress={() => {
+         setAddTaskVisible(true)
+       }}
+    >
+      <View style={button.buttonContent}>
+        <Text style={button.buttonText}>Dodaj</Text>
+      </View>
+    </TouchableOpacity>
+      <AddTask add={addTaskVisible} cancel={cancel}/>
     </View>
+    </ImageBackground>
+
   );
 }
 
@@ -116,23 +152,24 @@ const missionStyles = StyleSheet.create({
     flexDirection: "row",
     width: (width * 94) / 100,
     height: (height * 50) / 100,
-    marginTop: 100,
+    marginTop: 200,
     marginLeft: (width * 3) / 100,
     backgroundColor: "rgba(0, 0, 0, 0.726)",
+    position: "relative",
   },
   left: {
     width: "30%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    flex: 2,
+    flex: 3,
     borderWidth: 0.5,
     borderColor: "yellow",
   },
   right: {
     width: "50%",
     height: "100%",
-    flex: 3,
+    flex: 6,
     // borderWidth: 0.6,
     // borderColor: "yellow",
   },
