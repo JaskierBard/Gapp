@@ -14,83 +14,41 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
-  TextInput,
-  Button,
 } from "react-native";
 import { Todo } from "../Tasks";
 
-import { FIRESTORE_DB } from "../../../firebaseConfig";
-
-
-
 const { width, height } = Dimensions.get("window");
 
+export interface Props {
+  todos: Todo[];
+  show: (arg: string) => void;
+}
 
-export default function CurrentTasks({todos}:any) {
-  const [todo, setTodo] = useState<any>("");
-
-  const addTodo = async () => {
-    console.log("ADD");
-    await addDoc(collection(FIRESTORE_DB, "todos"), {
-      title: todo,
-      done: false,
-      description: "To dopiero początek!",
-    });
-    setTodo("");
-  };
-
-  const speak = async () => {
-    console.log("ADD");
-    await addDoc(collection(FIRESTORE_DB, "todos"), {
-      title: todo,
-      done: false,
-      description: "To dopiero początek!",
-    });
-    setTodo("");
-  };
-
-
+export const CurrentTasks: React.FC<Props> = ({ todos, show }) => {
   const renderTodo = ({ item }: any) => {
     return (
       <View style={missionStyles.todoContainer}>
-        <TouchableOpacity
-          // onPress={() => showTaskDetails(item.id, item.description, item.done)}
-          style={missionStyles.todo}
-        >
+        <TouchableOpacity onPress={() => show(item)} style={missionStyles.todo}>
           <Text style={missionStyles.todoTextDone}>{item.title}</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
-
   return (
     todos.length > 0 && (
       <>
-      <View>
-        <FlatList
-          data={todos} 
-          renderItem={(item) => renderTodo(item)}
-          keyExtractor={(todo: Todo) => todo.id}
-        />
-         
-      </View>
-      <View style={missionStyles.form}>
-      <TextInput
-        style={missionStyles.input}
-        placeholder="Add new todo"
-        onChangeText={(text: string) => setTodo(text)}
-        value={todo}
-      ></TextInput>
-      <Button onPress={addTodo} title="Add Todo" disabled={todo === ""} />
-      <Button onPress={speak} title="Speak" />
-
-    </View>
-    </>
-
+        <View>
+          <FlatList
+            data={todos}
+            renderItem={(item) => renderTodo(item)}
+            keyExtractor={(todo: Todo) => todo.id}
+          />
+        </View>
+      </>
     )
   );
-}
+};
 
 export const missionStyles = StyleSheet.create({
   container: {
@@ -102,20 +60,6 @@ export const missionStyles = StyleSheet.create({
     marginLeft: (width * 3) / 100,
     backgroundColor: "rgba(0, 0, 0, 0.726)",
     // fontSize: "115%",
-  },
-  form: {
-    flexDirection: "row",
-    alignItems: "center",
-    position: "absolute",
-    bottom: "0%",
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "#fff",
   },
   todoContainer: {
     flexDirection: "row",
@@ -196,7 +140,6 @@ export const missionStyles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     fontFamily: "gothic-font",
-
   },
   descriptionText: {
     color: "white",
@@ -205,7 +148,6 @@ export const missionStyles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     fontFamily: "gothic-font",
-
   },
   right: {
     width: "50%",
@@ -215,4 +157,3 @@ export const missionStyles = StyleSheet.create({
     // borderColor: "yellow",
   },
 });
-
