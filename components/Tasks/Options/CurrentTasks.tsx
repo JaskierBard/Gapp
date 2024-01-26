@@ -38,7 +38,7 @@ export const CurrentTasks: React.FC<Props> = ({ todos, show }) => {
   return (
     todos.length > 0 && (
       <>
-        <View>
+        <View style={{ borderWidth: 0.5, borderColor: "yellow" }}>
           <FlatList
             data={todos}
             renderItem={(item) => renderTodo(item)}
@@ -59,13 +59,11 @@ export const missionStyles = StyleSheet.create({
     marginTop: 100,
     marginLeft: (width * 3) / 100,
     backgroundColor: "rgba(0, 0, 0, 0.726)",
-    // fontSize: "115%",
   },
   todoContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#111111",
-    padding: 10,
+    padding: 5,
     marginVertical: 4,
   },
   todoTextUndone: {

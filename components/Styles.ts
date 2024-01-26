@@ -4,11 +4,14 @@ const { width, height } = Dimensions.get("window");
 
 export const main = StyleSheet.create({
   container: {
+    position: "absolute",
     width: (width * 94) / 100,
     height: (height * 50) / 100,
-    marginTop: 200,
-    marginLeft: (width * 3) / 100,
-    backgroundColor: "darkorange",
+    borderWidth: 0.5,
+    borderColor: "yellow",
+    // backgroundColor: "rgba(0, 0, 0, 0.826)",
+    backgroundColor: "black",
+    zIndex: 2,
     // position: "absolute",
   },
   textTitle: {
@@ -37,7 +40,7 @@ export const button = StyleSheet.create({
     right: 10, // Odstęp od prawej
     backgroundColor: "rgba(0, 0, 0, 0.726)",
 
-    borderWidth: 2, // Grubość obramówki
+    borderWidth: 0.5, // Grubość obramówki
     borderColor: "yellow", // Kolor obramówki (żółty)
     borderRadius: 8, // Zaokrąglenie narożników
     paddingHorizontal: 16, // Wypełnienie poziome
@@ -51,7 +54,8 @@ export const button = StyleSheet.create({
   buttonText: {
     color: "white", // Kolor tekstu (czarny)
     fontSize: 16, // Rozmiar tekstu
-    fontWeight: "bold", // Pogrubienie tekstu
+    fontFamily: "gothic-font",
+
   },
 });
 export const background = StyleSheet.create({

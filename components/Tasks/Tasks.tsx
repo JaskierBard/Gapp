@@ -5,6 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ImageBackground,
+  TouchableWithoutFeedback,
 } from "react-native";
 import {
   addDoc,
@@ -14,11 +15,12 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import * as NavigationBar from "expo-navigation-bar";
 
 import { GetTimeNow } from "../common/GetTimeNow";
 import React, { useEffect, useState } from "react";
-import {CurrentTasks} from "./Options/CurrentTasks";
+import { CurrentTasks } from "./Options/CurrentTasks";
 import FinishedTasks from "./Options/FinishedTasks";
 import FailedTasks from "./Options/FailedTasks";
 import Information from "./Options/Information";
@@ -41,9 +43,6 @@ export default function Tasks() {
   const [details, setDetails] = useState<any>("");
   const [addTaskVisible, setAddTaskVisible] = useState<boolean>(false);
 
-
-
-
   useEffect(() => {
     const todoRef = collection(FIRESTORE_DB, "todos");
 
@@ -63,13 +62,12 @@ export default function Tasks() {
     return () => subscriber();
   }, []);
 
-  const showTaskDetails = (data:any) => {
-    setDetails(data)
-  }
+  const showTaskDetails = (data: any) => {
+    setDetails(data);
+  };
   const cancel = () => {
-    setAddTaskVisible(false)
-  }
-
+    setAddTaskVisible(false);
+  };
 
   const pickComponent = (component: string) => {
     setActiveComponent(component);
@@ -78,7 +76,7 @@ export default function Tasks() {
   const renderComponent = () => {
     switch (activeComponent) {
       case "current-task":
-        return <CurrentTasks todos={todos} show={showTaskDetails}/>;
+        return <CurrentTasks todos={todos} show={showTaskDetails} />;
       case "failed-task":
         return <FinishedTasks />;
       case "finished-task":
@@ -92,57 +90,62 @@ export default function Tasks() {
 
   return (
     <ImageBackground
-    source={require("../../assets/images/background.jpg")}
-    style={background.image}
-  >
-    <View style={missionStyles.container}>
-      <TaskDetails details={details} show={showTaskDetails}/>
-      <View style={missionStyles.left}>
-        <TouchableOpacity
-          style={missionStyles.current}
-          onPress={() => pickComponent("current-task")}
-        >
-          <Text style={missionStyles.text}>Obecne {"\n"}zadania </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={missionStyles.done}
-          onPress={() => pickComponent("failed-task")}
-        >
-          <Text style={missionStyles.text}> Wykonane {"\n"} zadania </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={missionStyles.failture}
-          onPress={() => pickComponent("finished-task")}
-        >
-          <Text style={missionStyles.text}>Popsute {"\n"}zadania </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={missionStyles.information}
-          onPress={() => pickComponent("information")}
-        >
-          <Text style={missionStyles.text}>Informacje {"\n"}ogólne </Text>
-        </TouchableOpacity>
-        <View style={missionStyles.date}>
-          <GetTimeNow />
+      source={require("../../assets/images/background.jpg")}
+      style={background.image}
+    >
+      <View
+        style={{ width: "100%", height: "100%" }}
+        onTouchStart={() => NavigationBar.setVisibilityAsync("hidden")}
+      >
+        <View style={missionStyles.container}>
+          <TaskDetails details={details} show={showTaskDetails} />
+          <View style={missionStyles.left}>
+            <TouchableOpacity
+              style={missionStyles.current}
+              onPress={() => pickComponent("current-task")}
+            >
+              <Text style={missionStyles.text}>Obecne {"\n"}zadania </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={missionStyles.done}
+              onPress={() => pickComponent("failed-task")}
+            >
+              <Text style={missionStyles.text}> Wykonane {"\n"} zadania </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={missionStyles.failture}
+              onPress={() => pickComponent("finished-task")}
+            >
+              <Text style={missionStyles.text}>Popsute {"\n"}zadania </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={missionStyles.information}
+              onPress={() => pickComponent("information")}
+            >
+              <Text style={missionStyles.text}>Informacje {"\n"}ogólne </Text>
+            </TouchableOpacity>
+            <View style={missionStyles.date}>
+              <GetTimeNow />
+            </View>
+          </View>
+          <View style={missionStyles.right}>{renderComponent()}</View>
+
+          {!addTaskVisible ? (
+            <TouchableOpacity
+              style={button.buttonContainer}
+              onPress={() => {
+                setAddTaskVisible(true);
+              }}
+            >
+              <View style={button.buttonContent}>
+                <Text style={button.buttonText}>Dodaj</Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
+          <AddTask add={addTaskVisible} cancel={cancel} />
         </View>
       </View>
-      <View style={missionStyles.right}>{renderComponent()}</View>
-    
-
-      <TouchableOpacity
-       style={button.buttonContainer}
-       onPress={() => {
-         setAddTaskVisible(true)
-       }}
-    >
-      <View style={button.buttonContent}>
-        <Text style={button.buttonText}>Dodaj</Text>
-      </View>
-    </TouchableOpacity>
-      <AddTask add={addTaskVisible} cancel={cancel}/>
-    </View>
     </ImageBackground>
-
   );
 }
 
