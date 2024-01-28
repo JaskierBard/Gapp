@@ -1,16 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { NavigationContainer, useNavigation} from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Image, TouchableOpacity } from "react-native";
-
-import List from "../components/Tasks/Tasks";
 import EqGenerator from "../components/Equipment/Equipment";
 import Map from "../components/Map/Map";
 import Statistics from "../components/Statistics/Statistics";
-
 import Settings from "./Settings";
-
 import { StyleSheet } from "react-native";
 import Tasks from "../components/Tasks/Tasks";
 
@@ -38,23 +33,19 @@ const TabNavigator = () => {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
-          headerTitleStyle: { fontFamily: "gothic-font" },
+          headerTitleStyle: { fontFamily: "gothic-font", color: "white" },
           tabBarLabelStyle: { fontFamily: "gothic-font" },
           headerStyle: {
             borderBottomWidth: 0,
           },
           headerTransparent: true,
-
           tabBarStyle: {
-            borderTopWidth: 0.5, // Górne obramowanie
-            borderTopColor: 'yellow', // Kolor górnego obramowania
-            backgroundColor: 'black', // Kolor tła paska nawigacyjnego
-            
+            borderTopWidth: 0.5,
+            borderTopColor: "yellow",
+            backgroundColor: "black",
           },
-
         }}
       >
-
         <Tab.Screen
           name="missions"
           component={Tasks}
@@ -95,7 +86,6 @@ const TabNavigator = () => {
             ),
           }}
         />
-        
         <Tab.Screen
           name="equipment"
           component={EqGenerator}
@@ -109,7 +99,6 @@ const TabNavigator = () => {
             ),
           }}
         />
-
         <Tab.Screen
           name="Settings"
           component={Settings}
@@ -121,9 +110,7 @@ const TabNavigator = () => {
           }}
         />
       </Tab.Navigator>
-      
     </NavigationContainer>
-    
   );
 };
 

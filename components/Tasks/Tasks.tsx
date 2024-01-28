@@ -1,23 +1,6 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  ImageBackground,
-  TouchableWithoutFeedback,
-} from "react-native";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
-import { Ionicons } from "@expo/vector-icons";
+import { Text, View, TouchableOpacity, ImageBackground } from "react-native";
+import { collection, onSnapshot } from "firebase/firestore";
 import * as NavigationBar from "expo-navigation-bar";
-
 import { GetTimeNow } from "../common/GetTimeNow";
 import React, { useEffect, useState } from "react";
 import { CurrentTasks } from "./Options/CurrentTasks";
@@ -26,10 +9,9 @@ import FailedTasks from "./Options/FailedTasks";
 import Information from "./Options/Information";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { TaskDetails } from "./TaskDetails";
-import { main, button, background } from "../Styles";
+import { button, background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";
 
-const { width, height } = Dimensions.get("window");
 export interface Todo {
   title: string;
   done: boolean;
@@ -55,7 +37,6 @@ export default function Tasks() {
             ...doc.data(),
           } as Todo);
         });
-        // console.log(details)
         setTodos(todos);
       },
     });
@@ -84,7 +65,7 @@ export default function Tasks() {
       case "information":
         return <Information />;
       default:
-        return <Text>Wybierz komponent</Text>;
+        return <CurrentTasks todos={todos} show={showTaskDetails} />;
     }
   };
 
@@ -148,75 +129,3 @@ export default function Tasks() {
     </ImageBackground>
   );
 }
-
-const missionStyles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    width: (width * 94) / 100,
-    height: (height * 50) / 100,
-    marginTop: 200,
-    marginLeft: (width * 3) / 100,
-    backgroundColor: "rgba(0, 0, 0, 0.726)",
-    position: "relative",
-  },
-  left: {
-    width: "30%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    flex: 3,
-    borderWidth: 0.5,
-    borderColor: "yellow",
-  },
-  right: {
-    width: "50%",
-    height: "100%",
-    flex: 6,
-    // borderWidth: 0.6,
-    // borderColor: "yellow",
-  },
-  current: {
-    height: "20%",
-    position: "relative",
-    flex: 2,
-    borderWidth: 0.5,
-    borderColor: "yellow",
-  },
-  done: {
-    height: "20%",
-    position: "relative",
-    flex: 1,
-    borderWidth: 0.5,
-    borderColor: "yellow",
-  },
-  failture: {
-    height: "20%",
-    position: "relative",
-    flex: 1,
-    borderWidth: 0.5,
-    borderColor: "yellow",
-  },
-  information: {
-    height: "20%",
-    position: "relative",
-    flex: 1,
-    borderWidth: 0.5,
-    borderColor: "yellow",
-  },
-  text: {
-    color: "white",
-    fontSize: 15,
-    marginLeft: 10,
-    marginTop: 5,
-    marginBottom: 5,
-    fontFamily: "gothic-font",
-  },
-  date: {
-    height: "20%",
-    position: "relative",
-    flex: 2,
-    borderWidth: 0.5,
-    borderColor: "yellow",
-  },
-});
