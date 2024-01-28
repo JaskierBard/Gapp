@@ -1,6 +1,7 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 
 const { width, height } = Dimensions.get("window");
+const windowBadckground = "rgba(0, 0, 0, 0.726)";
 
 export const main = StyleSheet.create({
   container: {
@@ -9,10 +10,8 @@ export const main = StyleSheet.create({
     height: (height * 50) / 100,
     borderWidth: 0.5,
     borderColor: "yellow",
-    // backgroundColor: "rgba(0, 0, 0, 0.826)",
     backgroundColor: "black",
     zIndex: 2,
-    // position: "absolute",
   },
   textTitle: {
     flex: 1,
@@ -55,7 +54,6 @@ export const button = StyleSheet.create({
     color: "white", // Kolor tekstu (czarny)
     fontSize: 16, // Rozmiar tekstu
     fontFamily: "gothic-font",
-
   },
 });
 export const background = StyleSheet.create({
@@ -73,8 +71,10 @@ export const missionStyles = StyleSheet.create({
     width: (width * 94) / 100,
     height: (height * 50) / 100,
     marginTop: 200,
-marginLeft: (width * 3) / 100,
-    backgroundColor: "rgba(0, 0, 0, 0.726)",
+    marginLeft: (width * 3) / 100,
+    backgroundColor: windowBadckground,
+    borderWidth: 0.5,
+    borderColor: "yellow",
   },
   todoContainer: {
     flexDirection: "row",
@@ -82,6 +82,7 @@ marginLeft: (width * 3) / 100,
     padding: 5,
     marginVertical: 4,
   },
+
   todoTextUndone: {
     flex: 1,
     paddingHorizontal: 4,
@@ -109,50 +110,63 @@ marginLeft: (width * 3) / 100,
     display: "flex",
     flexDirection: "column",
     flex: 2,
-    borderWidth: 0.5,
+    borderRightWidth: 0.5,
     borderColor: "yellow",
   },
   current: {
     height: "20%",
     position: "relative",
     flex: 2,
-    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderColor: "yellow",
+    justifyContent: 'flex-end', // Umieść tekst na dole
+    alignItems: 'center',     // Umieść tekst po prawej stronie
+    padding: 10,    
   },
   done: {
     height: "20%",
     position: "relative",
     flex: 1,
-    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderColor: "yellow",
+    justifyContent: 'flex-end', // Umieść tekst na dole
+    alignItems: 'flex-end',     // Umieść tekst po prawej stronie
+    padding: 10,    
   },
   failture: {
     height: "20%",
     position: "relative",
     flex: 1,
-    borderWidth: 0.5,
+    justifyContent: 'flex-end', // Umieść tekst na dole
+    alignItems: 'center',     // Umieść tekst po prawej stronie
+    padding: 10,        borderBottomWidth: 0.5,
     borderColor: "yellow",
   },
   information: {
     height: "20%",
     position: "relative",
     flex: 1,
-    borderWidth: 0.5,
+    justifyContent: 'flex-end', // Umieść tekst na dole
+    alignItems: 'flex-end',     // Umieść tekst po prawej stronie
+    padding: 10,        borderBottomWidth: 0.5,
     borderColor: "yellow",
   },
   date: {
     height: "20%",
     position: "relative",
     flex: 2,
-    borderWidth: 0.5,
-    borderColor: "yellow",
+    justifyContent: 'flex-start', // Umieść tekst na dole
+    alignItems: 'flex-end',     // Umieść tekst po prawej stronie
+    padding: 10,        // borderWidth: 0.5,
+    // borderColor: "yellow",
   },
   text: {
+    // textAlign: "center",
     color: "white",
     fontSize: 15,
-    marginLeft: 10,
-    marginTop: 5,
-    marginBottom: 5,
+    // marginLeft: 10,
+    // marginTop: 5,
+    // marginBottom: 5,
     fontFamily: "gothic-font",
   },
   descriptionText: {
@@ -171,4 +185,3 @@ marginLeft: (width * 3) / 100,
     // borderColor: "yellow",
   },
 });
-

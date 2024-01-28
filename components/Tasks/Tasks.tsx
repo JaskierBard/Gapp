@@ -3,41 +3,54 @@ import { collection, onSnapshot } from "firebase/firestore";
 import * as NavigationBar from "expo-navigation-bar";
 import { GetTimeNow } from "../common/GetTimeNow";
 import React, { useEffect, useState } from "react";
-import { CurrentTasks } from "./Options/CurrentTasks";
-import FinishedTasks from "./Options/FinishedTasks";
-import FailedTasks from "./Options/FailedTasks";
-import Information from "./Options/Information";
+import { CurrentTasks } from "../CurrentTasks";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { TaskDetails } from "./TaskDetails";
 import { button, background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";
 
 export interface Todo {
-  title: string;
-  done: boolean;
   id: string;
+  title: string;
+  status: string;
   description: string;
 }
 export default function Tasks() {
   const [activeComponent, setActiveComponent] = useState("");
-
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [undoneTodos, setUndoneTodos] = useState<Todo[]>([]);
+  const [doneTodos, setDoneTodos] = useState<Todo[]>([]);
+  const [failedTodos, setFailedTodos] = useState<Todo[]>([]);
   const [details, setDetails] = useState<any>("");
   const [addTaskVisible, setAddTaskVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const todoRef = collection(FIRESTORE_DB, "todos");
-
+  
     const subscriber = onSnapshot(todoRef, {
       next: (snapshot) => {
-        const todos: Todo[] = [];
+        const doneTodos: Todo[] = [];
+        const undoneTodos: Todo[] = [];
+        const failedTodos: Todo[] = [];
+  
         snapshot.docs.forEach((doc) => {
-          todos.push({
+          const todo: any = {
             id: doc.id,
             ...doc.data(),
-          } as Todo);
+          };
+  
+          if (todo.status === "done") {
+            doneTodos.push(todo);
+          } else if (todo.status === "undone") {
+            undoneTodos.push(todo);
+          } else if (todo.status === "failed") {
+            failedTodos.push(todo);
+          }
         });
-        setTodos(todos);
+  
+        setDoneTodos(doneTodos);
+        console.log(doneTodos)
+        setUndoneTodos(undoneTodos);
+        setFailedTodos(failedTodos);
       },
     });
     return () => subscriber();
@@ -57,15 +70,15 @@ export default function Tasks() {
   const renderComponent = () => {
     switch (activeComponent) {
       case "current-task":
-        return <CurrentTasks todos={todos} show={showTaskDetails} />;
-      case "failed-task":
-        return <FinishedTasks />;
+        return <CurrentTasks todos={undoneTodos} show={showTaskDetails} />;
       case "finished-task":
-        return <FailedTasks />;
+        return <CurrentTasks todos={doneTodos} show={showTaskDetails} />;
+      case "failed-task":
+        return <CurrentTasks todos={failedTodos} show={showTaskDetails} />;
       case "information":
-        return <Information />;
+        return <CurrentTasks todos={undoneTodos} show={showTaskDetails} />;
       default:
-        return <CurrentTasks todos={todos} show={showTaskDetails} />;
+        return <CurrentTasks todos={undoneTodos} show={showTaskDetails} />;
     }
   };
 

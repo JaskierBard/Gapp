@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, SafeAreaView, Button, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { missionStyles } from "../Styles";
 
 export const GetTimeNow = () => {
   const [date, setDate] = useState(new Date());
@@ -39,7 +40,7 @@ export const GetTimeNow = () => {
 
   return (
     <SafeAreaView>
-      <Text style={styles.text}>{formatDate(date)}</Text>
+      <Text style={missionStyles.text}>{formatDate(date)}</Text>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -52,13 +53,4 @@ export const GetTimeNow = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  text: {
-    fontFamily: "gothic-font",
-    fontSize: 15,
-    marginBottom: 0,
-    color: "white",
-    marginTop: 35,
-    marginLeft: 10,
-  },
-});
+

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { Todo } from "../Tasks";
-import { missionStyles } from "../../Styles";
+import { Todo } from "./Tasks/Tasks";
+import { missionStyles } from "./Styles";
 
 export interface Props {
   todos: Todo[];
@@ -22,7 +22,7 @@ export const CurrentTasks: React.FC<Props> = ({ todos, show }) => {
   return (
     todos.length > 0 && (
       <>
-        <View style={{ borderWidth: 0.5, borderColor: "yellow" }}>
+        <View>
           <FlatList
             data={todos}
             renderItem={(item) => renderTodo(item)}
