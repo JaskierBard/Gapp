@@ -13,6 +13,7 @@ import {
 import { main } from "../Styles";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
+import { addItem } from "../common/FirebaseService";
 
 export interface Props {
   add: boolean;
@@ -24,12 +25,7 @@ export const AddTask = (props: Props) => {
   const [description, setDescription] = useState<any>("");
 
   const addTodo = async () => {
-    console.log("ADD");
-    await addDoc(collection(FIRESTORE_DB, "todos"), {
-      title: title,
-      done: false,
-      description: description,
-    });
+    addItem(title, description)
     props.cancel;
     setTitle("");
     setDescription("");
