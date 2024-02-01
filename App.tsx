@@ -1,10 +1,17 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import TabNavigator from "./components/Navigation";
 import * as NavigationBar from "expo-navigation-bar";
+import { background } from "./components/Styles";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
@@ -20,7 +27,7 @@ export default function App() {
       try {
         await SplashScreen.preventAutoHideAsync();
         await loadFonts();
-        NavigationBar.setVisibilityAsync('hidden');
+        NavigationBar.setVisibilityAsync("hidden");
         await NavigationBar.setBehaviorAsync("inset-swipe");
 
         setIsAppReady(true);
@@ -37,5 +44,12 @@ export default function App() {
   if (!isAppReady) {
     return <Text>Loading...</Text>;
   }
-  return <TabNavigator />;
+  return (
+    <ImageBackground
+      source={require("./assets/images/background.jpg")}
+      style={background.image}
+    >
+      <TabNavigator />
+    </ImageBackground>
+  );
 }

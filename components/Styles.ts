@@ -58,9 +58,12 @@ export const button = StyleSheet.create({
 });
 export const background = StyleSheet.create({
   image: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
+    position: 'absolute',
+    width: width ,
+    height: (height * 1.1),
+    
+    // resizeMode: 'cover',
+
   },
 });
 

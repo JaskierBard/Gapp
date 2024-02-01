@@ -35,6 +35,7 @@ const TabNavigator = () => {
         screenOptions={{
           headerTitleStyle: { fontFamily: "gothic-font", color: "white" },
           tabBarLabelStyle: { fontFamily: "gothic-font" },
+          tabBarHideOnKeyboard: true,
           headerStyle: {
             borderBottomWidth: 0,
           },
@@ -44,7 +45,9 @@ const TabNavigator = () => {
             borderTopColor: "yellow",
             backgroundColor: "black",
           },
+          
         }}
+        
       >
         <Tab.Screen
           name="missions"
