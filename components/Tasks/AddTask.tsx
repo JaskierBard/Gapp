@@ -1,19 +1,10 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Modal,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  Button,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, Button, Text, TextInput } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { main } from "../Styles";
-import { FIRESTORE_DB } from "../../firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
 import { addItem } from "../common/FirebaseService";
+import { formatDate } from "../common/FormatDate";
 
 export interface Props {
   add: boolean;
@@ -23,12 +14,21 @@ export interface Props {
 export const AddTask = (props: Props) => {
   const [title, setTitle] = useState<any>("");
   const [description, setDescription] = useState<any>("");
+  const [expires, setExpires] = useState<Date | null>(null);
 
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const addTodo = async () => {
-    addItem(title, description)
+    addItem(title, description, expires);
     props.cancel;
     setTitle("");
     setDescription("");
+  };
+
+  const onChange = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(false);
+    setExpires(currentDate);
   };
 
   if (props.add) {
@@ -41,6 +41,23 @@ export const AddTask = (props: Props) => {
             onChangeText={(text: string) => setTitle(text)}
             value={title}
           ></TextInput>
+          <View>
+            <Text style={styles.titleInput}>
+              Misja wygasa: {expires && formatDate(expires)}
+            </Text>
+            <Button
+              title="Misja wygasa?"
+              onPress={() => setShowDatePicker(true)}
+            />
+            {showDatePicker && (
+              <DateTimePicker
+                value={expires ? expires : new Date}
+                mode="date"
+                display="default"
+                onChange={onChange}
+              />
+            )}
+          </View>
           <TextInput
             style={styles.descriptionInput}
             placeholder="Dodaj opis"

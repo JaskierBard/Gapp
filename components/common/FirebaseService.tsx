@@ -6,11 +6,11 @@ export const deleteItem = async (id: string) => {
   deleteDoc(ref);
 };
 
-export const addItem = async (title: string, description: string) => {
+export const addItem = async (title: string, description: string, expires: Date | null) => {
   console.log("ADD");
   await addDoc(collection(FIRESTORE_DB, "todos"), {
     title: title,
-    done: false,
+    status: 'undone',
     description: description,
   });
 };
@@ -21,7 +21,7 @@ export const editItem = async (id: string, title: string, description: string) =
 
   await updateDoc(ref, {
     title: title,
-    done: false,
+    status: 'undone',
     description: description,
   });
 };

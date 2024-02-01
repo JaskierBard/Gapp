@@ -10,17 +10,17 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
-    "@react-native-community/datetimepicker": "^7.6.1",
+    "@react-native-community/datetimepicker": "^7.6.2",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "expo": "~50.0.3",
     "expo-font": "^11.10.2",
+    "expo-navigation-bar": "~2.8.1",
     "expo-splash-screen": "^0.26.4",
     "expo-status-bar": "~1.11.1",
     "firebase": "10.7.1",
     "openai": "^4.25.0",
     "react": "18.2.0",
-    "react-native": "0.73.2",
-    "expo-navigation-bar": "~2.8.1"
+    "react-native": "0.73.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

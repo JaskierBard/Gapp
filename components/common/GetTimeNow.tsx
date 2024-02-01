@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, SafeAreaView, Button, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { missionStyles } from "../Styles";
+import { formatDate } from "./FormatDate";
 
 export const GetTimeNow = () => {
   const [date, setDate] = useState(new Date());
@@ -22,21 +23,7 @@ export const GetTimeNow = () => {
     setDate(currentDate);
   };
 
-  const formatDate = (date: Date) => {
-    const options = {
-      weekday: "long" as const,
-      month: "long" as const,
-      day: "numeric" as const,
-      hour: "numeric" as const,
-      minute: "numeric" as const,
-      timeZone: "Europe/Warsaw",
-    };
 
-    const formattedDate = new Intl.DateTimeFormat("pl-PL", options).format(
-      date
-    );
-    return formattedDate;
-  };
 
   return (
     <SafeAreaView>
