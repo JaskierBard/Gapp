@@ -11,6 +11,7 @@ import {
 
 import { main } from "../Styles";
 import { editItem } from "../common/FirebaseService";
+import { Checkmark } from "../common/Checkmark";
 
 export interface Props {
   details: any;
@@ -92,6 +93,7 @@ export const TaskDetails = (props: Props) => {
           >
             <Text style={main.textTitle}>{props.details.title}</Text>
           </TouchableOpacity>
+          <Checkmark/>
           <View style={{ width: "100%", height: "40%" }}>
             <Text style={main.textRegular}>{props.details.description}</Text>
           </View>
