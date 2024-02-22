@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-export const Checkmark = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+export interface Props {
+  text: string;
+  isChecked: boolean;
+  onCheckChange: (isChecked: boolean) => void;
+}
 
-  useEffect(() => {}, []);
+export const Checkmark = (props: Props) => {
+  const [isChecked, setIsChecked] = useState<boolean>(props.isChecked);
+
+  useEffect(() => {
+    props.onCheckChange(isChecked);
+  }, [isChecked]);
 
   return (
     <View style={checkmarkStyle.mark_container}>
@@ -12,19 +20,18 @@ export const Checkmark = () => {
         style={[checkmarkStyle.mark, isChecked && { backgroundColor: "green" }]}
         onPress={() => setIsChecked(!isChecked)}
       ></TouchableOpacity>
-      <Text style={checkmarkStyle.mark_text}>Misja cykliczna.</Text>
+      <Text style={checkmarkStyle.mark_text}>{props.text}</Text>
     </View>
   );
 };
 
 export const checkmarkStyle = StyleSheet.create({
   mark_container: {
-    position: "absolute",
-    top: 30,
+    // position: "absolute",
+    // top: 10,
     left: 10,
     width: 200,
     height: 50,
-    // backgroundColor: "grey",
   },
   mark: {
     position: "relative",
@@ -39,6 +46,6 @@ export const checkmarkStyle = StyleSheet.create({
     marginLeft: 50,
     marginTop: 10,
     fontFamily: "gothic-font",
-    color: 'white'
+    color: "white",
   },
 });

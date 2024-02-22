@@ -22,6 +22,11 @@ export const TaskDetails = (props: Props) => {
   const [toEdit, setToEdit] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(props.details.title);
   const [description, setDescription] = useState<string>(props.details.description);
+  const [isCyclical, setIsCyclical] = useState<boolean>(false);
+
+  const handleCheckChange = (newState: boolean) => {
+    setIsCyclical(newState);
+  };
 
   const closeModal = () => {
     props.show("");
@@ -93,12 +98,12 @@ export const TaskDetails = (props: Props) => {
           >
             <Text style={main.textTitle}>{props.details.title}</Text>
           </TouchableOpacity>
-          <Checkmark/>
+          <Checkmark text={'Misja cykliczna'} isChecked={isCyclical} onCheckChange={handleCheckChange}/>
           <View style={{ width: "100%", height: "40%" }}>
             <Text style={main.textRegular}>{props.details.description}</Text>
           </View>
           <View style={{ width: "100%", height: "40%" }}>
-            <Text style={main.textRegular}>Doświadczenie</Text>
+            <Text style={main.textRegular}>Doświadczenie +300</Text>
           </View>
           <TouchableOpacity style={styles.exit}>
             <Button onPress={closeModal} title="Zamknij"></Button>

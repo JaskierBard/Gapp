@@ -5,6 +5,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { main } from "../Styles";
 import { addItem } from "../common/FirebaseService";
 import { formatDate } from "../common/FormatDate";
+import { Checkmark } from "../common/Checkmark";
 
 export interface Props {
   add: boolean;
@@ -15,9 +16,19 @@ export const AddTask = (props: Props) => {
   const [title, setTitle] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [expires, setExpires] = useState<Date | null>(null);
+  const [isCountdown, setIsCountdown] = useState<boolean>(false);
+
 
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const handleCheckChange = (newState: boolean) => {
+    console.log(newState + " newstate");
+    setShowDatePicker(newState);
+  };
+  const handleCountdownChange = (newState: boolean) => {
+    setIsCountdown(newState);
+  };
   const addTodo = async () => {
     addItem(title, description, expires);
     props.cancel;
@@ -42,16 +53,28 @@ export const AddTask = (props: Props) => {
             value={title}
           ></TextInput>
           <View>
-            <Text style={styles.titleInput}>
-              Misja wygasa: {expires && formatDate(expires)}
-            </Text>
-            <Button
-              title="Misja wygasa?"
-              onPress={() => setShowDatePicker(true)}
+            <Checkmark
+              text={"Wygaśnięcie misji"}
+              isChecked={showDatePicker}
+              onCheckChange={handleCheckChange}
             />
+           
+            {expires && (
+              <View style={styles.expiresInfoContainer}>
+               <Text style={styles.expiresInfoText}>
+                Misja wygasa: {expires && formatDate(expires)}
+              </Text>
+               <Checkmark
+               text={"Dodać do Countdown?"}
+               isChecked={isCountdown}
+               onCheckChange={handleCountdownChange}
+             /></View>
+             
+            )}
+
             {showDatePicker && (
               <DateTimePicker
-                value={expires ? expires : new Date}
+                value={expires ? expires : new Date()}
                 mode="date"
                 display="default"
                 onChange={onChange}
@@ -87,12 +110,29 @@ const styles = StyleSheet.create({
   titleInput: {
     color: "white",
     fontFamily: "gothic-font",
-    height: 40,
+    // height: 40,
     borderColor: "gray",
     borderWidth: 1,
-    marginBottom: 16,
+    // marginBottom: 16,
     paddingHorizontal: 8,
     fontSize: 16,
+  },
+  expiresInfoContainer:{
+    borderColor: "gray",
+    borderWidth: 1,
+    // height: 40,
+    // width: 40,
+    // backgroundColor:'red'
+
+  },
+  expiresInfoText:{
+    color: "white",
+    fontFamily: "gothic-font",
+    // height: 40,
+ 
+    // marginBottom: 16,
+    paddingHorizontal: 8,
+    fontSize: 12,
   },
   descriptionInput: {
     color: "white",
