@@ -32,30 +32,8 @@ export const main = StyleSheet.create({
   },
 });
 
-export const button = StyleSheet.create({
-  buttonContainer: {
-    position: "absolute",
-    bottom: -70, // Odstęp od dołu
-    right: 10, // Odstęp od prawej
-    backgroundColor: "rgba(0, 0, 0, 0.726)",
 
-    borderWidth: 0.5, // Grubość obramówki
-    borderColor: "yellow", // Kolor obramówki (żółty)
-    borderRadius: 8, // Zaokrąglenie narożników
-    paddingHorizontal: 16, // Wypełnienie poziome
-    paddingVertical: 8, // Wypełnienie pionowe
-  },
-  buttonContent: {
-    flexDirection: "row", // Domyślnie przycisk będzie centrował tekst i ikonę w poziomie
-    alignItems: "center", // Centrowanie zawartości w pionie
-    justifyContent: "center", // Centrowanie zawartości w poziomie
-  },
-  buttonText: {
-    color: "white", // Kolor tekstu (czarny)
-    fontSize: 16, // Rozmiar tekstu
-    fontFamily: "gothic-font",
-  },
-});
+
 export const background = StyleSheet.create({
   image: {
     position: 'absolute',

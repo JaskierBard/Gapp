@@ -93,7 +93,6 @@ export const AddTask = (props: Props) => {
               title="Add Todo"
               disabled={title === ""}
             />
-            <Button onPress={props.cancel} title="Anuluj" />
           </View>
         </View>
       </View>

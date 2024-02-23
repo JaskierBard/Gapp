@@ -12,6 +12,7 @@ import {
 import { main } from "../Styles";
 import { editItem } from "../common/FirebaseService";
 import { Checkmark } from "../common/Checkmark";
+import { ActionButton } from "../common/ActionButton";
 
 export interface Props {
   details: any;
@@ -21,40 +22,43 @@ export interface Props {
 export const TaskDetails = (props: Props) => {
   const [toEdit, setToEdit] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(props.details.title);
-  const [description, setDescription] = useState<string>(props.details.description);
+  const [description, setDescription] = useState<string>(
+    props.details.description
+  );
   const [isCyclical, setIsCyclical] = useState<boolean>(false);
 
   const handleCheckChange = (newState: boolean) => {
     setIsCyclical(newState);
   };
+  const handleUndoButton = (newState: boolean) => {
+    if (newState === false) {
+           props.show("");
 
-  const closeModal = () => {
-    props.show("");
+    } 
   };
 
-  useEffect(() => {
-  
-  },[])
+  // const closeModal = () => {
+  //   props.show("");
+  // };
+
+  useEffect(() => {}, []);
 
   const updateState = async () => {
     setTitle(props.details.title);
     setDescription(props.details.description);
-    setToEdit(true)
-    
-  }
+    setToEdit(true);
+  };
 
   const editTodo = async () => {
-    editItem(props.details.id ,title, description)
+    editItem(props.details.id, title, description);
     // props.cancel;
     setTitle("");
     setDescription("");
-    setToEdit(false)
-    closeModal()
+    setToEdit(false);
+    handleUndoButton;
   };
 
   if (toEdit) {
-
-
     return (
       <View style={main.container}>
         <View style={styles.form}>
@@ -64,6 +68,16 @@ export const TaskDetails = (props: Props) => {
             onChangeText={(text: string) => setTitle(text)}
             value={title}
           ></TextInput>
+          <Checkmark
+            text={"Misja cykliczna"}
+            isChecked={isCyclical}
+            onCheckChange={handleCheckChange}
+          />
+          <Checkmark
+            text={"Misje poboczne"}
+            isChecked={isCyclical}
+            onCheckChange={handleCheckChange}
+          />
           <TextInput
             style={styles.descriptionInput}
             placeholder="Dodaj opis"
@@ -71,52 +85,18 @@ export const TaskDetails = (props: Props) => {
             value={description}
           ></TextInput>
           <View style={styles.buttonContainer}>
-            <Button
-              onPress={editTodo}
-              title="Edytuj"
-              disabled={title === ""}
-            />
-            <Button onPress={()=>setToEdit(false)} title="Anuluj" />
+            <Button onPress={editTodo} title="Zapisz" disabled={title === ""} />
+            <Button onPress={() => setToEdit(false)} title="Anuluj" />
           </View>
         </View>
       </View>
-  );
+    );
   }
 
   if (props.details) {
     return (
-        <View style={main.container}>
-          <TouchableOpacity
-            style={{
-              width: "100%",
-              height: "10%",
-              flex: 3,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            
-          >
-            <Text style={main.textTitle}>{props.details.title}</Text>
-          </TouchableOpacity>
-          <Checkmark text={'Misja cykliczna'} isChecked={isCyclical} onCheckChange={handleCheckChange}/>
-          <View style={{ width: "100%", height: "40%" }}>
-            <Text style={main.textRegular}>{props.details.description}</Text>
-          </View>
-          <View style={{ width: "100%", height: "40%" }}>
-            <Text style={main.textRegular}>Doświadczenie +300</Text>
-          </View>
-          <TouchableOpacity style={styles.exit}>
-            <Button onPress={closeModal} title="Zamknij"></Button>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.edit}>
-          <Button onPress={updateState} title="Edytuj"></Button>
-        </TouchableOpacity>
-        </View>
-    );
-  } else
-    
       <View style={main.container}>
-        <View
+        <TouchableOpacity
           style={{
             width: "100%",
             height: "10%",
@@ -125,14 +105,40 @@ export const TaskDetails = (props: Props) => {
             alignItems: "center",
           }}
         >
-          <Text style={main.textTitle}>Błąd przy pobieraniu taska!</Text>
-        </View>
-
-        <TouchableOpacity style={styles.exit}>
-          <Button onPress={closeModal} title="Zamknij"></Button>
+          <Text style={main.textTitle}>{props.details.title}</Text>
         </TouchableOpacity>
-        
+        <View style={{ width: "100%", height: "40%" }}>
+          <Text style={main.textRegular}>{props.details.description}</Text>
+        </View>
+        <View style={{ width: "100%", height: "40%" }}>
+          <Text style={main.textRegular}>Doświadczenie +300</Text>
+        </View>
+        <ActionButton
+            text={"Anuluj"}
+            isClicked={props.details}
+            onClickButton={handleUndoButton}
+          />
+        <TouchableOpacity style={styles.edit}>
+          <Button onPress={updateState} title="Edytuj"></Button>
+        </TouchableOpacity>
       </View>
+    );
+  } else
+    <View style={main.container}>
+      <View
+        style={{
+          width: "100%",
+          height: "10%",
+          flex: 3,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={main.textTitle}>Błąd przy pobieraniu taska!</Text>
+      </View>
+
+      
+    </View>;
 };
 
 const styles = StyleSheet.create({

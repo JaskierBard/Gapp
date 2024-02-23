@@ -6,8 +6,9 @@ import React, { useEffect, useState } from "react";
 import { CurrentTasks } from "../CurrentTasks";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { TaskDetails } from "./TaskDetails";
-import { button, background, missionStyles } from "../Styles";
+import { background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";
+import { ActionButton } from "../common/ActionButton";
 
 export interface Todo {
   id: string;
@@ -23,21 +24,25 @@ export default function Tasks() {
   const [details, setDetails] = useState<any>("");
   const [addTaskVisible, setAddTaskVisible] = useState<boolean>(false);
 
+  const handleClickAddButton = (newState: boolean) => {
+    setAddTaskVisible(newState);
+  };
+
   useEffect(() => {
     const todoRef = collection(FIRESTORE_DB, "todos");
-  
+
     const subscriber = onSnapshot(todoRef, {
       next: (snapshot) => {
         const doneTodos: Todo[] = [];
         const undoneTodos: Todo[] = [];
         const failedTodos: Todo[] = [];
-  
+
         snapshot.docs.forEach((doc) => {
           const todo: any = {
             id: doc.id,
             ...doc.data(),
           };
-  
+
           if (todo.status === "done") {
             doneTodos.push(todo);
           } else if (todo.status === "undone") {
@@ -46,9 +51,8 @@ export default function Tasks() {
             failedTodos.push(todo);
           }
         });
-  
+
         setDoneTodos(doneTodos);
-        console.log(doneTodos)
         setUndoneTodos(undoneTodos);
         setFailedTodos(failedTodos);
       },
@@ -58,9 +62,6 @@ export default function Tasks() {
 
   const showTaskDetails = (data: any) => {
     setDetails(data);
-  };
-  const cancel = () => {
-    setAddTaskVisible(false);
   };
 
   const pickComponent = (component: string) => {
@@ -124,19 +125,18 @@ export default function Tasks() {
           </View>
           <View style={missionStyles.right}>{renderComponent()}</View>
 
-          {!addTaskVisible ? (
-            <TouchableOpacity
-              style={button.buttonContainer}
-              onPress={() => {
-                setAddTaskVisible(true);
-              }}
-            >
-              <View style={button.buttonContent}>
-                <Text style={button.buttonText}>Dodaj</Text>
-              </View>
-            </TouchableOpacity>
-          ) : null}
-          <AddTask add={addTaskVisible} cancel={cancel} />
+          {details == "" && (
+            <ActionButton
+              text={"Dodaj Task"}
+              isClicked={addTaskVisible}
+              onClickButton={handleClickAddButton}
+            />
+          )}
+
+          <AddTask
+            add={addTaskVisible}
+            cancel={() => setAddTaskVisible(false)}
+          />
         </View>
       </View>
     </ImageBackground>

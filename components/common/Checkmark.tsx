@@ -27,24 +27,22 @@ export const Checkmark = (props: Props) => {
 
 export const checkmarkStyle = StyleSheet.create({
   mark_container: {
-    // position: "absolute",
-    // top: 10,
-    left: 10,
+   
     width: 200,
-    height: 50,
+    height: 22,
   },
   mark: {
     position: "relative",
     width: 20,
     height: 20,
+    borderRadius: 3,
     backgroundColor: "red",
-    marginTop: 10,
     marginLeft: 20,
   },
   mark_text: {
     position: "absolute",
     marginLeft: 50,
-    marginTop: 10,
+    fontSize:12,
     fontFamily: "gothic-font",
     color: "white",
   },
