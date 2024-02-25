@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 
 export interface Props {
   onClickButton: () => void;
+  undo: () => void;
+
 }
 
 export const BinButton = (props: Props) => {
@@ -11,6 +13,8 @@ export const BinButton = (props: Props) => {
       style={buttonStyle.buttonContainer}
       onPress={() => {
         props.onClickButton();
+        props.undo();
+
       }}
     >
       <Image

@@ -4,7 +4,8 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 export interface Props {
 //   text: string;
 //   isClicked: boolean;
-  onClickButton: (isChecked: boolean) => void;
+  onClickButton: () => void;
+
 }
 
 export const UndoButton = (props: Props) => {
@@ -18,7 +19,8 @@ export const UndoButton = (props: Props) => {
     <TouchableOpacity
       style={buttonStyle.buttonContainer}
       onPress={() => {
-        props.onClickButton(true);
+        props.onClickButton();
+
       }}
     >
       <View style={buttonStyle.buttonContent}>

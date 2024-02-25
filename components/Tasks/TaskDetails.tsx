@@ -82,6 +82,7 @@ export const TaskDetails = (props: Props) => {
         </View>
         <BinButton
             onClickButton={() => deleteItem(props.details.id)}
+            undo={() => props.show("")}
           />
         <UndoButton onClickButton={() => props.show("")} />
         {/* <TouchableOpacity style={styles.edit}>

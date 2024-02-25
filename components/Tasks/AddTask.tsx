@@ -24,7 +24,7 @@ export const AddTask = (props: Props) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleCheckChange = (newState: boolean) => {
-    console.log(newState + " newstate");
+    // console.log(newState + " newstate");
     setShowDatePicker(newState);
   };
   const handleCountdownChange = (newState: boolean) => {
@@ -33,17 +33,11 @@ export const AddTask = (props: Props) => {
   const addTodo = async () => {
     console.log('add')
     addItem(title, description, expires);
-    props.cancel;
+    props.cancel();
     setTitle("");
     setDescription("");
   };
 
-  // const handleUndoButton = (newState: boolean) => {
-  //   // if (newState === false) {
-  //   props.cancel;
-
-  //   // }
-  // };
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
@@ -98,19 +92,11 @@ export const AddTask = (props: Props) => {
             onChangeText={(text: string) => setDescription(text)}
             value={description}
           ></TextInput>
-          {/* <View style={styles.buttonContainer}>
-            <Button
-              onPress={addTodo}
-              title="Add Todo"
-              disabled={title === ""}
-            />
-          </View> */}
+    
           
         </View>
         <ActionButton
-            text={"Zapisz"}
-            // isClicked={true}
-            
+            text={"Zapisz"}            
             onClickButton={()=>addTodo()}
           />
         <UndoButton onClickButton={props.cancel} />
