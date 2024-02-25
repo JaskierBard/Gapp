@@ -10,9 +10,12 @@ import {
 } from "react-native";
 
 import { main } from "../Styles";
-import { editItem } from "../common/FirebaseService";
+import { deleteItem, editItem } from "../common/FirebaseService";
 import { Checkmark } from "../common/Checkmark";
-import { ActionButton } from "../common/ActionButton";
+import { ActionButton } from "../common/Buttons/ActionButton";
+import { UndoButton } from "../common/Buttons/UndoButtons";
+import { EditTask } from "./EditTask";
+import { BinButton } from "../common/Buttons/BinButton";
 
 export interface Props {
   details: any;
@@ -30,68 +33,32 @@ export const TaskDetails = (props: Props) => {
   const handleCheckChange = (newState: boolean) => {
     setIsCyclical(newState);
   };
-  const handleUndoButton = (newState: boolean) => {
-    if (newState === false) {
-           props.show("");
 
-    } 
-  };
 
-  // const closeModal = () => {
-  //   props.show("");
-  // };
+ 
 
   useEffect(() => {}, []);
 
-  const updateState = async () => {
-    setTitle(props.details.title);
-    setDescription(props.details.description);
-    setToEdit(true);
-  };
+  // const updateState = async () => {
+  //   setTitle(props.details.title);
+  //   setDescription(props.details.description);
+  //   setToEdit(true);
+  // };
 
-  const editTodo = async () => {
-    editItem(props.details.id, title, description);
-    // props.cancel;
-    setTitle("");
-    setDescription("");
-    setToEdit(false);
-    handleUndoButton;
-  };
+  // const editTodo = async () => {
+  //   editItem(props.details.id, title, description);
+  //   // props.cancel;
+  //   setTitle("");
+  //   setDescription("");
+  //   setToEdit(false);
+  //   handleUndoButton;
+  // };
 
-  if (toEdit) {
-    return (
-      <View style={main.container}>
-        <View style={styles.form}>
-          <TextInput
-            style={styles.titleInput}
-            placeholder="Dodaj tytuł taska"
-            onChangeText={(text: string) => setTitle(text)}
-            value={title}
-          ></TextInput>
-          <Checkmark
-            text={"Misja cykliczna"}
-            isChecked={isCyclical}
-            onCheckChange={handleCheckChange}
-          />
-          <Checkmark
-            text={"Misje poboczne"}
-            isChecked={isCyclical}
-            onCheckChange={handleCheckChange}
-          />
-          <TextInput
-            style={styles.descriptionInput}
-            placeholder="Dodaj opis"
-            onChangeText={(text: string) => setDescription(text)}
-            value={description}
-          ></TextInput>
-          <View style={styles.buttonContainer}>
-            <Button onPress={editTodo} title="Zapisz" disabled={title === ""} />
-            <Button onPress={() => setToEdit(false)} title="Anuluj" />
-          </View>
-        </View>
-      </View>
-    );
-  }
+  // if (toEdit) {
+  //   return (
+  //    <EditTask details={props.details}/>
+  //   );
+  // }
 
   if (props.details) {
     return (
@@ -113,14 +80,18 @@ export const TaskDetails = (props: Props) => {
         <View style={{ width: "100%", height: "40%" }}>
           <Text style={main.textRegular}>Doświadczenie +300</Text>
         </View>
-        <ActionButton
-            text={"Anuluj"}
-            isClicked={props.details}
-            onClickButton={handleUndoButton}
+        <BinButton
+            onClickButton={() => deleteItem(props.details.id)}
           />
-        <TouchableOpacity style={styles.edit}>
+        <UndoButton onClickButton={() => props.show("")} />
+        {/* <TouchableOpacity style={styles.edit}>
           <Button onPress={updateState} title="Edytuj"></Button>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+         {/* <ActionButton
+              text={"Edytuj"}
+              isClicked={toEdit}
+              onClickButton={()=>setToEdit(true)}
+            /> */}
       </View>
     );
   } else
@@ -136,8 +107,6 @@ export const TaskDetails = (props: Props) => {
       >
         <Text style={main.textTitle}>Błąd przy pobieraniu taska!</Text>
       </View>
-
-      
     </View>;
 };
 

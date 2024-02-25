@@ -6,6 +6,8 @@ import { main } from "../Styles";
 import { addItem } from "../common/FirebaseService";
 import { formatDate } from "../common/FormatDate";
 import { Checkmark } from "../common/Checkmark";
+import { UndoButton } from "../common/Buttons/UndoButtons";
+import { ActionButton } from "../common/Buttons/ActionButton";
 
 export interface Props {
   add: boolean;
@@ -18,7 +20,6 @@ export const AddTask = (props: Props) => {
   const [expires, setExpires] = useState<Date | null>(null);
   const [isCountdown, setIsCountdown] = useState<boolean>(false);
 
-
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -30,11 +31,19 @@ export const AddTask = (props: Props) => {
     setIsCountdown(newState);
   };
   const addTodo = async () => {
+    console.log('add')
     addItem(title, description, expires);
     props.cancel;
     setTitle("");
     setDescription("");
   };
+
+  // const handleUndoButton = (newState: boolean) => {
+  //   // if (newState === false) {
+  //   props.cancel;
+
+  //   // }
+  // };
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
@@ -45,6 +54,8 @@ export const AddTask = (props: Props) => {
   if (props.add) {
     return (
       <View style={main.container}>
+                <Text>Dodanie taska</Text>
+
         <View style={styles.form}>
           <TextInput
             style={styles.titleInput}
@@ -58,18 +69,18 @@ export const AddTask = (props: Props) => {
               isChecked={showDatePicker}
               onCheckChange={handleCheckChange}
             />
-           
+
             {expires && (
               <View style={styles.expiresInfoContainer}>
-               <Text style={styles.expiresInfoText}>
-                Misja wygasa: {expires && formatDate(expires)}
-              </Text>
-               <Checkmark
-               text={"Dodać do Countdown?"}
-               isChecked={isCountdown}
-               onCheckChange={handleCountdownChange}
-             /></View>
-             
+                <Text style={styles.expiresInfoText}>
+                  Misja wygasa: {expires && formatDate(expires)}
+                </Text>
+                <Checkmark
+                  text={"Dodać do Countdown?"}
+                  isChecked={isCountdown}
+                  onCheckChange={handleCountdownChange}
+                />
+              </View>
             )}
 
             {showDatePicker && (
@@ -87,14 +98,22 @@ export const AddTask = (props: Props) => {
             onChangeText={(text: string) => setDescription(text)}
             value={description}
           ></TextInput>
-          <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
             <Button
               onPress={addTodo}
               title="Add Todo"
               disabled={title === ""}
             />
-          </View>
+          </View> */}
+          
         </View>
+        <ActionButton
+            text={"Zapisz"}
+            // isClicked={true}
+            
+            onClickButton={()=>addTodo()}
+          />
+        <UndoButton onClickButton={props.cancel} />
       </View>
     );
   }
@@ -116,19 +135,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     fontSize: 16,
   },
-  expiresInfoContainer:{
+  expiresInfoContainer: {
     borderColor: "gray",
     borderWidth: 1,
     // height: 40,
     // width: 40,
     // backgroundColor:'red'
-
   },
-  expiresInfoText:{
+  expiresInfoText: {
     color: "white",
     fontFamily: "gothic-font",
     // height: 40,
- 
+
     // marginBottom: 16,
     paddingHorizontal: 8,
     fontSize: 12,

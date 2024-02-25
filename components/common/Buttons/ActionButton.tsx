@@ -3,26 +3,26 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export interface Props {
   text: string;
-  isClicked: boolean;
+  // isClicked: boolean;
   onClickButton: (isChecked: boolean) => void;
 }
 
 export const ActionButton = (props: Props) => {
-  const [isClicked, setisClicked] = useState<boolean>(props.isClicked);
+  // const [isClicked, setisClicked] = useState<boolean>(props.isClicked);
 
-  useEffect(() => {
-    props.onClickButton(isClicked);
-  }, [isClicked]);
+  // useEffect(() => {
+  //   props.onClickButton(isClicked);
+  // }, [isClicked]);
 
   return (
     <TouchableOpacity
       style={buttonStyle.buttonContainer}
       onPress={() => {
-        setisClicked(!isClicked);
+        props.onClickButton(true);
       }}
     >
       <View style={buttonStyle.buttonContent}>
-        <Text style={buttonStyle.buttonText}>{!isClicked ? props.text : 'Anuluj' }</Text>
+        <Text style={buttonStyle.buttonText}>{props.text}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -32,7 +32,7 @@ export const buttonStyle = StyleSheet.create({
     buttonContainer: {
       position: "absolute",
       bottom: -70, // Odstęp od dołu
-      right: 10, // Odstęp od prawej
+      left: 10, // Odstęp od prawej
       backgroundColor: "rgba(0, 0, 0, 0.726)",
   
       borderWidth: 0.5, // Grubość obramówki

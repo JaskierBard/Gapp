@@ -8,7 +8,7 @@ import { FIRESTORE_DB } from "../../firebaseConfig";
 import { TaskDetails } from "./TaskDetails";
 import { background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";
-import { ActionButton } from "../common/ActionButton";
+import { ActionButton } from "../common/Buttons/ActionButton";
 
 export interface Todo {
   id: string;
@@ -125,10 +125,10 @@ export default function Tasks() {
           </View>
           <View style={missionStyles.right}>{renderComponent()}</View>
 
-          {details == "" && (
+          {(!addTaskVisible && details=="") && (
             <ActionButton
               text={"Dodaj Task"}
-              isClicked={addTaskVisible}
+              // isClicked={addTaskVisible}
               onClickButton={handleClickAddButton}
             />
           )}
