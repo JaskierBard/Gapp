@@ -9,6 +9,10 @@ import Settings from "./Settings";
 import { StyleSheet } from "react-native";
 import Tasks from "../components/Tasks/Tasks";
 
+export interface Props {
+  addLog: (arg: string) => void;
+}
+
 const NavigateToSettings = () => {
   const navigation = useNavigation();
 
@@ -28,7 +32,7 @@ const NavigateToSettings = () => {
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
+const TabNavigator = (props: Props) => {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -45,13 +49,10 @@ const TabNavigator = () => {
             borderTopColor: "yellow",
             backgroundColor: "black",
           },
-          
         }}
-        
       >
         <Tab.Screen
           name="missions"
-          component={Tasks}
           options={{
             title: "Misje",
             tabBarIcon: () => (
@@ -61,7 +62,9 @@ const TabNavigator = () => {
               />
             ),
           }}
-        />
+        >
+          {() => <Tasks addLog={props.addLog} />}
+        </Tab.Screen>
         <Tab.Screen
           name="map"
           component={Map}

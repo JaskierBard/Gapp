@@ -9,6 +9,7 @@ import { TaskDetails } from "./TaskDetails";
 import { background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";
 import { ActionButton } from "../common/Buttons/ActionButton";
+import { Console } from "../common/Console/Console";
 
 export interface Todo {
   id: string;
@@ -16,7 +17,10 @@ export interface Todo {
   status: string;
   description: string;
 }
-export default function Tasks() {
+export interface Props {
+  addLog: (arg: string) => void;
+}
+export default function Tasks(props:Props) {
   const [activeComponent, setActiveComponent] = useState("");
   const [undoneTodos, setUndoneTodos] = useState<Todo[]>([]);
   const [doneTodos, setDoneTodos] = useState<Todo[]>([]);
@@ -92,7 +96,9 @@ export default function Tasks() {
         style={{ width: "100%", height: "100%" }}
         onTouchStart={() => NavigationBar.setVisibilityAsync("hidden")}
       >
+        
         <View style={missionStyles.container}>
+
           <TaskDetails details={details} show={showTaskDetails} />
           <View style={missionStyles.left}>
             <TouchableOpacity
@@ -134,6 +140,7 @@ export default function Tasks() {
           )}
 
           <AddTask
+            addLog={props.addLog}
             add={addTaskVisible}
             cancel={() => setAddTaskVisible(false)}
           />

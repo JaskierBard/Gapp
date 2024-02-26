@@ -12,9 +12,18 @@ import * as Font from "expo-font";
 import TabNavigator from "./components/Navigation";
 import * as NavigationBar from "expo-navigation-bar";
 import { background } from "./components/Styles";
+import { Console } from "./components/common/Console/Console";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
+  const [logs, setLogs] = useState(['dodano nowy task: Ugotować obiad', 'portdddddadsdaos', 'aramsidsssss']);
+
+  const addLog = (newLog: string) => {
+    setLogs((prevLogs) => {
+      const updatedLogs = [newLog, ...prevLogs.slice(0, 4)];
+      return updatedLogs;
+    });
+  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -49,7 +58,9 @@ export default function App() {
       source={require("./assets/images/background.jpg")}
       style={background.image}
     >
-      <TabNavigator />
+      <TabNavigator addLog={addLog}/>
+      <Console text={logs}/>
+
     </ImageBackground>
   );
 }

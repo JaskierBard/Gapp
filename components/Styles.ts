@@ -58,11 +58,11 @@ export const missionStyles = StyleSheet.create({
     borderColor: "yellow",
   },
   todoContainer: {
-    backgroundColor: 'grey',
+    // backgroundColor: 'grey',
     flexDirection: "row",
     alignItems: "center",
     padding: 5,
-    marginVertical: 4,
+    marginVertical: 1,
   },
 
   todoTextUndone: {

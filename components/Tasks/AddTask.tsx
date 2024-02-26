@@ -12,6 +12,8 @@ import { ActionButton } from "../common/Buttons/ActionButton";
 export interface Props {
   add: boolean;
   cancel: () => void;
+  addLog: (arg: string) => void;
+
 }
 
 export const AddTask = (props: Props) => {
@@ -33,6 +35,7 @@ export const AddTask = (props: Props) => {
   const addTodo = async () => {
     console.log('add')
     addItem(title, description, expires);
+    props.addLog('Nowa misja: ' + title)
     props.cancel();
     setTitle("");
     setDescription("");
