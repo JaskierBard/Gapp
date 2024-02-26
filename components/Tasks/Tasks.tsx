@@ -20,7 +20,7 @@ export interface Todo {
 export interface Props {
   addLog: (arg: string) => void;
 }
-export default function Tasks(props:Props) {
+export default function Tasks(props: Props) {
   const [activeComponent, setActiveComponent] = useState("");
   const [undoneTodos, setUndoneTodos] = useState<Todo[]>([]);
   const [doneTodos, setDoneTodos] = useState<Todo[]>([]);
@@ -96,10 +96,12 @@ export default function Tasks(props:Props) {
         style={{ width: "100%", height: "100%" }}
         onTouchStart={() => NavigationBar.setVisibilityAsync("hidden")}
       >
-        
         <View style={missionStyles.container}>
-
-          <TaskDetails details={details} show={showTaskDetails} />
+          <TaskDetails
+            addLog={props.addLog}
+            details={details}
+            show={showTaskDetails}
+          />
           <View style={missionStyles.left}>
             <TouchableOpacity
               style={missionStyles.current}
@@ -131,7 +133,7 @@ export default function Tasks(props:Props) {
           </View>
           <View style={missionStyles.right}>{renderComponent()}</View>
 
-          {(!addTaskVisible && details=="") && (
+          {!addTaskVisible && details == "" && (
             <ActionButton
               text={"Dodaj Task"}
               // isClicked={addTaskVisible}

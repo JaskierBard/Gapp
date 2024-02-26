@@ -13,7 +13,6 @@ export interface Props {
   add: boolean;
   cancel: () => void;
   addLog: (arg: string) => void;
-
 }
 
 export const AddTask = (props: Props) => {
@@ -33,14 +32,13 @@ export const AddTask = (props: Props) => {
     setIsCountdown(newState);
   };
   const addTodo = async () => {
-    console.log('add')
+    console.log("add");
     addItem(title, description, expires);
-    props.addLog('Nowa misja: ' + title)
+    props.addLog("Nowa misja: " + title);
     props.cancel();
     setTitle("");
     setDescription("");
   };
-
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
@@ -51,7 +49,7 @@ export const AddTask = (props: Props) => {
   if (props.add) {
     return (
       <View style={main.container}>
-                <Text>Dodanie taska</Text>
+        <Text>Dodanie taska</Text>
 
         <View style={styles.form}>
           <TextInput
@@ -60,48 +58,44 @@ export const AddTask = (props: Props) => {
             onChangeText={(text: string) => setTitle(text)}
             value={title}
           ></TextInput>
-          <View>
-            <Checkmark
-              text={"Wygaśnięcie misji"}
-              isChecked={showDatePicker}
-              onCheckChange={handleCheckChange}
-            />
-
-            {expires && (
-              <View style={styles.expiresInfoContainer}>
-                <Text style={styles.expiresInfoText}>
-                  Misja wygasa: {expires && formatDate(expires)}
-                </Text>
-                <Checkmark
-                  text={"Dodać do Countdown?"}
-                  isChecked={isCountdown}
-                  onCheckChange={handleCountdownChange}
-                />
-              </View>
-            )}
-
-            {showDatePicker && (
-              <DateTimePicker
-                value={expires ? expires : new Date()}
-                mode="date"
-                display="default"
-                onChange={onChange}
-              />
-            )}
-          </View>
+          <View></View>
           <TextInput
             style={styles.descriptionInput}
             placeholder="Dodaj opis"
             onChangeText={(text: string) => setDescription(text)}
             value={description}
           ></TextInput>
-    
-          
+
+          {expires && (
+            <View style={styles.expiresInfoContainer}>
+              <Text style={styles.expiresInfoText}>
+                Misja wygasa: {expires && formatDate(expires)}
+              </Text>
+            </View>
+          )}
+            <View style={styles.checkmarks}>
+            <Checkmark
+              text={"Wygaśnięcie misji"}
+              isChecked={showDatePicker}
+              onCheckChange={handleCheckChange}
+            />
+            <Checkmark
+              text={"Dodać do Countdown?"}
+              isChecked={isCountdown}
+              onCheckChange={handleCountdownChange}
+            />
+          </View>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={expires ? expires : new Date()}
+              mode="date"
+              display="default"
+              onChange={onChange}
+            />
+          )}
         </View>
-        <ActionButton
-            text={"Zapisz"}            
-            onClickButton={()=>addTodo()}
-          />
+        <ActionButton text={"Zapisz"} onClickButton={() => addTodo()} />
         <UndoButton onClickButton={props.cancel} />
       </View>
     );
@@ -154,4 +148,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+
+  checkmarks: {
+    height: 60,
+    bottom: 10,
+  }
 });

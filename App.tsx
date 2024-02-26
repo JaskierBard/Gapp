@@ -16,7 +16,7 @@ import { Console } from "./components/common/Console/Console";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
-  const [logs, setLogs] = useState(['dodano nowy task: Ugotować obiad', 'portdddddadsdaos', 'aramsidsssss']);
+  const [logs, setLogs] = useState(['']);
 
   const addLog = (newLog: string) => {
     setLogs((prevLogs) => {

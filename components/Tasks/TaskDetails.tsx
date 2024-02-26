@@ -20,6 +20,8 @@ import { BinButton } from "../common/Buttons/BinButton";
 export interface Props {
   details: any;
   show: (arg: string) => void;
+  addLog: (arg: string) => void;
+
 }
 
 export const TaskDetails = (props: Props) => {
@@ -81,8 +83,10 @@ export const TaskDetails = (props: Props) => {
           <Text style={main.textRegular}>Doświadczenie +300</Text>
         </View>
         <BinButton
+            name={props.details.title}
             onClickButton={() => deleteItem(props.details.id)}
             undo={() => props.show("")}
+            addLog={props.addLog}
           />
         <UndoButton onClickButton={() => props.show("")} />
         {/* <TouchableOpacity style={styles.edit}>

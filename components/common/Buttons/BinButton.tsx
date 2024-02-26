@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 
 export interface Props {
+  name: string;
   onClickButton: () => void;
   undo: () => void;
+  addLog: (arg: string) => void;
+
 
 }
 
@@ -14,6 +17,7 @@ export const BinButton = (props: Props) => {
       onPress={() => {
         props.onClickButton();
         props.undo();
+        props.addLog('Usunięto misję: ' + props.name)
 
       }}
     >
