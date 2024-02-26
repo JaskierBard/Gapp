@@ -14,7 +14,7 @@ export const ConsoleItems: React.FC<Props> = (props: Props) => {
 
   const renderLogs = ({ item }: any) => {
     return (
-      <View style={missionStyles.todoContainer}>
+      <View  style={missionStyles.todoContainer}>
         <Text style={missionStyles.todoTextDone}>{item}</Text>
       </View>
     );
@@ -27,7 +27,7 @@ export const ConsoleItems: React.FC<Props> = (props: Props) => {
           <FlatList
             data={reversedLogs}
             renderItem={(item) => renderLogs(item)}
-            keyExtractor={(todo) => todo.id}
+            keyExtractor={(item) => item}
           />
         </View>
       </>

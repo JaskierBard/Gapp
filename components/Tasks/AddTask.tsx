@@ -8,6 +8,7 @@ import { formatDate } from "../common/FormatDate";
 import { Checkmark } from "../common/Checkmark";
 import { UndoButton } from "../common/Buttons/UndoButtons";
 import { ActionButton } from "../common/Buttons/ActionButton";
+import { MissionAi } from "../common/AiMissions/MissionAi";
 
 export interface Props {
   add: boolean;
@@ -17,7 +18,7 @@ export interface Props {
 
 export const AddTask = (props: Props) => {
   const [title, setTitle] = useState<any>("");
-  const [description, setDescription] = useState<any>("");
+  // const [description, setDescription] = useState<any>("");
   const [expires, setExpires] = useState<Date | null>(null);
   const [isCountdown, setIsCountdown] = useState<boolean>(false);
 
@@ -32,12 +33,13 @@ export const AddTask = (props: Props) => {
     setIsCountdown(newState);
   };
   const addTodo = async () => {
-    console.log("add");
-    addItem(title, description, expires);
-    props.addLog("Nowa misja: " + title);
+    const description = await MissionAi(title + ' podaj odpowiedź (jako `mission`)')
+    console.log(description);
     props.cancel();
+    await addItem(title, description['mission'], expires);
+    props.addLog("Nowa misja: " + title);
     setTitle("");
-    setDescription("");
+    // setDescription("");
   };
 
   const onChange = (event: any, selectedDate: any) => {
@@ -59,12 +61,12 @@ export const AddTask = (props: Props) => {
             value={title}
           ></TextInput>
           <View></View>
-          <TextInput
+          {/* <TextInput
             style={styles.descriptionInput}
             placeholder="Dodaj opis"
             onChangeText={(text: string) => setDescription(text)}
             value={description}
-          ></TextInput>
+          ></TextInput> */}
 
           {expires && (
             <View style={styles.expiresInfoContainer}>
