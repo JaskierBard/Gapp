@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Button, Text, TextInput } from "react-native";
+import { StyleSheet, View, Text, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import { main } from "../Styles";
 import { addItem } from "../common/FirebaseService";
 import { formatDate } from "../common/FormatDate";
@@ -18,32 +17,28 @@ export interface Props {
 
 export const AddTask = (props: Props) => {
   const [title, setTitle] = useState<any>("");
-  // const [description, setDescription] = useState<any>("");
   const [expires, setExpires] = useState<Date | null>(null);
   const [isCountdown, setIsCountdown] = useState<boolean>(false);
-
-  const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleCheckChange = (newState: boolean) => {
-    // console.log(newState + " newstate");
     setShowDatePicker(newState);
   };
   const handleCountdownChange = (newState: boolean) => {
     setIsCountdown(newState);
   };
   const addTodo = async () => {
-    const description = await MissionAi(title + ' podaj odpowiedź (jako `mission`)')
-    console.log(description);
+    const description = await MissionAi(
+      title + " podaj odpowiedź (jako `mission`)"
+    );
     props.cancel();
-    await addItem(title, description['mission'], expires);
+    await addItem(title, description["mission"], expires);
     props.addLog("Nowa misja: " + title);
     setTitle("");
-    // setDescription("");
   };
 
-  const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate || date;
+  const onChange = (selectedDate: any) => {
+    const currentDate = selectedDate || new Date();
     setShowDatePicker(false);
     setExpires(currentDate);
   };
@@ -51,8 +46,6 @@ export const AddTask = (props: Props) => {
   if (props.add) {
     return (
       <View style={main.container}>
-        <Text>Dodanie taska</Text>
-
         <View style={styles.form}>
           <TextInput
             style={styles.titleInput}
@@ -60,14 +53,6 @@ export const AddTask = (props: Props) => {
             onChangeText={(text: string) => setTitle(text)}
             value={title}
           ></TextInput>
-          <View></View>
-          {/* <TextInput
-            style={styles.descriptionInput}
-            placeholder="Dodaj opis"
-            onChangeText={(text: string) => setDescription(text)}
-            value={description}
-          ></TextInput> */}
-
           {expires && (
             <View style={styles.expiresInfoContainer}>
               <Text style={styles.expiresInfoText}>
@@ -75,7 +60,7 @@ export const AddTask = (props: Props) => {
               </Text>
             </View>
           )}
-            <View style={styles.checkmarks}>
+          <View style={styles.checkmarks}>
             <Checkmark
               text={"Wygaśnięcie misji"}
               isChecked={showDatePicker}
@@ -87,7 +72,6 @@ export const AddTask = (props: Props) => {
               onCheckChange={handleCountdownChange}
             />
           </View>
-
           {showDatePicker && (
             <DateTimePicker
               value={expires ? expires : new Date()}
@@ -113,26 +97,18 @@ const styles = StyleSheet.create({
   titleInput: {
     color: "white",
     fontFamily: "gothic-font",
-    // height: 40,
     borderColor: "gray",
     borderWidth: 1,
-    // marginBottom: 16,
     paddingHorizontal: 8,
     fontSize: 16,
   },
   expiresInfoContainer: {
     borderColor: "gray",
     borderWidth: 1,
-    // height: 40,
-    // width: 40,
-    // backgroundColor:'red'
   },
   expiresInfoText: {
     color: "white",
     fontFamily: "gothic-font",
-    // height: 40,
-
-    // marginBottom: 16,
     paddingHorizontal: 8,
     fontSize: 12,
   },
@@ -150,9 +126,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-
   checkmarks: {
     height: 60,
     bottom: 10,
-  }
+  },
 });

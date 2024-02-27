@@ -9,7 +9,7 @@ import { TaskDetails } from "./TaskDetails";
 import { background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";
 import { ActionButton } from "../common/Buttons/ActionButton";
-import { Console } from "../common/Console/Console";
+
 
 export interface Todo {
   id: string;
@@ -55,7 +55,6 @@ export default function Tasks(props: Props) {
             failedTodos.push(todo);
           }
         });
-
         setDoneTodos(doneTodos);
         setUndoneTodos(undoneTodos);
         setFailedTodos(failedTodos);
@@ -86,6 +85,8 @@ export default function Tasks(props: Props) {
         return <CurrentTasks todos={undoneTodos} show={showTaskDetails} />;
     }
   };
+
+  
 
   return (
     <ImageBackground
@@ -140,6 +141,8 @@ export default function Tasks(props: Props) {
               onClickButton={handleClickAddButton}
             />
           )}
+
+         
 
           <AddTask
             addLog={props.addLog}

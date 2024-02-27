@@ -8,6 +8,7 @@ import Statistics from "../components/Statistics/Statistics";
 import Settings from "./Settings";
 import { StyleSheet } from "react-native";
 import Tasks from "../components/Tasks/Tasks";
+import { Npc } from "./Npc/Npc";
 
 export interface Props {
   addLog: (arg: string) => void;
@@ -64,6 +65,20 @@ const TabNavigator = (props: Props) => {
           }}
         >
           {() => <Tasks addLog={props.addLog} />}
+        </Tab.Screen>
+        <Tab.Screen
+          name="npc"
+          options={{
+            title: "NPC",
+            tabBarIcon: () => (
+              <Image
+                source={require("../assets/images/paper.jpg")}
+                style={styles.backgroundImage}
+              />
+            ),
+          }}
+        >
+          {() => <Npc/>}
         </Tab.Screen>
         <Tab.Screen
           name="map"

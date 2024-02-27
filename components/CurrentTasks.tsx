@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { Todo } from "./Tasks/Tasks";
 import { missionStyles } from "./Styles";
+import { Spinner } from "./common/Spinner";
 
 export interface Props {
   todos: Todo[];
@@ -19,8 +20,9 @@ export const CurrentTasks: React.FC<Props> = ({ todos, show }) => {
     );
   };
 
+
   return (
-    todos.length > 0 && (
+    todos.length > 0 ? (
       <>
         <View>
           <FlatList
@@ -30,6 +32,8 @@ export const CurrentTasks: React.FC<Props> = ({ todos, show }) => {
           />
         </View>
       </>
+    ) : (
+      <Spinner />
     )
   );
 };

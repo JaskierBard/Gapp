@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, Button, StyleSheet } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { missionStyles } from "../Styles";
 import { formatDate } from "./FormatDate";
@@ -17,13 +17,11 @@ export const GetTimeNow = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const onChange = (event: any, selectedDate: any) => {
+  const onChange = (selectedDate: any) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
   };
-
-
 
   return (
     <SafeAreaView>
@@ -39,5 +37,3 @@ export const GetTimeNow = () => {
     </SafeAreaView>
   );
 };
-
-
