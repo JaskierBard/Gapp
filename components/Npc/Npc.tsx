@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { background, missionStyles } from "../Styles";
+import {Speak} from "../common/Speech";
 
 export const Npc = () => {
   const text =
@@ -23,7 +24,7 @@ export const Npc = () => {
       <View style={styles.npcContainer}>
         <View style={styles.npcTalkWindow}>
           <Text style={styles.npcName}>Bosper</Text>
-          <Text style={styles.npcTalkText}>{text}</Text>
+          <Speak text={text}/>
         </View>
         {/* <Flame/> */}
         <View>
@@ -85,16 +86,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
 
-  npcTalkText: {
-    position: "absolute",
-    fontFamily: "gothic-font",
-    color: "rgb(255, 255, 102)",
-    fontSize: 11,
-    top: 20,
-    textAlign: "center",
-
-    
-  },
   talkingArea: {
     position: "absolute",
     width: "100%",
