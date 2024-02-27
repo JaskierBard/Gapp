@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,24 +8,30 @@ import {
   Image,
 } from "react-native";
 import { background, missionStyles } from "../Styles";
-import {Speak} from "../common/Speech";
+import { Speak } from "../common/Speech";
+import { FIRESTORE_DB } from "../../firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 export const Npc = () => {
-  const text =
-    "Kolejnym cieniem spotkanym przez Bezimiennego jest Świstak. Odda on swój głos w zamian za drobną przysługę. Chce on zdobyć pewien pięknie zdobiony miecz, który sprzedaje Fisk.";
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const [text, setText] = useState<string>();
 
-  const text2 =
-    "Problem w tym, że panowie się posprzeczali, dlatego Świstak musi zakupić oręż przez pośrednika. Bohater dostaje 100 bryłek rudy i ma za zadanie nabyć broń. Na miejscu okazuje się jednak, że miecz kosztuje 110 bryłek rudy. Bezimienny może wrócić do Świstaka po dodatkowe bryłki lub zapłacić z własnej kieszeni. Po udanym zakupie Bezimienny wraca do cienia, który jest zadowolony i oddaje na niego swój głos.";
+  useEffect(() => {
+    (async () => {
+      const docRef = doc(FIRESTORE_DB, "todos", "L5T2RhEr41WEVtx321UH");
+
+      const docSnap = await getDoc(docRef);
+      setText(docSnap.data()?.description);
+    })();
+  }, []);
+
   return (
     <ImageBackground
       source={require("../../assets/images/background.jpg")}
       style={background.image}
     >
       <View style={styles.npcContainer}>
-        <View style={styles.npcTalkWindow}>
-          <Text style={styles.npcName}>Bosper</Text>
-          <Speak text={text}/>
-        </View>
+        {isSpeaking && <Speak name={"Bosper"} text={text ? text : 'bład'} speak={isSpeaking} />}
         {/* <Flame/> */}
         <View>
           {/* <NPCView name={props.name} /> */}
@@ -34,9 +40,9 @@ export const Npc = () => {
             style={styles.npcImage}
           />
           <View style={styles.talkingArea}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsSpeaking(!isSpeaking)}>
               <Text style={styles.talkingText}>
-                Co możesz powiedzieć mi o tym miejscu?
+                Czy masz dla mnie jakieś zadanie?
               </Text>
             </TouchableOpacity>
             <TouchableOpacity>
@@ -67,23 +73,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
-  },
-
-  npcTalkWindow: {
-    position: "absolute",
-    flex: 1,
-    alignItems: "center",
-    top: 20,
-    left: "5%",
-    zIndex: 3,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    width: "90%",
-    height: "20%",
-  },
-  npcName: {
-    position: "absolute",
-    fontFamily: "gothic-font",
-    color: "white",
   },
 
   talkingArea: {

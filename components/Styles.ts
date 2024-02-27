@@ -76,6 +76,14 @@ export const missionStyles = StyleSheet.create({
     paddingHorizontal: 4,
     fontFamily: "gothic-font",
   },
+
+  missionTodo: {
+      color: "green",
+      flex: 1,
+      paddingHorizontal: 4,
+      fontFamily: "gothic-font",
+    
+  },
   todo: {
     flex: 1,
     flexDirection: "row",

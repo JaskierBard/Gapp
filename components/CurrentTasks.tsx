@@ -11,13 +11,24 @@ export interface Props {
 
 export const CurrentTasks: React.FC<Props> = ({ todos, show }) => {
   const renderTodo = ({ item }: any) => {
-    return (
-      <View style={missionStyles.todoContainer}>
-        <TouchableOpacity onPress={() => show(item)} style={missionStyles.todo}>
-          <Text style={missionStyles.todoTextDone}>{item.title}</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    if (item.isMission === true) {
+      return (
+        <View style={missionStyles.todoContainer}>
+          <TouchableOpacity onPress={() => show(item)} style={missionStyles.todo}>
+            <Text style={missionStyles.missionTodo}>{item.title}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={missionStyles.todoContainer}>
+          <TouchableOpacity onPress={() => show(item)} style={missionStyles.todo}>
+            <Text style={missionStyles.todoTextDone}>{item.title}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    
   };
 
 

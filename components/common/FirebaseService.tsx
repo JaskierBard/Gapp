@@ -7,7 +7,6 @@ export const deleteItem = async (id: string) => {
 };
 
 export const addItem = async (title: string, description: string, expires: Date | null) => {
-  console.log("ADD");
   await addDoc(collection(FIRESTORE_DB, "todos"), {
     title: title,
     status: 'undone',
