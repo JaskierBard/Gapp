@@ -4,16 +4,15 @@ import {
   ChatCompletion,
   ChatCompletionCreateParamsBase,
 } from "openai/resources/chat/completions";
+import { Completions } from "openai/resources";
 
 const parameters: ChatCompletionCreateParamsBase = {
-  n: 1, // liczba odpowiedzi, nie zawsze działa
-  top_p: 1, // im większe tym bardziej kreatywny, lepiej bawić się tylko temperaturą
-  temperature: 1, // im większe tym bardziej kreatywny, nie zmieniać obu na raz
-  max_tokens: 1000, // utnie odpowiedź jeśli się przekroczy tokeny
-  stream: false, // podaje całą odpowiedź a nie po literce
-  model: "gpt-4-1106-preview",
+  temperature: 0.7,
+  max_tokens: 1000,
+  stream: false,
+  model: "gpt-3.5-turbo-1106",
   messages: [],
-  response_format: {type: 'json_object'}, // działa tylko w wersji '1106' w 3.5 i 4 chata gpt
+  response_format: { type: 'json_object' },
 };
 
 const extractFirstChoiceText = (
@@ -38,6 +37,13 @@ export class OpenAiChat {
     ];
   }
 
+  countPrice35 = (usage: any) => {
+    const input = (usage?.prompt_tokens / 1000) * 0.001;
+    const output =(usage?.completion_tokens / 1000) * 0.002;
+    console.log('input: ' + ((input * 100).toFixed(4)) + ' centów')
+    console.log('output: ' + ((output * 100).toFixed(4)) + ' centów')
+  };
+
   async say(prompt: string): Promise<any | null> {
     this.messages.push({
       role: "user",
@@ -57,8 +63,15 @@ export class OpenAiChat {
         content: s,
       });
     }
-    console.log(s ? JSON.parse(s) : null);
-    return s ? JSON.parse(s) : null;
+    
+    const parsedResponse = s ? JSON.parse(s) : null;
+    console.log(parsedResponse);
+    if ('usage' in data) {
+      const usageData = (data as ChatCompletion).usage;
+
+      this.countPrice35(usageData)
+    }
+    return parsedResponse;
   }
 
   clear(): void {
