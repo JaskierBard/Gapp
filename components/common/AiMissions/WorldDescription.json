@@ -1,0 +1,92 @@
+{
+  "npc": [
+    {
+      "name": "Constantino",
+      "role": "alchemik",
+      "flag": "alchemik",
+      "sprzedawca": "rośliny... if sprzedawca wtedy opcja kupowania.",
+      "miejsce": "Pracownia Constantina",
+      "charakter": "Jest bardzo niemiłą i zgorzkniałą osobą",
+      "opis": "Jego uczeń po wielu latach nauki otruł się podczas przygotowywania własnej mikstury"
+    },
+    {
+      "name": "Harad",
+      "flag": "kowal",
+      "role": "kowal",
+      "miejsce": "Świetliste kowadło",
+      "charakter": "silny charakter, bardzo ceni sobie siłę i odwagę",
+      "opis": "Razem z czeladnikiem Brianem prowadzi kuźnię Świetliste Kowadło. Wykute towary sprzedaje na targowisku Hakon. Od czasu gdy paladyni przybywają do Khorinis, Harad dostaje zlecenie wykuwać dla nich miecze z magicznej rudy."
+    },
+    {
+      "name": "Pablo",
+      "role": "strażnik miejski",
+      "miejsce": "patroluje całe dolne miasto",
+      "charakter": "podejrzliwy",
+      "opis": "Próbuje rozbić szajkę bandytów i zajmuje się skradzionymi towarami które są rozprowadzane w mieście. Podejrzewa że paserem współpracującym z bandytami jest Halvor."
+    },
+    {
+      "name": "Brian",
+      "role": "czeladnik kowala",
+      "sprzedawca": "stalowe pręty",
+      "miejsce": "Świetliste kowadło",
+      "charakter": "przyjacielski",
+      "opis": "Jego pracą jest ostrzenie mieczy na osełce"
+    },
+    {
+      "name": "Halvor",
+      "role": "handlarz rybami",
+      "miejsce": "Sklep Halvora",
+      "opis": "Jest kupcem z Khorinis, handlującym rybami w dzielnicy portowej. Jest także członkiem gildii złodziei, zajmuje się paserstwem ale jest to informacja tylko dla wtajemniczonych."
+    },
+    
+    {
+      "name": "Bosper",
+      "role": "myśliwy",
+      "miejsce": "Sklep Halvora",
+      "opis": "Jest kupcem z Khorinis, handlującym rybami w dzielnicy portowej. Jest także członkiem gildii złodziei, zajmuje się paserstwem ale jest to informacja tylko dla wtajemniczonych."
+    },
+    {
+      "name": "Sekob",
+      "role": "farmer",
+      "miejsce": "Sklep Halvora",
+      "opis": "Jest kupcem z Khorinis, handlującym rybami w dzielnicy portowej. Jest także członkiem gildii złodziei, zajmuje się paserstwem ale jest to informacja tylko dla wtajemniczonych."
+    }
+    
+  ],
+
+  "miejsca": [
+    {
+      "nazwa": "Pracownia Constantina",
+      "lokalizacja": "Dolne Miasto",
+      "opis": "Mała kamieniczka mieszcząca się w przejściu łączącym plac świątynny z dolnym miastem. Mieszkanie wyposażone jest w kominek, stół alchemiczny oraz pulpit w jednym z rogów izby, na którym widnieje księga zawierająca informacje o miksturach leczniczych."
+    },
+    {
+      "nazwa": "Świetliste kowadło",
+      "lokalizacja": "Dolne Miasto",
+      "opis": "Jest to Kuźnia która znajduje się przy drodze prowadzącej do portu. Jest ona własnością Harada i jest połączona z jego domem. Okolicę patroluje strażnik Pablo lub dwóch innych strażników miejskich."
+    },
+    {
+      "nazwa": "Sklep Halvora",
+      "lokalizacja": "Dzielnica Portowa",
+      "opis": "Jest to sklep rybny blisko magazynu paladynów. Z wystawionego przed domem straganu Halvor sprzedaje ryby"
+    }
+  ],
+  "lokacje": [
+    {
+      "nazwa": "Dzielnica Portowa",
+      "opis": "Najbiedniejsza część miasta Khorinis. Zamieszkują ją głównie rybacy, przestępcy i kryminaliści, a także ludzie, których nie stać na przeprowadzenie się do innej dzielnicy lub górnego miasta. Dzielnica ta  nie jest patrolowana przez żadnego strażnika miejskiego."
+    },
+    {
+      "nazwa": "Dolne Miasto",
+      "opis": "Mieszkają tutaj przede wszystkim mistrzowie oraz czeladnicy. Miejsce to jest dosyć duże, możemy w nim znaleźć przede wszystkim sklepy, czy też kuźnię."
+    },
+    {
+      "nazwa": "Las przed Miastem",
+      "opis": "Kuźnia znajduje się przy drodze prowadzącej do portu. Jest ona własnością Harada i jest połączona z jego domem. Okolicę patroluje strażnik Pablo lub dwóch innych strażników miejskich."
+    },
+    {
+      "nazwa": "Wielki las",
+      "opis": "Jest to największy las na wyspie..."
+    }
+  ]
+}
