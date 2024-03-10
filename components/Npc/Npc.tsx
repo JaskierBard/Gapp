@@ -14,7 +14,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 export const Npc = () => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
-  const [text, setText] = useState<string>();
+  const [text, setText] = useState<string | null>();
 
   useEffect(() => {
     (async () => {
@@ -31,10 +31,14 @@ export const Npc = () => {
       style={background.image}
     >
       <View style={styles.npcContainer}>
-        {isSpeaking && <Speak name={"Bosper"} text={text ? text : 'bład'} speak={isSpeaking} />}
-        {/* <Flame/> */}
+        {isSpeaking && (
+          <Speak
+            name={"Bosper"}
+            text={text ? text : "bład"}
+            speak={isSpeaking}
+          />
+        )}
         <View>
-          {/* <NPCView name={props.name} /> */}
           <Image
             source={require("../../assets/Npc/Bosper.jpg")}
             style={styles.npcImage}
@@ -45,6 +49,10 @@ export const Npc = () => {
                 Czy masz dla mnie jakieś zadanie?
               </Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsSpeaking(!isSpeaking)}>
+              <Text style={styles.talkingText}>Co do tej misji...</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity>
               <Text style={styles.talkingText}>Wstecz</Text>
             </TouchableOpacity>
@@ -85,6 +93,7 @@ const styles = StyleSheet.create({
   },
   talkingText: {
     marginLeft: 10,
+    marginBottom: 5,
     fontFamily: "gothic-font",
     color: "wheat",
     fontSize: 12,

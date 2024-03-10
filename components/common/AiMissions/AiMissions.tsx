@@ -5,15 +5,9 @@ import {
   ChatCompletionCreateParamsBase,
 } from "openai/resources/chat/completions";
 import { Completions } from "openai/resources";
+import { countPrice35 } from "./functions/getCosts";
 
-const parameters: ChatCompletionCreateParamsBase = {
-  temperature: 0.7,
-  max_tokens: 1000,
-  stream: false,
-  model: "gpt-3.5-turbo-1106",
-  messages: [],
-  response_format: { type: 'json_object' },
-};
+
 
 const extractFirstChoiceText = (
   msg: OpenAI.Chat.Completions.ChatCompletion
@@ -37,14 +31,9 @@ export class OpenAiChat {
     ];
   }
 
-  countPrice35 = (usage: any) => {
-    const input = (usage?.prompt_tokens / 1000) * 0.001;
-    const output =(usage?.completion_tokens / 1000) * 0.002;
-    console.log('input: ' + ((input * 100).toFixed(4)) + ' centów')
-    console.log('output: ' + ((output * 100).toFixed(4)) + ' centów')
-  };
 
-  async say(prompt: string): Promise<any | null> {
+
+  async say(prompt: string, parameters: ChatCompletionCreateParamsBase): Promise<any | null> {
     this.messages.push({
       role: "user",
       content: prompt,
@@ -63,15 +52,20 @@ export class OpenAiChat {
         content: s,
       });
     }
+    try {
+      const parsedResponse = s ? JSON.parse(s) : null;
+      console.log(typeof(parsedResponse))
+      return parsedResponse;
+
+    } catch (err) {}
     
-    const parsedResponse = s ? JSON.parse(s) : null;
-    console.log(parsedResponse);
     if ('usage' in data) {
       const usageData = (data as ChatCompletion).usage;
-
-      this.countPrice35(usageData)
+      countPrice35(usageData)
     }
-    return parsedResponse;
+    // console.log(typeof(s))
+
+    return s
   }
 
   clear(): void {

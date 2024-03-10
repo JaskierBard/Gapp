@@ -7,7 +7,7 @@ import { formatDate } from "../common/FormatDate";
 import { Checkmark } from "../common/Checkmark";
 import { UndoButton } from "../common/Buttons/UndoButtons";
 import { ActionButton } from "../common/Buttons/ActionButton";
-import { MissionAi } from "../common/AiMissions/MissionAi";
+import { MissionAi, categoryAI } from "../common/AiMissions/MissionAi";
 
 export interface Props {
   add: boolean;
@@ -28,13 +28,13 @@ export const AddTask = (props: Props) => {
     setIsCountdown(newState);
   };
   const addTodo = async () => {
-    const description = await MissionAi(
-      title + " podaj odpowiedź (jako `mission`)"
+    await categoryAI(
+      title
     );
-    props.cancel();
-    await addItem(title, description["mission"], expires);
-    props.addLog("Nowa misja: " + title);
-    setTitle("");
+    // props.cancel();
+    // await addItem(title, description["mission"], expires);
+    // props.addLog("Nowa misja: " + title);
+    // setTitle("");
   };
 
   const onChange = (selectedDate: any) => {
