@@ -20,6 +20,7 @@ export const Speak = (props: Props) => {
   const startSpeech = async () => {
     try {
       Speech.speak(props.text, { voice: "pl-pl-x-bmg-network" });
+      console.log('elo')
 
     } catch (error) {
       console.error("Wystąpił błąd podczas odczytywania tekstu:", error);

@@ -9,6 +9,7 @@ import Settings from "./Settings";
 import { StyleSheet } from "react-native";
 import Tasks from "../components/Tasks/Tasks";
 import { Npc } from "./Npc/Npc";
+import { NpcList } from "./Npc/NpcList";
 
 export interface Props {
   addLog: (arg: string) => void;
@@ -78,7 +79,7 @@ const TabNavigator = (props: Props) => {
             ),
           }}
         >
-          {() => <Npc/>}
+          {() => <NpcList/>}
         </Tab.Screen>
         <Tab.Screen
           name="map"

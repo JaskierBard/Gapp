@@ -9,12 +9,20 @@ import {
 } from "react-native";
 import { background, missionStyles } from "../Styles";
 import { Speak } from "../common/Speech";
-import { FIRESTORE_DB } from "../../firebaseConfig";
+import { FIREBASE_STORAGE, FIRESTORE_DB } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 
-export const Npc = () => {
+ interface Props {
+  name: string;
+  end: () => void;
+}
+
+export const Npc = (props:Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [text, setText] = useState<string | null>();
+  const [singleItem, setSingleItem] = useState<any>(null);
+const targetImageName = `${props.name}.jpg`;
 
   useEffect(() => {
     (async () => {
@@ -25,6 +33,23 @@ export const Npc = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    const fetchSingleImage = async () => {
+      try {
+        const storageRef = ref(FIREBASE_STORAGE, `npc/${targetImageName}`);
+  
+        const url = await getDownloadURL(storageRef);
+  
+        setSingleItem(url);
+      } catch (error) {
+        console.error("Błąd podczas pobierania danych:", error);
+      }
+    };
+  
+    fetchSingleImage();
+  }, []);
+  
+
   return (
     <ImageBackground
       source={require("../../assets/images/background.jpg")}
@@ -33,14 +58,14 @@ export const Npc = () => {
       <View style={styles.npcContainer}>
         {isSpeaking && (
           <Speak
-            name={"Bosper"}
+            name={props.name}
             text={text ? text : "bład"}
             speak={isSpeaking}
           />
         )}
         <View>
           <Image
-            source={require("../../assets/Npc/Bosper.jpg")}
+            source={{ uri: singleItem }}
             style={styles.npcImage}
           />
           <View style={styles.talkingArea}>
@@ -53,8 +78,8 @@ export const Npc = () => {
               <Text style={styles.talkingText}>Co do tej misji...</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity>
-              <Text style={styles.talkingText}>Wstecz</Text>
+            <TouchableOpacity onPress={props.end}>
+              <Text style={styles.talkingText}>Koniec</Text>
             </TouchableOpacity>
           </View>
         </View>
