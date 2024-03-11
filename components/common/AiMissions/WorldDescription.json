@@ -20,6 +20,7 @@
     {
       "name": "Pablo",
       "role": "strażnik miejski",
+      "flag": "strażnik",
       "miejsce": "patroluje całe dolne miasto",
       "charakter": "podejrzliwy",
       "opis": "Próbuje rozbić szajkę bandytów i zajmuje się skradzionymi towarami które są rozprowadzane w mieście. Podejrzewa że paserem współpracującym z bandytami jest Halvor."
@@ -27,6 +28,7 @@
     {
       "name": "Brian",
       "role": "czeladnik kowala",
+      "flag": "kowal",
       "sprzedawca": "stalowe pręty",
       "miejsce": "Świetliste kowadło",
       "charakter": "przyjacielski",
@@ -34,6 +36,7 @@
     },
     {
       "name": "Halvor",
+      "flag": "sprzedawca",
       "role": "handlarz rybami",
       "miejsce": "Sklep Halvora",
       "opis": "Jest kupcem z Khorinis, handlującym rybami w dzielnicy portowej. Jest także członkiem gildii złodziei, zajmuje się paserstwem ale jest to informacja tylko dla wtajemniczonych."
@@ -41,15 +44,41 @@
     
     {
       "name": "Bosper",
-      "role": "myśliwy",
+      "flag": "myśliwy",
+      "role": "myśliwy oraz sprzedawca",
       "miejsce": "Sklep Halvora",
       "opis": "Jest kupcem z Khorinis, handlującym rybami w dzielnicy portowej. Jest także członkiem gildii złodziei, zajmuje się paserstwem ale jest to informacja tylko dla wtajemniczonych."
     },
     {
       "name": "Sekob",
-      "role": "farmer",
-      "miejsce": "Sklep Halvora",
+      "flag": "farmer",
+      "role": "właściciel farmy",
+      "miejsce": "Farma Sekoba",
       "opis": "Jest kupcem z Khorinis, handlującym rybami w dzielnicy portowej. Jest także członkiem gildii złodziei, zajmuje się paserstwem ale jest to informacja tylko dla wtajemniczonych."
+    }
+    ,
+    {
+      "name": "Malak",
+      "flag": "farmer",
+      "role": "pasterz owiec",
+      "miejsce": "Farma Bengara",
+      "opis": "Jest kupcem z Khorinis, handlującym rybami w dzielnicy portowej. Jest także członkiem gildii złodziei, zajmuje się paserstwem ale jest to informacja tylko dla wtajemniczonych."
+    }
+    ,
+    {
+      "name": "Bengar",
+      "flag": "farmer",
+      "role": "właściciel farmy",
+      "miejsce": "Farma Bengara",
+      "opis": ""
+    }
+    ,
+    {
+      "name": "Lobart",
+      "flag": "farmer",
+      "role": "właściciel farmy",
+      "miejsce": "Farma Lobarta",
+      "opis": ""
     }
     
   ],

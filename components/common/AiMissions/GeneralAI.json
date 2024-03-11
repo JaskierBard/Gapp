@@ -10,7 +10,7 @@
 
   "missionCategories": {
     "eksploracja": ["myśliwy"],
-    "rozmowa": ["farmer", "mag "],
+    "rozmowa": ["farmer", "mag"],
     "podróż": ["strażnik", "myśliwy"],
     "nauka": ["mag", "myśliwy", "kowal"],
     "finanse": ["mag", "najemnik", "kowal"],
@@ -57,11 +57,15 @@
       "przetopienie rudy": [{"opis": "przetopienie rudy żelaza lub magicznej rudy"}]
     },
     "farmer": {
-      "zasiej pole zbożem": [{"opis": "zasianie pola zbożem"}],
-      "pomoc innemu farmerowi": [{"opis": "farmer prosi cię o pocmoc lub zleca ci to nadzorca farmy"},{"npc": "jakiś farmer"}],
-      "opieka nad zwierzętami": [{"opis": "opieka nad stadem owiec"}],
-      "handel na lokalnym targu": [{"opis": "sprzedaż plonów na targu w khorinis"}],
-      "naprawa": [{"opis": "naprawa płotu, dachu stodoły lub innej rzeczy na farmie"}]
+      "zasiej pole zbożem": [{"opis": "zasianie pola zbożem"},{"nagroda":"złoto"}],
+      "zakup narzędzi rolniczych": [{"opis": "udanie się do khorinis i kupienie nowych narzędzi"},{"npc": "kowal"},{"nagroda":"złoto"}],
+      "zebranie plonów": [{"opis": "zebranie rzepy lub zborza z pola"},{"nagroda":"złoto"}],
+      "pomoc innemu farmerowi": [{"opis": "farmer prosi cię o pocmoc lub zleca ci to nadzorca farmy"},{"npc": "farmer"},{"nagroda":"złoto"}],
+      "opieka nad zwierzętami": [{"opis": "opieka nad stadem owiec"},{"npc": "kowal"},{"nagroda":"posiłek od Hildy"}],
+      "sprzedaż na lokalnym targu": [{"opis": "sprzedaż plonów na targu w khorinis"},{"nagroda":"złoto"}],
+      "naprawa": [{"opis": "naprawa płotu, dachu stodoły lub innej rzeczy na farmie"},{"nagroda":"posiłek"}],
+      "rozebranie starego budynkiu": [{"opis": "rozebranie starej szopy która mogła ulec zniszczeniu"},{"nagroda":"słabej jakości znalezisko"}]
+
     }
   }
 }
