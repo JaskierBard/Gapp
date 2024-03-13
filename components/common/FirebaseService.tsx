@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 
 export const deleteItem = async (id: string) => {
@@ -6,21 +6,38 @@ export const deleteItem = async (id: string) => {
   deleteDoc(ref);
 };
 
-export const addItem = async (title: string, description: string, expires: Date | null) => {
+export const addItem = async (title: string, expires: Date | null) => {
   await addDoc(collection(FIRESTORE_DB, "todos"), {
     title: title,
     status: 'undone',
-    description: description,
   });
 };
 
-export const editItem = async (id: string, title: string, description: string) => {
+export const editItem = async (id: string, title: string) => {
   const ref = doc(FIRESTORE_DB, `todos/${id}`);
   console.log("UPDATED");
 
   await updateDoc(ref, {
     title: title,
     status: 'undone',
-    description: description,
   });
+};
+
+
+export const addManyDev = async (title: string) => {
+  await setDoc(doc(collection(FIRESTORE_DB, "npc"),title), {
+    nazwa: title,
+    miejsce: '',
+    ekwipunek: '',
+    charakter: '',
+    nastawienie: '',
+    opis: '',
+    poziom: '',
+    rola: '',
+    flaga: ''
+
+
+  });
+  console.log(title)
+
 };

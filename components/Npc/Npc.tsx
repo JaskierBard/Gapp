@@ -13,16 +13,16 @@ import { FIREBASE_STORAGE, FIRESTORE_DB } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 
- interface Props {
+interface Props {
   name: string;
   end: () => void;
 }
 
-export const Npc = (props:Props) => {
+export const Npc = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [text, setText] = useState<string | null>();
-  const [singleItem, setSingleItem] = useState<any>(null);
-const targetImageName = `${props.name}.jpg`;
+  const [singleItem, setSingleItem] = useState<string>("");
+  const targetImageName = `${props.name}.jpg`;
 
   useEffect(() => {
     (async () => {
@@ -37,18 +37,17 @@ const targetImageName = `${props.name}.jpg`;
     const fetchSingleImage = async () => {
       try {
         const storageRef = ref(FIREBASE_STORAGE, `npc/${targetImageName}`);
-  
+
         const url = await getDownloadURL(storageRef);
-  
+
         setSingleItem(url);
       } catch (error) {
         console.error("Błąd podczas pobierania danych:", error);
       }
     };
-  
+
     fetchSingleImage();
   }, []);
-  
 
   return (
     <ImageBackground
@@ -64,10 +63,10 @@ const targetImageName = `${props.name}.jpg`;
           />
         )}
         <View>
-          <Image
-            source={{ uri: singleItem }}
-            style={styles.npcImage}
-          />
+          {singleItem && (
+            <Image source={{ uri: singleItem }} style={styles.npcImage} />
+          )}
+
           <View style={styles.talkingArea}>
             <TouchableOpacity onPress={() => setIsSpeaking(!isSpeaking)}>
               <Text style={styles.talkingText}>

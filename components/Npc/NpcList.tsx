@@ -10,18 +10,26 @@ import {
 } from "react-native";
 import { background } from "../Styles";
 import { Npc } from "./Npc";
+import { getNpc } from "./functions/getNpc";
 
-const npcList = [
-  "Bosper",
-  "Hakon",
-  "Matteo",
-  "Zuris",
-];
+
+
+
 
 export const NpcList = () => {
   const [speaker, setSpeaker] = useState<string | null>(null);
+  const [npcList, setNpcList] = useState<[string]>();
+
+  useEffect(() => {
+    (async () => {
+      setNpcList(getNpc())
+
+    })();
+
+  }, []);
   const endSpeak = () => {
     setSpeaker(null);
+
   };
   const renderTodo = ({ item }: any) => {
     return (
@@ -42,13 +50,14 @@ export const NpcList = () => {
         <Npc name={speaker} end={endSpeak} />
       ) : (
         <View style={styles.npcContainer}>
-          <View>
+          {npcList &&<View>
             <FlatList
               data={npcList}
               renderItem={(item) => renderTodo(item)}
               keyExtractor={(todo) => todo}
             />
-          </View>
+          </View>}
+          
         </View>
       )}
     </ImageBackground>
@@ -63,6 +72,7 @@ const styles = StyleSheet.create({
     top: 170,
     left: "3%",
     position: "relative",
+
     shadowColor: "wheat",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1.9,
@@ -73,6 +83,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+    
   },
 
   talkingArea: {
@@ -80,7 +91,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 110,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
     paddingTop: 5,
   },
   talkingText: {

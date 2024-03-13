@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { main } from "../Styles";
-import { addItem } from "../common/FirebaseService";
+import { addItem, addManyDev } from "../common/FirebaseService";
 import { formatDate } from "../common/FormatDate";
 import { Checkmark } from "../common/Checkmark";
 import { UndoButton } from "../common/Buttons/UndoButtons";
@@ -14,7 +14,7 @@ export interface Props {
   cancel: () => void;
   addLog: (arg: string) => void;
 }
-
+const namess = ['Constantino', 'Harad', 'Pablo', 'Brian', 'Halvor', 'Sekob', 'Malak', 'Bengar', 'Lobart', 'Xardas','Bosper']
 export const AddTask = (props: Props) => {
   const [title, setTitle] = useState<any>("");
   const [expires, setExpires] = useState<Date | null>(null);
@@ -28,11 +28,15 @@ export const AddTask = (props: Props) => {
     setIsCountdown(newState);
   };
   const addTodo = async () => {
+
     await categoryAI(
       title
     );
+    // namess.forEach(async element => {
+    //  await addManyDev(element)
+    // });
     // props.cancel();
-    // await addItem(title, description["mission"], expires);
+    // await addItem(title, expires);
     // props.addLog("Nowa misja: " + title);
     // setTitle("");
   };
