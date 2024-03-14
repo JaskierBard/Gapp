@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, View, Text} from "react-native";
 import EqGenerator from "../components/Equipment/Equipment";
 import Map from "../components/Map/Map";
 import Statistics from "../components/Statistics/Statistics";
@@ -10,24 +10,31 @@ import { StyleSheet } from "react-native";
 import Tasks from "../components/Tasks/Tasks";
 import { Npc } from "./Npc/Npc";
 import { NpcList } from "./Npc/NpcList";
+import { Console } from "./common/Console/Console";
 
 export interface Props {
   addLog: (arg: string) => void;
+  consoleVisible: () => void;
+
 }
 
-const NavigateToSettings = () => {
-  const navigation = useNavigation();
+
+
+
+const NavigateToSettings = (props:Props) => {
 
   const handlePress = () => {
-    navigation.navigate("Settings" as never);
+    console.log("Press")
+    props.consoleVisible()
   };
 
   return (
     <TouchableOpacity onPress={handlePress} style={{ marginRight: 16 }}>
-      <Image
+      <Text style={{fontFamily: "gothic-font", fontSize: 20,color: "white"}}>F2</Text>
+      {/* <Image
         source={require("../assets/images/settings.jpg")}
         style={{ width: 40, height: 40 }}
-      />
+      /> */}
     </TouchableOpacity>
   );
 };
@@ -63,6 +70,8 @@ const TabNavigator = (props: Props) => {
                 style={styles.backgroundImage}
               />
             ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
           }}
         >
           {() => <Tasks addLog={props.addLog} />}
@@ -77,6 +86,8 @@ const TabNavigator = (props: Props) => {
                 style={styles.backgroundImage}
               />
             ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
           }}
         >
           {() => <NpcList/>}
@@ -92,7 +103,7 @@ const TabNavigator = (props: Props) => {
                 style={styles.backgroundImage}
               />
             ),
-            headerRight: () => <NavigateToSettings />,
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
           }}
         />
         <Tab.Screen
@@ -106,6 +117,8 @@ const TabNavigator = (props: Props) => {
                 style={styles.eqImage}
               />
             ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
           }}
         />
         <Tab.Screen
@@ -119,6 +132,8 @@ const TabNavigator = (props: Props) => {
                 style={styles.eqImage}
               />
             ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
           }}
         />
         <Tab.Screen

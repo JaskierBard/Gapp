@@ -1,14 +1,19 @@
-import React from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import { ConsoleItems } from "./ConsoleItems";
 
 export interface Props {
-    text: string[]
+    text: string[];
+    consoleVisible: () => void;
 }
 
 export const Console = (props:Props) => {
+  const handlePress = () => {
+    props.consoleVisible()
+  };
   return (
-    <View style={consoleStyle.codes}>
+
+      <TouchableOpacity onPress={handlePress} style={consoleStyle.codes}>
       <Image
         style={consoleStyle.code_flame}
         source={require("../../../assets/images/flame_1.png")}
@@ -19,7 +24,7 @@ export const Console = (props:Props) => {
       />
       {}
       <ConsoleItems logs={props.text}/>
-    </View>
+      </TouchableOpacity>
   );
 };
 export const consoleStyle = StyleSheet.create({
@@ -37,9 +42,9 @@ export const consoleStyle = StyleSheet.create({
     position: "absolute",
     margin: 0,
     padding: 0,
-    top: -290,
+    top: -340,
     width: 120,
-    height: 700,
+    height: 800,
     transform: [{ rotate: "270deg" }],
     opacity: 0.3,
   },

@@ -16,13 +16,19 @@ import { Console } from "./components/common/Console/Console";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
-  const [logs, setLogs] = useState(['']);
+  const [showConsole, setShowConsole] = useState(false);
+
+  const [logs, setLogs] = useState([""]);
 
   const addLog = (newLog: string) => {
     setLogs((prevLogs) => {
       const updatedLogs = [newLog, ...prevLogs.slice(0, 4)];
       return updatedLogs;
     });
+  };
+
+  const makeF2Visible = () => {
+    setShowConsole(!showConsole)
   };
 
   const loadFonts = async () => {
@@ -58,9 +64,8 @@ export default function App() {
       source={require("./assets/images/background.jpg")}
       style={background.image}
     >
-      <TabNavigator addLog={addLog}/>
-      <Console text={logs}/>
-
+      <TabNavigator addLog={addLog} consoleVisible={makeF2Visible}/>
+      {showConsole && <Console text={logs} consoleVisible={makeF2Visible}/>}
     </ImageBackground>
   );
 }

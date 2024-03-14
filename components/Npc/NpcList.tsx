@@ -5,12 +5,11 @@ import {
   Text,
   ImageBackground,
   TouchableOpacity,
-  Image,
   FlatList,
 } from "react-native";
 import { background } from "../Styles";
 import { Npc } from "./Npc";
-import { getNpc } from "./functions/getNpc";
+import { getNpc } from "../common/FirebaseService";
 
 
 

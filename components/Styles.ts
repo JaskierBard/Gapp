@@ -38,8 +38,9 @@ export const background = StyleSheet.create({
   image: {
     position: 'absolute',
     width: width ,
-    height: (height * 1.1),
-    
+    // height: (height * 1.1),
+        height: (height * 1.055),
+
     // resizeMode: 'cover',
 
   },

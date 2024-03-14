@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
   npcName: {
     // position: "absolute",
+    paddingTop: 5,
     fontFamily: "gothic-font",
     color: "white",
     textAlign: "center",
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     fontFamily: "gothic-font",
     color: "rgb(255, 255, 102)",
     fontSize: 11,
-    top: 20,
+    top: 5,
     textAlign: "center",
   },
 });
