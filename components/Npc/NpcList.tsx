@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { background } from "../Styles";
 import { Npc } from "./Npc";
-import { getNpc } from "../common/FirebaseService";
+import { getMissions, getNpc } from "../common/FirebaseService";
 
 
 
@@ -22,7 +22,7 @@ export const NpcList = () => {
   useEffect(() => {
     (async () => {
       setNpcList(getNpc())
-
+      getMissions("g4tPE1itk3vJTDAj19PO")
     })();
 
   }, []);
@@ -49,7 +49,7 @@ export const NpcList = () => {
         <Npc name={speaker} end={endSpeak} />
       ) : (
         <View style={styles.npcContainer}>
-          {npcList &&<View>
+          {npcList && <View>
             <FlatList
               data={npcList}
               renderItem={(item) => renderTodo(item)}

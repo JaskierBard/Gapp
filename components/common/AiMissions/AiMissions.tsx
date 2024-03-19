@@ -54,7 +54,7 @@ export class OpenAiChat {
     }
     try {
       const parsedResponse = s ? JSON.parse(s) : null;
-      console.log(typeof(parsedResponse))
+      // console.log(typeof(parsedResponse))
       return parsedResponse;
 
     } catch (err) {}

@@ -2,7 +2,7 @@ import { OpenAiChat } from "./AiMissions";
 import characters from './WorldDescription.json';
 import aiGeneral from "./GeneralAI.json";
 import { getMissions, getNPCClass } from "./functions/getClass";
-import { param3, param3json } from "./parametersOpenAi";
+import { param3, param3json, param4 } from "./parametersOpenAi";
 
 
 
@@ -26,25 +26,33 @@ export const categoryAI = async (todo: string) => {
     " uzupełnij:" +
     aiGeneral.general.missionPlanJSON;
 
-  //   const ask2 = 'otrzymasz klasę postaci, podaj imię postaci pasujące do podanej roli ' + data + "bardzo ważne jest aby wynikiem było samno imię";
-  // const chat  = new OpenAiChat(ask)
+  const chat  = new OpenAiChat(ask)
 
-  // const res = await chat.say('muszę pogadać z tatą', param3json);
-  // console.log('res: ' +res.category)
+  const res = await chat.say(todo, param3json);
+  console.log('res: ' +res.category)
 
-  // const principal = getNPCClass(res.category);
-  // console.log('npcClass: ' +principal)
+  const principal = getNPCClass(res.category);
+  console.log('npcClass: ' +principal)
 
-  // const chat2  = new OpenAiChat(ask2)
-  // const ask3 = "";
 
-  // const chat3 = new OpenAiChat(ask3)
-  console.log(getMissions('mag'))
+  const ask2 = 'otrzymasz klasę postaci, podaj imię postaci pasujące do podanej roli ' + data + "bardzo ważne jest aby wynikiem było samo imię";
+  const chat2  = new OpenAiChat(ask2)
+  
 
-  // const res2 = await chat2.say(principal, param3);
+  const name = await chat2.say(principal, param3);
+  
+  const missions = getMissions(principal)
 
-  //  console.log(res2)
+   console.log(name)
 
+   const ask3 = `Wybierz pasującą kategorię misji spśród ${missions} od zleceniodawcy której zawodem jest ${principal} pasującej najbardziej do podanego przez użytkownika todo. Następnie stwórz z tych danych misję. Następnie wcielasz się w postać o imieniu" ${name}. I zleć misję bohaterowi. Odpowiedzią ma być sama wypowiedź zleceniodawcy do bohatera bez opisów i nie podawaj imienia zleceniodawcy`;
+
+  const chat3 = new OpenAiChat(ask3)
+  const res3 = await chat3.say(todo, param4);
+  console.log(res3)
+
+
+ return {name: name, message:res3}
 };
 
 // planAI('todo')

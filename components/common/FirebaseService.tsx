@@ -15,9 +15,19 @@ export const deleteItem = async (id: string) => {
 };
 
 export const addItem = async (title: string, expires: Date | null) => {
-  await addDoc(collection(FIRESTORE_DB, "todos"), {
+  const docRef =  await addDoc(collection(FIRESTORE_DB, "todos"), {
     title: title,
     status: "undone",
+  });
+  return  docRef.id
+};
+
+export const addMission = async (NPCname: string, mission: string, todoId: string,) => {
+  await addDoc(collection(FIRESTORE_DB, "missions"), {
+    NPCname: NPCname,
+    mission: mission,
+    todoId: todoId,
+
   });
 };
 
@@ -41,11 +51,20 @@ export const getNpc = () => {
           ...doc.data(),
         };
         npcs.push(npc.nazwa);
-        console.log(npc.nazwa);
+        // console.log(npc.nazwa);
       });
     },
   });
   return npcs;
+};
+
+export const getMissions = (heroID: string) => {
+  const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
+  onSnapshot(heroRef, {
+    next: (snapshot) => {
+      console.log(snapshot.get('missions'));
+    },
+  });
 };
 
 export const addManyDev = async (title: string) => {
