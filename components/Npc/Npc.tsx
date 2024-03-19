@@ -23,7 +23,6 @@ const lines = [
   "Co mogę dla ciebie zrobić?",
   "Masz dla mnie jakieś zadanie?",
   "Słyszałem że masz jakiś problem.",
-
 ];
 export const Npc = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
@@ -31,6 +30,7 @@ export const Npc = (props: Props) => {
   const [missionsText, setMissionsText] = useState<any>(null);
 
   const [singleItem, setSingleItem] = useState<string>("");
+
   const targetImageName = `${props.name}.jpg`;
 
   useEffect(() => {
@@ -54,12 +54,20 @@ export const Npc = (props: Props) => {
 
     fetchSingleImage();
   }, []);
+  const endSpeak = () => {
+    setIsSpeaking(false)
+  }
 
-  const renderDialogueLines = (line: string, index:number) => {
-    console.log();
+
+  const renderDialogueLines = (line: string, index: number) => {
     if (missionsText) {
       return (
-        <TouchableOpacity onPress={() => {setIsSpeaking(!isSpeaking);  setText(missionsText[index])}}>
+        <TouchableOpacity
+          onPress={() => {
+            setIsSpeaking(!isSpeaking);
+            setText(missionsText[index]);
+          }}
+        >
           <Text style={styles.talkingText}>{line}</Text>
         </TouchableOpacity>
       );
@@ -83,31 +91,35 @@ export const Npc = (props: Props) => {
             name={props.name}
             text={text ? text : "bład"}
             speak={isSpeaking}
+            endSpeak={endSpeak}
           />
         )}
         <View>
           {singleItem && (
             <Image source={{ uri: singleItem }} style={styles.npcImage} />
           )}
-
-          <View style={styles.talkingArea}>
-            {missionsText && (
-              <View>
-                <FlatList
-                  data={lines.slice(0, missionsText.length)}
-                  renderItem={({ item, index }) => renderDialogueLines(item, index)}
-                  keyExtractor={(item, index) => index.toString()}
+          {!isSpeaking && (
+            <View style={styles.talkingArea}>
+              {missionsText && (
+                <View>
+                  <FlatList
+                    data={lines.slice(0, missionsText.length)}
+                    renderItem={({ item, index }) =>
+                      renderDialogueLines(item, index)
+                    }
+                    keyExtractor={(item, index) => index.toString()}
                   />
-              </View>
-            )}
-            <TouchableOpacity onPress={() => setIsSpeaking(!isSpeaking)}>
-              <Text style={styles.talkingText}>Co słychać?</Text>
-            </TouchableOpacity>
+                </View>
+              )}
+              <TouchableOpacity onPress={() => setIsSpeaking(!isSpeaking)}>
+                <Text style={styles.talkingText}>Co słychać?</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={props.end}>
-              <Text style={styles.talkingText}>Koniec</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity onPress={props.end}>
+                <Text style={styles.talkingText}>Koniec</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
     </ImageBackground>
