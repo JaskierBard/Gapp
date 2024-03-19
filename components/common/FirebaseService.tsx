@@ -4,9 +4,12 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 
@@ -26,13 +29,14 @@ export const addItem = async (title: string, expires: Date | null) => {
 export const addMission = async (
   NPCname: string,
   mission: string,
-  todoId: string
+  todoId: string,
 ) => {
   
   const docRef = await addDoc(collection(FIRESTORE_DB, "missions"), {
     NPCname: NPCname,
     mission: mission,
     todoId: todoId,
+    isAccepted: false
   });
   return docRef.id;
 
@@ -84,7 +88,7 @@ export const getNpc = () => {
   return npcs;
 };
 
-export const getMissions = (
+export const getMissionsCount = (
   heroID: string
 ): Promise<{ [NPCname: string]: number }> => {
   return new Promise((resolve) => {
@@ -101,7 +105,8 @@ export const getMissions = (
               onSnapshot(ref, {
                 next: (snapshot) => {
                   const NPCname = snapshot.get("NPCname");
-                  if (NPCname) {
+                  const isAccepted = snapshot.get("isAccepted");
+                  if (NPCname && !isAccepted) {
                     unreadMissions[NPCname] =
                       (unreadMissions[NPCname] || 0) + 1;
                   }
@@ -117,6 +122,32 @@ export const getMissions = (
       },
     });
   });
+};
+
+
+export const getNpcMissions = async(
+  heroID: string, NPCname: string
+) => {
+  const docRef = collection(FIRESTORE_DB, "missions");
+  const q = query(docRef, where('NPCname', '==', NPCname));
+  try {
+    const querySnapshot = await getDocs(q);
+
+    const missions: any[] = [];
+    
+    querySnapshot.forEach((doc) => {
+      if (!doc.data().isAccepted) {
+        missions.push(doc.data().mission);
+
+      }
+    });
+
+    return missions;
+  } catch (error) {
+    console.error('Błąd pobierania misji:', error);
+    return [];
+  }
+  
 };
 export const addManyDev = async (title: string) => {
   await setDoc(doc(collection(FIRESTORE_DB, "npc"), title), {

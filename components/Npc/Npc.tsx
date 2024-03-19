@@ -6,30 +6,36 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  FlatList,
 } from "react-native";
 import { background, missionStyles } from "../Styles";
 import { Speak } from "../common/Speech";
 import { FIREBASE_STORAGE, FIRESTORE_DB } from "../../firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+import { getNpcMissions } from "../common/FirebaseService";
 
 interface Props {
   name: string;
   end: () => void;
 }
+const lines = [
+  "W czym mogę ci pomóc?",
+  "Co mogę dla ciebie zrobić?",
+  "Masz dla mnie jakieś zadanie?",
+  "Słyszałem że masz jakiś problem.",
 
+];
 export const Npc = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [text, setText] = useState<string | null>();
+  const [missionsText, setMissionsText] = useState<any>(null);
+
   const [singleItem, setSingleItem] = useState<string>("");
   const targetImageName = `${props.name}.jpg`;
 
   useEffect(() => {
     (async () => {
-      const docRef = doc(FIRESTORE_DB, "todos", "L5T2RhEr41WEVtx321UH");
-
-      const docSnap = await getDoc(docRef);
-      setText(docSnap.data()?.description);
+      setMissionsText(await getNpcMissions("g4tPE1itk3vJTDAj19PO", props.name));
     })();
   }, []);
 
@@ -48,6 +54,23 @@ export const Npc = (props: Props) => {
 
     fetchSingleImage();
   }, []);
+
+  const renderDialogueLines = (line: string, index:number) => {
+    console.log();
+    if (missionsText) {
+      return (
+        <TouchableOpacity onPress={() => {setIsSpeaking(!isSpeaking);  setText(missionsText[index])}}>
+          <Text style={styles.talkingText}>{line}</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity>
+          <Text style={styles.talkingText}>Nic</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
 
   return (
     <ImageBackground
@@ -68,13 +91,17 @@ export const Npc = (props: Props) => {
           )}
 
           <View style={styles.talkingArea}>
+            {missionsText && (
+              <View>
+                <FlatList
+                  data={lines.slice(0, missionsText.length)}
+                  renderItem={({ item, index }) => renderDialogueLines(item, index)}
+                  keyExtractor={(item, index) => index.toString()}
+                  />
+              </View>
+            )}
             <TouchableOpacity onPress={() => setIsSpeaking(!isSpeaking)}>
-              <Text style={styles.talkingText}>
-                Czy masz dla mnie jakieś zadanie?
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setIsSpeaking(!isSpeaking)}>
-              <Text style={styles.talkingText}>Co do tej misji...</Text>
+              <Text style={styles.talkingText}>Co słychać?</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={props.end}>

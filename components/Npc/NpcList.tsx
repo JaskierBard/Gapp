@@ -9,31 +9,46 @@ import {
 } from "react-native";
 import { background } from "../Styles";
 import { Npc } from "./Npc";
-import { getMissions, getNpc } from "../common/FirebaseService";
+import { getMissionsCount, getNpc } from "../common/FirebaseService";
 
 export const NpcList = () => {
   const [speaker, setSpeaker] = useState<string | null>(null);
   const [npcList, setNpcList] = useState<[string]>();
+  const [npcWithMission, setNpcWithMission] = useState<{ [key: string]: any }>(
+    {}
+  );
 
   useEffect(() => {
     (async () => {
       const npcs = getNpc();
       setNpcList(npcs);
-      const npcsWithMission = await getMissions("g4tPE1itk3vJTDAj19PO")
-      console.log(npcsWithMission)
+      setNpcWithMission(await getMissionsCount("g4tPE1itk3vJTDAj19PO"));
     })();
   }, []);
   const endSpeak = () => {
     setSpeaker(null);
   };
   const renderTodo = ({ item }: any) => {
-    return (
-      <View>
-        <TouchableOpacity onPress={() => setSpeaker(item)}>
-          <Text style={styles.talkingText}>{item}</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    // console.log(npcWithMission);
+    if (npcWithMission.hasOwnProperty(item)) {
+      return (
+        <View>
+          <TouchableOpacity onPress={() => setSpeaker(item)}>
+            <Text style={styles.important}>
+              {item} - Nowa Misja [{npcWithMission[item]}]
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <TouchableOpacity onPress={() => setSpeaker(item)}>
+            <Text style={styles.talkingText}>{item}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   };
 
   return (
@@ -93,6 +108,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontFamily: "gothic-font",
     color: "wheat",
+    fontSize: 16,
+  },
+important: {
+    marginLeft: 10,
+    marginBottom: 5,
+    fontFamily: "gothic-font",
+    color: "orange",
     fontSize: 16,
   },
 });

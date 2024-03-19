@@ -14,7 +14,6 @@ export interface Props {
   cancel: () => void;
   addLog: (arg: string) => void;
 }
-const namess = ['Constantino', 'Harad', 'Pablo', 'Brian', 'Halvor', 'Sekob', 'Malak', 'Bengar', 'Lobart', 'Xardas','Bosper']
 export const AddTask = (props: Props) => {
   const [title, setTitle] = useState<any>("");
   const [expires, setExpires] = useState<Date | null>(null);
@@ -31,6 +30,7 @@ export const AddTask = (props: Props) => {
     const taskID = await addItem(title, expires);
     props.addLog("Nowa misja: " + title);
     setTitle("");
+    props.cancel();
 
     const data = await categoryAI(
       title
@@ -42,7 +42,6 @@ export const AddTask = (props: Props) => {
     // namess.forEach(async element => {
     //  await addManyDev(element)
     // });
-    props.cancel();
   
   };
 
