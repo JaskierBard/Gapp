@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { main } from "../Styles";
-import { addItem, addManyDev, addMission } from "../common/FirebaseService";
+import { addHeroMission, addItem, addManyDev, addMission } from "../common/FirebaseService";
 import { formatDate } from "../common/FormatDate";
 import { Checkmark } from "../common/Checkmark";
 import { UndoButton } from "../common/Buttons/UndoButtons";
@@ -35,13 +35,14 @@ export const AddTask = (props: Props) => {
     const data = await categoryAI(
       title
     );
-    // console.log(data.);
+    
+    const missionID = addMission(data.name, data.message, taskID)
 
-    addMission(data.name, data.message, taskID)
+   await addHeroMission("g4tPE1itk3vJTDAj19PO", await missionID)
     // namess.forEach(async element => {
     //  await addManyDev(element)
     // });
-    // props.cancel();
+    props.cancel();
   
   };
 

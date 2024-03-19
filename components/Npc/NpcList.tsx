@@ -11,24 +11,20 @@ import { background } from "../Styles";
 import { Npc } from "./Npc";
 import { getMissions, getNpc } from "../common/FirebaseService";
 
-
-
-
-
 export const NpcList = () => {
   const [speaker, setSpeaker] = useState<string | null>(null);
   const [npcList, setNpcList] = useState<[string]>();
 
   useEffect(() => {
     (async () => {
-      setNpcList(getNpc())
-      getMissions("g4tPE1itk3vJTDAj19PO")
+      const npcs = getNpc();
+      setNpcList(npcs);
+      const npcsWithMission = await getMissions("g4tPE1itk3vJTDAj19PO")
+      console.log(npcsWithMission)
     })();
-
   }, []);
   const endSpeak = () => {
     setSpeaker(null);
-
   };
   const renderTodo = ({ item }: any) => {
     return (
@@ -49,14 +45,15 @@ export const NpcList = () => {
         <Npc name={speaker} end={endSpeak} />
       ) : (
         <View style={styles.npcContainer}>
-          {npcList && <View>
-            <FlatList
-              data={npcList}
-              renderItem={(item) => renderTodo(item)}
-              keyExtractor={(todo) => todo}
-            />
-          </View>}
-          
+          {npcList && (
+            <View>
+              <FlatList
+                data={npcList}
+                renderItem={(item) => renderTodo(item)}
+                keyExtractor={(todo) => todo}
+              />
+            </View>
+          )}
         </View>
       )}
     </ImageBackground>
@@ -82,7 +79,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
-    
   },
 
   talkingArea: {

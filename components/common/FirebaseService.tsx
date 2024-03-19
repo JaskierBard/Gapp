@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   onSnapshot,
   setDoc,
   updateDoc,
@@ -15,20 +16,26 @@ export const deleteItem = async (id: string) => {
 };
 
 export const addItem = async (title: string, expires: Date | null) => {
-  const docRef =  await addDoc(collection(FIRESTORE_DB, "todos"), {
+  const docRef = await addDoc(collection(FIRESTORE_DB, "todos"), {
     title: title,
     status: "undone",
   });
-  return  docRef.id
+  return docRef.id;
 };
 
-export const addMission = async (NPCname: string, mission: string, todoId: string,) => {
-  await addDoc(collection(FIRESTORE_DB, "missions"), {
+export const addMission = async (
+  NPCname: string,
+  mission: string,
+  todoId: string
+) => {
+  
+  const docRef = await addDoc(collection(FIRESTORE_DB, "missions"), {
     NPCname: NPCname,
     mission: mission,
     todoId: todoId,
-
   });
+  return docRef.id;
+
 };
 
 export const editItem = async (id: string, title: string) => {
@@ -37,6 +44,25 @@ export const editItem = async (id: string, title: string) => {
     title: title,
     status: "undone",
   });
+};
+
+export const addHeroMission = async (heroID: string, missionID: string) => {
+  const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
+
+  const heroDoc = await getDoc(heroRef);
+
+  if (heroDoc.exists()) {
+    const currentMissions = heroDoc.data()?.missions || [];
+
+    const updatedMissions = [...currentMissions, missionID];
+
+    await updateDoc(heroRef, {
+      missions: updatedMissions,
+    });
+  } else {
+    console.log(`Dokument o ID ${heroID} nie istnieje.`);
+  }
+  return heroDoc.id
 };
 
 export const getNpc = () => {
@@ -58,15 +84,40 @@ export const getNpc = () => {
   return npcs;
 };
 
-export const getMissions = (heroID: string) => {
-  const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
-  onSnapshot(heroRef, {
-    next: (snapshot) => {
-      console.log(snapshot.get('missions'));
-    },
+export const getMissions = (
+  heroID: string
+): Promise<{ [NPCname: string]: number }> => {
+  return new Promise((resolve) => {
+    const unreadMissions: { [NPCname: string]: number } = {};
+    const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
+    onSnapshot(heroRef, {
+      next: (snapshot) => {
+        const data = snapshot.get("missions");
+        const promises: Promise<void>[] = [];
+        data.forEach((element: string) => {
+          const ref = doc(FIRESTORE_DB, `missions/${element}`);
+          promises.push(
+            new Promise((resolve) => {
+              onSnapshot(ref, {
+                next: (snapshot) => {
+                  const NPCname = snapshot.get("NPCname");
+                  if (NPCname) {
+                    unreadMissions[NPCname] =
+                      (unreadMissions[NPCname] || 0) + 1;
+                  }
+                  resolve();
+                },
+              });
+            })
+          );
+        });
+        Promise.all(promises).then(() => {
+          resolve(unreadMissions);
+        });
+      },
+    });
   });
 };
-
 export const addManyDev = async (title: string) => {
   await setDoc(doc(collection(FIRESTORE_DB, "npc"), title), {
     nazwa: title,
