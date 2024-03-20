@@ -3,22 +3,22 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import * as Speech from "expo-speech";
 
 export interface Props {
-  name: string;
   text: string;
+  selectedNpc: string;
   speak: boolean;
   endSpeak: () => void;
 }
 const MAX_FRAGMENT_LENGTH = 200;
 
-export const Speak = (props: Props) => {
+export const NpcVoice = (props: Props) => {
   const [fragments, setFragments] = useState<string[]>([]);
   const [currentFragmentIndex, setCurrentFragmentIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (props.speak === true) {
+    if (props.speak === true && fragments[currentFragmentIndex] !== undefined) {
       startSpeech();
     }
-  }, [props.speak]);
+  }, [currentFragmentIndex, fragments]);
 
   useEffect(() => {
     if (props.text) {
@@ -44,17 +44,20 @@ export const Speak = (props: Props) => {
 
   const startSpeech = async () => {
     try {
-      Speech.speak(props.text, { voice: "pl-pl-x-bmg-network" });
+      // console.log(fragments[currentFragmentIndex])
+
+      Speech.speak((fragments[currentFragmentIndex]), { voice: "pl-pl-x-bmg-network", onDone: nextDialog, rate: 1.4 });
     } catch (error) {
       console.error("Wystąpił błąd podczas odczytywania tekstu:", error);
     }
   };
 
-  const handlePress = () => {
-    startSpeech;
+  const nextDialog = () => {
+    Speech.stop()
 
     if (fragments.length <= currentFragmentIndex + 1) {
       props.endSpeak();
+      // setCurrentFragmentIndex(0)
     } else {
       setCurrentFragmentIndex(
         (prevIndex) => (prevIndex + 1) % fragments.length
@@ -63,8 +66,8 @@ export const Speak = (props: Props) => {
   };
   return (
     <View style={styles.npcTalkWindow}>
-      <Text style={styles.npcName}>{props.name}</Text>
-      <TouchableOpacity onPress={handlePress}>
+      <Text style={styles.npcName}>{props.selectedNpc}</Text>
+      <TouchableOpacity onPress={nextDialog}>
         <Text style={styles.npcTalkText}>
           {fragments[currentFragmentIndex]}
         </Text>

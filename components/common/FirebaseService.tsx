@@ -11,7 +11,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { FIRESTORE_DB } from "../../firebaseConfig";
+import { FIREBASE_STORAGE, FIRESTORE_DB } from "../../firebaseConfig";
+import { getDownloadURL, ref } from "firebase/storage";
 
 export const deleteItem = async (id: string) => {
   const ref = doc(FIRESTORE_DB, `todos/${id}`);
@@ -49,6 +50,15 @@ export const editItem = async (id: string, title: string) => {
     status: "undone",
   });
 };
+
+export const manageMissionStatus = async (id: string, decision: boolean) => {
+  const ref = doc(FIRESTORE_DB, `mission/${id}`);
+  await updateDoc(ref, {
+    isAccepted: decision,
+  });
+};
+
+
 
 export const addHeroMission = async (heroID: string, missionID: string) => {
   const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
@@ -125,30 +135,27 @@ export const getMissionsCount = (
 };
 
 
-export const getNpcMissions = async(
-  heroID: string, NPCname: string
-) => {
+export const getNpcMissions = async (heroID: string, NPCname: string) => {
   const docRef = collection(FIRESTORE_DB, "missions");
   const q = query(docRef, where('NPCname', '==', NPCname));
   try {
     const querySnapshot = await getDocs(q);
 
-    const missions: any[] = [];
-    
+    const missions: { id: string; mission: any }[] = [];
+
     querySnapshot.forEach((doc) => {
       if (!doc.data().isAccepted) {
-        missions.push(doc.data().mission);
-
+        missions.push({ id: doc.id, mission: doc.data().mission });
+        // console.log(doc.id);
       }
     });
-
     return missions;
   } catch (error) {
     console.error('Błąd pobierania misji:', error);
     return [];
   }
-  
 };
+
 export const addManyDev = async (title: string) => {
   await setDoc(doc(collection(FIRESTORE_DB, "npc"), title), {
     nazwa: title,
@@ -162,4 +169,17 @@ export const addManyDev = async (title: string) => {
     flaga: "",
   });
   console.log(title);
+};
+
+
+
+export const getImage = async (folder: string, imageName: string) => {
+  try {
+    const storageRef = ref(FIREBASE_STORAGE, `${folder}/${imageName}`);
+    const url = await getDownloadURL(storageRef);
+    return url
+
+  } catch (error) {
+    console.error("Błąd podczas pobierania danych:", error);
+  };
 };

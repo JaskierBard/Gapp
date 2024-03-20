@@ -8,7 +8,7 @@ import Statistics from "../components/Statistics/Statistics";
 import Settings from "./Settings";
 import { StyleSheet } from "react-native";
 import Tasks from "../components/Tasks/Tasks";
-import { Npc } from "./Npc/Npc";
+import { Npc } from "./Npc/SelectedNpc";
 import { NpcList } from "./Npc/NpcList";
 import { Console } from "./common/Console/Console";
 

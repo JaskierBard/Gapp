@@ -8,11 +8,11 @@ import {
   FlatList,
 } from "react-native";
 import { background } from "../Styles";
-import { Npc } from "./Npc";
+import { SelectedNpc } from "./SelectedNpc";
 import { getMissionsCount, getNpc } from "../common/FirebaseService";
 
 export const NpcList = () => {
-  const [speaker, setSpeaker] = useState<string | null>(null);
+  const [sectedNpc, setSelectedNpc] = useState<string | null>(null);
   const [npcList, setNpcList] = useState<[string]>();
   const [npcWithMission, setNpcWithMission] = useState<{ [key: string]: any }>(
     {}
@@ -25,15 +25,16 @@ export const NpcList = () => {
       setNpcWithMission(await getMissionsCount("g4tPE1itk3vJTDAj19PO"));
     })();
   }, []);
-  const endSpeak = () => {
-    setSpeaker(null);
+
+  const endConversation = () => {
+    setSelectedNpc(null);
   };
-  const renderTodo = ({ item }: any) => {
-    // console.log(npcWithMission);
+
+  const renderNpc = ({ item }: any) => {
     if (npcWithMission.hasOwnProperty(item)) {
       return (
         <View>
-          <TouchableOpacity onPress={() => setSpeaker(item)}>
+          <TouchableOpacity onPress={() => setSelectedNpc(item)}>
             <Text style={styles.important}>
               {item} - Nowa Misja [{npcWithMission[item]}]
             </Text>
@@ -43,7 +44,7 @@ export const NpcList = () => {
     } else {
       return (
         <View>
-          <TouchableOpacity onPress={() => setSpeaker(item)}>
+          <TouchableOpacity onPress={() => setSelectedNpc(item)}>
             <Text style={styles.talkingText}>{item}</Text>
           </TouchableOpacity>
         </View>
@@ -56,15 +57,20 @@ export const NpcList = () => {
       source={require("../../assets/images/background.jpg")}
       style={background.image}
     >
-      {speaker ? (
-        <Npc name={speaker} end={endSpeak} />
+      {sectedNpc ? (
+        <View style={styles.npcContainer}>
+          <SelectedNpc
+            selectedNpc={sectedNpc}
+            endConversation={endConversation}
+          />
+        </View>
       ) : (
         <View style={styles.npcContainer}>
           {npcList && (
             <View>
               <FlatList
                 data={npcList}
-                renderItem={(item) => renderTodo(item)}
+                renderItem={(item) => renderNpc(item)}
                 keyExtractor={(todo) => todo}
               />
             </View>
@@ -83,7 +89,6 @@ const styles = StyleSheet.create({
     top: 170,
     left: "3%",
     position: "relative",
-
     shadowColor: "wheat",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1.9,
@@ -96,13 +101,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
 
-  talkingArea: {
-    position: "absolute",
-    width: "100%",
-    height: 110,
-    bottom: 0,
-    paddingTop: 5,
-  },
+
   talkingText: {
     marginLeft: 10,
     marginBottom: 5,
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
     color: "wheat",
     fontSize: 16,
   },
-important: {
+  important: {
     marginLeft: 10,
     marginBottom: 5,
     fontFamily: "gothic-font",
