@@ -7,12 +7,18 @@ import {
   FlatList,
 } from "react-native";
 import { NpcVoice } from "./NpcVoice";
+import { manageMissionStatus } from "../common/FirebaseService";
 const lines = [
   "W czym mogę ci pomóc?",
   "Co mogę dla ciebie zrobić?",
   "Masz dla mnie jakieś zadanie?",
   "Słyszałem że masz jakiś problem.",
 ];
+const better = [
+    {"Zgoda": () => console.log('zgoda')}
+
+    // {"Zgoda": () => manageMissionStatus(ID ,false)}
+  ];
 
 const answers = [
   "Przyjmuję to zadanie",
@@ -28,54 +34,52 @@ export interface Props {
 
 export const DialogueOptions = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const [dialogLines, setDialogLines] = useState<string[]>(lines);
 
   const [text, setText] = useState<string | null>();
+  const [ID, setID] = useState<string | null>();
+
 
   const endSpeak = () => {
+    setDialogLines(answers);
     setIsSpeaking(false);
-    // manageMissionStatus('2',false);
   };
+
   const renderDialogueLines = (line: string, index: number) => {
-    if (props.missionsText) {
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            setIsSpeaking(!isSpeaking);
-            setText(props.missionsText[index].mission);
-          }}
-        >
-          <Text style={styles.text}>{line}</Text>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableOpacity>
-          <Text style={styles.text}>Nic</Text>
-        </TouchableOpacity>
-      );
-    }
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setIsSpeaking(!isSpeaking);
+          setID(props.missionsText[index].id);
+          setText(props.missionsText[index].mission);
+        }}
+      >
+        <Text style={styles.text}>{line}</Text>
+      </TouchableOpacity>
+    );
   };
 
   return (
     <View style={styles.container}>
-      {isSpeaking && (
+      {isSpeaking ? (
         <NpcVoice
           text={text ? text : "Nie mam ci nic do powiedzenia"}
           selectedNpc={props.selectedNpc}
           speak={isSpeaking}
           endSpeak={endSpeak}
         />
+      ) : (
+        <View style={styles.talkingArea}>
+          <FlatList
+            data={dialogLines.slice(0, props.missionsText.length)}
+            renderItem={({ item, index }) => renderDialogueLines(item, index)}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          <TouchableOpacity onPress={props.endConversation}>
+            <Text style={styles.text}>Koniec</Text>
+          </TouchableOpacity>
+        </View>
       )}
-      <View style={styles.talkingArea}>
-        <FlatList
-          data={lines.slice(0, props.missionsText.length)}
-          renderItem={({ item, index }) => renderDialogueLines(item, index)}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <TouchableOpacity onPress={props.endConversation}>
-          <Text style={styles.text}>Koniec</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
