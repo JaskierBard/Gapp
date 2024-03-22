@@ -5,7 +5,7 @@ import * as Speech from "expo-speech";
 export interface Props {
   text: string;
   selectedNpc: string;
-  speak: boolean;
+  // speak: boolean;
   endSpeak: () => void;
 }
 const MAX_FRAGMENT_LENGTH = 200;
@@ -15,7 +15,7 @@ export const NpcVoice = (props: Props) => {
   const [currentFragmentIndex, setCurrentFragmentIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (props.speak === true && fragments[currentFragmentIndex] !== undefined) {
+    if ( fragments[currentFragmentIndex] !== undefined) {
       startSpeech();
     }
   }, [currentFragmentIndex, fragments]);

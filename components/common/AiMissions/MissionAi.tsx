@@ -24,7 +24,16 @@ export const fastResponse = async (
 
 export const shortTalkDown = async (missionsText:string) => {
   const system =
-    "Otrzymasz opis zlecanej misji. Bazując na niej masz stworzyć krótkie pytanie do osoby która zleciła ci wykonanie tej misji aby o niej porozmawiać. W pytaniu zawrzyj krótką informację tak aby osoba wiedziała czego dotyczy misja";
+    "Otrzymasz opis zlecanej misji. Bazując na niej masz stworzyć krótkie zdanie do osoby która zleciła ci wykonanie tej misji aby o niej porozmawiać. W pytaniu zawrzyj krótką informację tak aby osoba wiedziała czego dotyczy misja";
+    const chat = new OpenAiChat(system);
+    const res = await chat.say(missionsText, param3);
+    return res;
+
+};
+
+export const shortMissionAsk = async (missionsText:string) => {
+  const system =
+    "Jesteś bohaterem który przychodzi do npc i pyta go w jednym krótkim zdaniu zleceniodawce czy ma dla niego jakieś zadanie do wykonania";
     const chat = new OpenAiChat(system);
     const res = await chat.say(missionsText, param3);
     return res;

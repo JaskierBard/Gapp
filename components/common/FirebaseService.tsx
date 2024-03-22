@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { FIREBASE_STORAGE, FIRESTORE_DB } from "../../firebaseConfig";
 import { getDownloadURL, ref } from "firebase/storage";
-import { shortTalkDown } from "./AiMissions/MissionAi";
+import { shortMissionAsk, shortTalkDown } from "./AiMissions/MissionAi";
 
 export const deleteItem = async (id: string) => {
   const ref = doc(FIRESTORE_DB, `todos/${id}`);
@@ -33,13 +33,16 @@ export const addMission = async (
   mission: string,
   todoId: string,
 ) => {
-   const short:string = await shortTalkDown(mission);
+   const talkDown:string = await shortTalkDown(mission);
+   const missionAsk:string = await shortMissionAsk(mission);
+
   const docRef = await addDoc(collection(FIRESTORE_DB, "missions"), {
     NPCname: NPCname,
     mission: mission,
     todoId: todoId,
     isAccepted: false,
-    talkDown: short
+    talkDown: talkDown,
+    missionAsk: missionAsk
   });
   return docRef.id;
 
