@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { FIREBASE_STORAGE, FIRESTORE_DB } from "../../firebaseConfig";
 import { getDownloadURL, ref } from "firebase/storage";
+import { shortTalkDown } from "./AiMissions/MissionAi";
 
 export const deleteItem = async (id: string) => {
   const ref = doc(FIRESTORE_DB, `todos/${id}`);
@@ -32,12 +33,13 @@ export const addMission = async (
   mission: string,
   todoId: string,
 ) => {
-  
+   const short:string = await shortTalkDown(mission);
   const docRef = await addDoc(collection(FIRESTORE_DB, "missions"), {
     NPCname: NPCname,
     mission: mission,
     todoId: todoId,
-    isAccepted: false
+    isAccepted: false,
+    talkDown: short
   });
   return docRef.id;
 
@@ -52,9 +54,10 @@ export const editItem = async (id: string, title: string) => {
 };
 
 export const manageMissionStatus = async (id: string, decision: boolean) => {
-  const ref = doc(FIRESTORE_DB, `mission/${id}`);
+  const ref = doc(FIRESTORE_DB, `missions/${id}`);
   await updateDoc(ref, {
     isAccepted: decision,
+    isDone: false
   });
 };
 
@@ -141,13 +144,10 @@ export const getNpcMissions = async (heroID: string, NPCname: string) => {
   try {
     const querySnapshot = await getDocs(q);
 
-    const missions: { id: string; mission: any }[] = [];
+    const missions: { id: string; isAccepted: boolean, mission: any, talkDown:string }[] = [];
 
     querySnapshot.forEach((doc) => {
-      if (!doc.data().isAccepted) {
-        missions.push({ id: doc.id, mission: doc.data().mission });
-        // console.log(doc.id);
-      }
+        missions.push({ id: doc.id, isAccepted:doc.data().isAccepted, mission:doc.data().mission, talkDown:doc.data().talkDown});
     });
     return missions;
   } catch (error) {

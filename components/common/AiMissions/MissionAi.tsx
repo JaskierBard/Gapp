@@ -1,14 +1,39 @@
 import { OpenAiChat } from "./AiMissions";
-import characters from './WorldDescription.json';
+import characters from "./WorldDescription.json";
 import aiGeneral from "./GeneralAI.json";
 import { getMissions, getNPCClass } from "./functions/getClass";
 import { param3, param3json, param4 } from "./parametersOpenAi";
 
+export const fastResponse = async (
+  answer: string,
+  option: string,
+) => {
+  const ask =
+    "Podziękuj krótko graczowi za przyjęcie misji lub wyraź zrozumienie jeśli odmówi";
+  const ask2 = `Zapytaj na jakim etapie jest gracz wykonujący misję. Podaję treść misji którą wcześniej zleciłeś graczowi: ${answer} -nie wchódź w szczegóły misji. Twoją odpowiedzią ma być lekko rozbudowane pytanie`;
+  if (option === "thanks") {
+    const chat = new OpenAiChat(ask);
+    const res = await chat.say(answer, param3);
+    return res;
+  } else if (option === "status") {
+    const chat = new OpenAiChat(ask2);
+    const res = await chat.say(answer, param3);
+    return res;
+  }
+};
 
+export const shortTalkDown = async (missionsText:string) => {
+  const system =
+    "Otrzymasz opis zlecanej misji. Bazując na niej masz stworzyć krótkie pytanie do osoby która zleciła ci wykonanie tej misji aby o niej porozmawiać. W pytaniu zawrzyj krótką informację tak aby osoba wiedziała czego dotyczy misja";
+    const chat = new OpenAiChat(system);
+    const res = await chat.say(missionsText, param3);
+    return res;
+
+};
 
 export const categoryAI = async (todo: string) => {
   const data: string[] = [];
-  Object.keys(characters.npc).forEach(item => {
+  Object.keys(characters.npc).forEach((item) => {
     const npc = characters.npc[item as any];
     data.push(`${npc.name} - ${npc.role}`);
   });
@@ -17,7 +42,7 @@ export const categoryAI = async (todo: string) => {
     // info na f2 o braku
   }
   const data2: string[] = Object.keys(aiGeneral.missionCategories);
- 
+
   const ask =
     aiGeneral.general.vaseline +
     aiGeneral.general.missionPlan +
@@ -26,33 +51,33 @@ export const categoryAI = async (todo: string) => {
     " uzupełnij:" +
     aiGeneral.general.missionPlanJSON;
 
-  const chat  = new OpenAiChat(ask)
+  const chat = new OpenAiChat(ask);
 
   const res = await chat.say(todo, param3json);
-  console.log('res: ' +res.category)
+  console.log("res: " + res.category);
 
   const principal = getNPCClass(res.category);
-  console.log('npcClass: ' +principal)
+  console.log("npcClass: " + principal);
 
-
-  const ask2 = 'otrzymasz klasę postaci, podaj imię postaci pasujące do podanej roli ' + data + "bardzo ważne jest aby wynikiem było samo imię";
-  const chat2  = new OpenAiChat(ask2)
-  
+  const ask2 =
+    "otrzymasz klasę postaci, podaj imię postaci pasujące do podanej roli " +
+    data +
+    "bardzo ważne jest aby wynikiem było samo imię";
+  const chat2 = new OpenAiChat(ask2);
 
   const name = await chat2.say(principal, param3);
-  
-  const missions = getMissions(principal)
 
-   console.log(name)
+  const missions = getMissions(principal);
 
-   const ask3 = `Wybierz pasującą kategorię misji spśród ${missions} od zleceniodawcy której zawodem jest ${principal} pasującej najbardziej do podanego przez użytkownika todo. Następnie stwórz z tych danych misję. Następnie wcielasz się w postać o imieniu" ${name}. I zleć misję bohaterowi. Odpowiedzią ma być sama wypowiedź zleceniodawcy do bohatera bez opisów i nie podawaj imienia zleceniodawcy`;
+  console.log(name);
 
-  const chat3 = new OpenAiChat(ask3)
+  const ask3 = `Wybierz pasującą kategorię misji spśród ${missions} od zleceniodawcy której zawodem jest ${principal} pasującej najbardziej do podanego przez użytkownika todo. Następnie stwórz z tych danych misję. Następnie wcielasz się w postać o imieniu" ${name}. I zleć misję bohaterowi. Odpowiedzią ma być sama wypowiedź zleceniodawcy do bohatera bez opisów i nie podawaj imienia zleceniodawcy`;
+
+  const chat3 = new OpenAiChat(ask3);
   const res3 = await chat3.say(todo, param4);
-  console.log(res3)
+  console.log(res3);
 
-
- return {name: name, message:res3}
+  return { name: name, message: res3 };
 };
 
 // planAI('todo')

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,23 +8,37 @@ import {
 } from "react-native";
 import { NpcVoice } from "./NpcVoice";
 import { manageMissionStatus } from "../common/FirebaseService";
+import { fastResponse, shortTalkDown } from "../common/AiMissions/MissionAi";
 const lines = [
   "W czym mogę ci pomóc?",
   "Co mogę dla ciebie zrobić?",
   "Masz dla mnie jakieś zadanie?",
   "Słyszałem że masz jakiś problem.",
+  "W czym mogę ci pomóc?",
+  "Co mogę dla ciebie zrobić?",
+  "Masz dla mnie jakieś zadanie?",
+  "Słyszałem że masz jakiś problem.",
 ];
-const better = [
-    {"Zgoda": () => console.log('zgoda')}
+// const better = [
+//   { text: "Zgoda", action: () => setText("zgoda") },
+//   { text: "Odrzucam", action: () => console.log("odrzucam") },
 
-    // {"Zgoda": () => manageMissionStatus(ID ,false)}
-  ];
+//   // {"Zgoda": () => manageMissionStatus(ID ,false)}
+// ];
+const zagajenie = [
+  "co do tej misji",
+  "co do tej misji",
+  "co do tej misji",
+  "co do tej misji",
+  
+];
 
 const answers = [
   "Przyjmuję to zadanie",
   "Muszę się zastanowić",
   "Chciałbym przekazać to zadanie komuś innemu",
   "Nie zrobię tej misji, znajdź kogoś innego",
+  
 ];
 export interface Props {
   missionsText: any;
@@ -34,27 +48,68 @@ export interface Props {
 
 export const DialogueOptions = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
-  const [dialogLines, setDialogLines] = useState<string[]>(lines);
+  const [dialogLines, setDialogLines] = useState<any>([
+    { text: "Test", action: () => console.log("test") },
+  ]);
 
   const [text, setText] = useState<string | null>();
   const [ID, setID] = useState<string | null>();
 
+  const fill = async () => {
+    if (ID) {
+      const better = [
+        { text: "Zgoda", action: async () => {setText( await fastResponse('zgadzam się', 'thanks')), manageMissionStatus(ID ,true) }},
+        { text: "Odrzucam", action: async () => {setText( await fastResponse('nie zgadzam się', 'thanks'))  }},
+      ]; 
+      setDialogLines(better);
+    }
+  };
+
+  useEffect(() => {
+    if (text) {
+      setIsSpeaking(true);
+    }
+  }, [text]);
+
+  
+
+  useEffect(() => {
+    const dialogLines: { text: any; action: any }[] = [];
+    props.missionsText.forEach((element: any, index:number) => {
+  if (props.missionsText[index].isAccepted) {
+        dialogLines.push({
+          text: props.missionsText[index].talkDown,
+          action: async () => setText( await fastResponse( props.missionsText[index].mission, 'status',)),
+        });
+      }else {
+        dialogLines.push({
+          text: lines[index],
+          action: () => setText(props.missionsText[index].mission),
+        });
+      }});
+
+    setDialogLines(dialogLines);
+  }, []);
 
   const endSpeak = () => {
-    setDialogLines(answers);
+    fill()
     setIsSpeaking(false);
   };
 
-  const renderDialogueLines = (line: string, index: number) => {
+  const executeAction = (action: any, index?: string) => {
+    action();
+  };
+
+  const renderDialogueLines =  (line: any, index: number) => {
+    const dialogLine = Object.values(line)[0] ? Object.values(line)[0] : 'bład';
     return (
       <TouchableOpacity
         onPress={() => {
-          setIsSpeaking(!isSpeaking);
+          executeAction(Object.values(line)[1]);
           setID(props.missionsText[index].id);
-          setText(props.missionsText[index].mission);
         }}
       >
-        <Text style={styles.text}>{line}</Text>
+        <Text style={styles.text}>{dialogLine as string}</Text>
       </TouchableOpacity>
     );
   };
@@ -71,7 +126,7 @@ export const DialogueOptions = (props: Props) => {
       ) : (
         <View style={styles.talkingArea}>
           <FlatList
-            data={dialogLines.slice(0, props.missionsText.length)}
+            data={dialogLines}
             renderItem={({ item, index }) => renderDialogueLines(item, index)}
             keyExtractor={(item, index) => index.toString()}
           />
@@ -92,7 +147,7 @@ const styles = StyleSheet.create({
   talkingArea: {
     position: "absolute",
     width: "100%",
-    minHeight: 110,
+    minHeight: 100,
     bottom: 0,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     paddingTop: 5,
