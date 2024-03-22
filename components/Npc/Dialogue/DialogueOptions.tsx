@@ -11,15 +11,8 @@ import { DialogueLines } from "./DialogueLines";
 
 import { manageMissionStatus } from "../../common/FirebaseService";
 import { fastResponse, shortTalkDown } from "../../common/AiMissions/MissionAi";
-import { acceptMission, doneMission } from "./TrackData";
-const lines = [
-  "W czym mogę ci pomóc?",
-  "W czym mogę ci pomóc?",
-  "W czym mogę ci pomóc?",
-  "W czym mogę ci pomóc?",
-  "W czym mogę ci pomóc?",
-  ,
-];
+import { TrackDialogue, acceptMission, doneMission } from "./TrackData";
+
 
 export interface Props {
   missionsText: any;
@@ -46,49 +39,19 @@ export const DialogueOptions = (props: Props) => {
   }, [text]);
 
   useEffect(() => {
-    const dialogLines: { text: any; action: any }[] = [];
-    if (conversationTrack === null) {
-      props.missionsText.forEach((element: any, index: number) => {
-        if (props.missionsText[index].isAccepted) {
-          dialogLines.push({
-            text: props.missionsText[index].talkDown,
-            action: async () => {
-              setConversationTrack("doneMission");
-              return "Jak ci idzie?";
-              // await fastResponse(props.missionsText[index].mission, "status")
-            },
-          });
-        } else {
-          dialogLines.push({
-            text: lines[index],
-            action: () => {
-              setConversationTrack("acceptMission");
-              return props.missionsText[index].mission;
-            },
-          });
-        }
-      });
-
-      setDialogLines(dialogLines);
-    } else {
-      switch (conversationTrack) {
-        case "doneMission":
-          return setDialogLines(doneMission);
-        case "acceptMission":
-          return setDialogLines(acceptMission);
-        default:
-          null;
-      }
-    }
+    setDialogLines( TrackDialogue(props.missionsText, conversationTrack))
   }, [isSpeaking, conversationTrack]);
 
-  const fillText = (data: string) => {
-    console.log(data);
+  const fillText = (data: string, conversationTrack?:string) => {
+    console.log(conversationTrack);
+    if (conversationTrack || conversationTrack === null) {
+      setConversationTrack(conversationTrack)
+    }
     setText(data);
   };
 
   const endSpeak = () => {
-    // setText(null)
+    setText(null);
     setIsSpeaking(false);
   };
 

@@ -25,8 +25,10 @@ export const acceptMission = [
     {
       text: "Wykonałem zadanie!",
       action: async () => {
-        return "świetnie że wykonałeś zadanie"
+        return "świetnie że wykonałeś zadanie oto twoja nagroda"
       },
+      conversationTrack:async () => { return null }
+
     },
     {
         text: "Co dokładnie miałem dla ciebie zrobić?",
@@ -41,5 +43,56 @@ export const acceptMission = [
       },
     },
   ];
+  const lines = [
+    "W czym mogę ci pomóc?",
+    "W czym mogę ci pomóc?",
+    "W czym mogę ci pomóc?",
+    "W czym mogę ci pomóc?",
+    "W czym mogę ci pomóc?",
+    ,
+  ];
+  export const TrackDialogue = (data: any, conversationTrack:string | null) => {
+    const dialogLines: { text: any; action: any; conversationTrack: any }[] = [];
+    console.log('ładowanie nowych linii dialogowych')
+    if (conversationTrack === null) {
+      data.forEach((element: any, index: number) => {
+        if (data[index].isAccepted) {
+          dialogLines.push({
+            text: data[index].talkDown,
+            action: async () => {
+              return "Jak ci idzie?";
+            },
+            conversationTrack:async () => { return "doneMission" }
+          });
+        } else {
+          dialogLines.push({
+            text: lines[index],
+            action: () => {
+              return data[index].mission;
+            },
+            conversationTrack:async () => { return "acceptMission" }
 
- 
+          });
+        }
+        
+      });
+      dialogLines.push({
+        text: "Co słychać?",
+        action: async () => {
+          return "Stare kury nie chcą zdychać!";
+        },
+        conversationTrack:async () => { return null }
+      });
+
+      return dialogLines;
+    } else {
+      switch (conversationTrack) {
+        case "doneMission":
+          return doneMission;
+        case "acceptMission":
+          return acceptMission;
+        default:
+          null;
+      }
+    }
+  };
