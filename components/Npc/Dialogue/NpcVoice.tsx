@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import * as Speech from "expo-speech";
+import { Audio } from "expo-av";
+import { getAudio } from "../../common/FirebaseService";
 
 export interface Props {
+  bezi: string;
   text: string;
   selectedNpc: string;
-  // speak: boolean;
   endSpeak: () => void;
 }
 const MAX_FRAGMENT_LENGTH = 200;
@@ -14,15 +16,58 @@ export const NpcVoice = (props: Props) => {
   const [fragments, setFragments] = useState<string[]>([]);
   const [currentFragmentIndex, setCurrentFragmentIndex] = useState<number>(0);
 
+  async function chooseAudio(bezi: string) {
+    switch (bezi) {
+      case "Czy moglibyśmy porozmawiać o zadaniu, które mi zleciłeś?":
+        return "co_do_tego_zadania.WAV";
+      case "W czym mogę ci pomóc?":
+        return "masz_dla_mnie_jakies_zadanie.WAV";
+      case "Co słychać?":
+        return "co_slychac.WAV";
+      case "Zgoda":
+        return "dobrze_zrobie_to.WAV";
+      case "Odrzucam":
+        return "nie_nie_zrobie_tego.WAV";
+      case "Co dokładnie miałem dla ciebie zrobić?":
+        return "na_czym_polega_twoje_zadanie.WAV";
+      default:
+        return "hmm.WAV";
+    }
+  }
+
+  async function playSound() {
+    const audioName = await chooseAudio(props.bezi);
+    const url = await getAudio("sounds", audioName);
+    const soundObject = new Audio.Sound();
+    try {
+      if (url) {
+        await soundObject.loadAsync({ uri: url });
+        await soundObject.playAsync();
+        soundObject.setOnPlaybackStatusUpdate((finish) => {
+          Object.keys(finish).map((key, index) => {
+            if (key === "didJustFinish") {
+              if (Object.values(finish)[index] === true) {
+                nextDialog();
+              }
+            }
+          });
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
-    if ( fragments[currentFragmentIndex] !== undefined) {
+    if (fragments[currentFragmentIndex] !== undefined) {
       startSpeech();
     }
   }, [currentFragmentIndex, fragments]);
 
   useEffect(() => {
-    if (props.text) {
+    if (props.text && props.bezi) {
       const textFragments: string[] = [];
+      textFragments.push(props.bezi);
       let start = 0;
       while (start < props.text.length) {
         let end = start + MAX_FRAGMENT_LENGTH;
@@ -44,16 +89,22 @@ export const NpcVoice = (props: Props) => {
 
   const startSpeech = async () => {
     try {
-      // console.log(fragments[currentFragmentIndex])
-
-      Speech.speak((fragments[currentFragmentIndex]), { voice: "pl-pl-x-bmg-network", onDone: nextDialog, rate: 1.4 });
+      if (currentFragmentIndex === 0) {
+        playSound();
+      } else {
+        Speech.speak(fragments[currentFragmentIndex], {
+          voice: "pl-pl-x-bmg-network",
+          onDone: nextDialog,
+          rate: 1.4,
+        });
+      }
     } catch (error) {
       console.error("Wystąpił błąd podczas odczytywania tekstu:", error);
     }
   };
 
   const nextDialog = () => {
-    Speech.stop()
+    Speech.stop();
 
     if (fragments.length <= currentFragmentIndex + 1) {
       props.endSpeak();
@@ -66,12 +117,24 @@ export const NpcVoice = (props: Props) => {
   };
   return (
     <View style={styles.npcTalkWindow}>
-      <Text style={styles.npcName}>{props.selectedNpc}</Text>
-      <TouchableOpacity onPress={nextDialog}>
-        <Text style={styles.npcTalkText}>
-          {fragments[currentFragmentIndex]}
-        </Text>
-      </TouchableOpacity>
+      {currentFragmentIndex === 0 ? (
+        <>
+          <TouchableOpacity onPress={nextDialog}>
+            <Text style={styles.heroTalkText}>
+              {fragments[currentFragmentIndex]}
+            </Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <>
+          <Text style={styles.npcName}>{props.selectedNpc}</Text>
+          <TouchableOpacity onPress={nextDialog}>
+            <Text style={styles.npcTalkText}>
+              {fragments[currentFragmentIndex]}
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };
@@ -81,6 +144,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     top: 20,
     left: "5%",
     zIndex: 3,
@@ -97,7 +161,14 @@ const styles = StyleSheet.create({
   npcTalkText: {
     fontFamily: "gothic-font",
     color: "rgb(255, 255, 102)",
-    fontSize: 11,
+    fontSize: 12,
+    top: 5,
+    textAlign: "center",
+  },
+  heroTalkText: {
+    fontFamily: "gothic-font",
+    color: "white",
+    fontSize: 12,
     top: 5,
     textAlign: "center",
   },

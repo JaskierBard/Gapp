@@ -44,7 +44,7 @@ export const acceptMission = [
     },
   ];
   const lines = [
-    "W czym mogę ci pomóc?",
+    "Czy masz dla mnie jakieś zadanie?",
     "W czym mogę ci pomóc?",
     "W czym mogę ci pomóc?",
     "W czym mogę ci pomóc?",
@@ -53,7 +53,7 @@ export const acceptMission = [
   ];
   export const TrackDialogue = (data: any, conversationTrack:string | null) => {
     const dialogLines: { text: any; action: any; conversationTrack: any }[] = [];
-    console.log('ładowanie nowych linii dialogowych')
+    // console.log('ładowanie nowych linii dialogowych')
     if (conversationTrack === null) {
       data.forEach((element: any, index: number) => {
         if (data[index].isAccepted) {

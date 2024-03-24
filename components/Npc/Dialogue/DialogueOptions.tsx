@@ -13,7 +13,6 @@ import { manageMissionStatus } from "../../common/FirebaseService";
 import { fastResponse, shortTalkDown } from "../../common/AiMissions/MissionAi";
 import { TrackDialogue, acceptMission, doneMission } from "./TrackData";
 
-
 export interface Props {
   missionsText: any;
   selectedNpc: string;
@@ -31,6 +30,8 @@ export const DialogueOptions = (props: Props) => {
   );
 
   const [text, setText] = useState<string | null>(null);
+  const [bezi, setBezi] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (text) {
@@ -39,19 +40,24 @@ export const DialogueOptions = (props: Props) => {
   }, [text]);
 
   useEffect(() => {
-    setDialogLines( TrackDialogue(props.missionsText, conversationTrack))
+    setDialogLines(TrackDialogue(props.missionsText, conversationTrack));
   }, [isSpeaking, conversationTrack]);
 
-  const fillText = (data: string, conversationTrack?:string) => {
-    console.log(conversationTrack);
+  const fillText = async (beziTalk: string, text: string, conversationTrack?: string) => {
+    setBezi(beziTalk);
     if (conversationTrack || conversationTrack === null) {
-      setConversationTrack(conversationTrack)
+      setConversationTrack(conversationTrack);
     }
-    setText(data);
+
+    setText(text);
+    
+    
   };
 
   const endSpeak = () => {
-    setText(null);
+    // setText(null);
+    console.log('koniec mówienia');
+
     setIsSpeaking(false);
   };
 
@@ -59,6 +65,8 @@ export const DialogueOptions = (props: Props) => {
     <View style={styles.container}>
       {isSpeaking ? (
         <NpcVoice
+        bezi={bezi ? bezi : "Nie mam ci nic do powiedzenia"}
+
           text={text ? text : "Nie mam ci nic do powiedzenia"}
           selectedNpc={props.selectedNpc}
           // speak={isSpeaking}
@@ -81,7 +89,7 @@ export const DialogueOptions = (props: Props) => {
             <TouchableOpacity
               onPress={() => {
                 setConversationTrack(null);
-                setText(null)
+                setText(null);
               }}
             >
               <Text style={styles.text}>Wróć</Text>

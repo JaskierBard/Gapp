@@ -2,19 +2,19 @@ import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
 export interface Props {
     line: any
-    fillText: (data:any , conversationTrack?:any) => void;
+    fillText: (beziTalk :string, data:any , conversationTrack?:any) => void;
 
   }
 
 
 export const DialogueLines = (props:Props) => {
   const dialogLine = Object.values(props.line)[0] ? Object.values(props.line)[0] : "bład";
-  const executeAction = async (action: any, conversationTrack?:any) => {
+  const executeAction = async (beziTalk: string, action: any, conversationTrack?:any) => {
     if (conversationTrack) {
-        props.fillText(await action(), await conversationTrack())
+        props.fillText(beziTalk ,await action(), await conversationTrack())
 
     } else {
-        props.fillText(await action())
+        props.fillText(beziTalk ,await action())
 
     }
     
@@ -24,7 +24,7 @@ export const DialogueLines = (props:Props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        executeAction(Object.values(props.line)[1], Object.values(props.line)[2]);
+        executeAction(dialogLine as string ,Object.values(props.line)[1], Object.values(props.line)[2]);
         // setID(props.missionsText[index].id);
       }}
     >

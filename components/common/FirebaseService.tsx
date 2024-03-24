@@ -186,3 +186,19 @@ export const getImage = async (folder: string, imageName: string) => {
     console.error("Błąd podczas pobierania danych:", error);
   };
 };
+
+
+
+export const getAudio = async (folder: string, audioName: string) => {
+  try {
+    const storageRef = ref(FIREBASE_STORAGE, `${folder}/${audioName}`);
+
+
+    const url = await getDownloadURL(storageRef);
+    return url
+
+  } catch (error) {
+    console.error("Błąd podczas pobierania danych:", error);
+  };
+};
+
