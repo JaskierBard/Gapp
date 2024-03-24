@@ -6,6 +6,7 @@ import { DialogueOptions } from "./Dialogue/DialogueOptions";
 interface Props {
   selectedNpc: string;
   endConversation: () => void;
+  addLog: (arg: string) => void;
 }
 
 export const SelectedNpc = (props: Props) => {
@@ -30,6 +31,7 @@ export const SelectedNpc = (props: Props) => {
       )}
       {missionsText && (
         <DialogueOptions
+        addLog={props.addLog}
           endConversation={props.endConversation}
           missionsText={missionsText}
           selectedNpc={props.selectedNpc}

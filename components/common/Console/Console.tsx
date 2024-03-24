@@ -1,30 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import { ConsoleItems } from "./ConsoleItems";
 
 export interface Props {
-    text: string[];
-    consoleVisible: () => void;
+  text: string[];
+  consoleVisible: () => void;
+  flashConsole: boolean;
 }
 
-export const Console = (props:Props) => {
+export const Console = (props: Props) => {
   const handlePress = () => {
-    props.consoleVisible()
+    props.consoleVisible();
   };
   return (
-
-      <TouchableOpacity onPress={handlePress} style={consoleStyle.codes}>
-      <Image
-        style={consoleStyle.code_flame}
-        source={require("../../../assets/images/flame_1.png")}
-      />
-      <Image
-        style={consoleStyle.code_text}
-        source={require("../../../assets/images/gothic.png")}
-      />
-      {}
-      <ConsoleItems logs={props.text}/>
-      </TouchableOpacity>
+    <>
+      {props.flashConsole ? (
+        <View style={consoleStyle.codes_flash}>
+        <Image
+          style={consoleStyle.code_flame}
+          source={require("../../../assets/images/flame_1.png")}
+        />
+          <ConsoleItems logs={[props.text[0]]} />
+      </View>
+      ) : (
+        <TouchableOpacity onPress={handlePress} style={consoleStyle.codes}>
+          <Image
+            style={consoleStyle.code_flame}
+            source={require("../../../assets/images/flame_1.png")}
+          />
+          <Image
+            style={consoleStyle.code_text}
+            source={require("../../../assets/images/gothic.png")}
+          />
+          {}
+          <ConsoleItems logs={props.text} />
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 export const consoleStyle = StyleSheet.create({
@@ -37,6 +49,27 @@ export const consoleStyle = StyleSheet.create({
     borderBottomColor: "rgba(255, 215, 0, 0.5)",
     borderBottomWidth: 1,
   },
+ 
+
+  codes_flash: {
+    position: "absolute",
+    width: "100%",
+    height: 110,
+    shadowColor: "green",
+    backgroundColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    // zIndex: 1000,
+    shadowOpacity: 0.5, // Zwiększenie widoczności cienia
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  
+
+
+
 
   code_flame: {
     position: "absolute",
@@ -62,7 +95,7 @@ export const consoleStyle = StyleSheet.create({
     position: "absolute",
 
     fontFamily: "gothic-font",
-    color: 'wheat',
+    color: "wheat",
     fontSize: 12,
     left: 10,
     bottom: 3,

@@ -9,6 +9,7 @@ export interface Props {
   text: string;
   selectedNpc: string;
   endSpeak: () => void;
+  addLog: (arg: string) => void;
 }
 const MAX_FRAGMENT_LENGTH = 200;
 
@@ -39,15 +40,32 @@ export const NpcVoice = (props: Props) => {
     const audioName = await chooseAudio(props.bezi);
     const url = await getAudio("sounds", audioName);
     const soundObject = new Audio.Sound();
+    let audioStarted = false;
     try {
       if (url) {
         await soundObject.loadAsync({ uri: url });
         await soundObject.playAsync();
         soundObject.setOnPlaybackStatusUpdate((finish) => {
-          Object.keys(finish).map((key, index) => {
+          Object.keys(finish).map(async (key, index) => {
+            if (key === "isPlaying") { // do zmiany chyba
+              if (Object.values(finish)[index] === true) {
+                console.log(Object.values(finish)[index]);
+                audioStarted = true;
+              }
+              await new Promise((resolve) => setTimeout(resolve, 3000));
+              if (audioStarted === false) {
+                console.log(
+                  "zbyt długie oczekianie na plik audio - sprawdź połaczenie z internetem"
+                );
+                nextDialog();
+                soundObject.unloadAsync(); 
+              }
+            }
             if (key === "didJustFinish") {
               if (Object.values(finish)[index] === true) {
+                props.addLog('kolejny tekst')
                 nextDialog();
+                soundObject.unloadAsync();
               }
             }
           });
@@ -105,10 +123,8 @@ export const NpcVoice = (props: Props) => {
 
   const nextDialog = () => {
     Speech.stop();
-
     if (fragments.length <= currentFragmentIndex + 1) {
       props.endSpeak();
-      // setCurrentFragmentIndex(0)
     } else {
       setCurrentFragmentIndex(
         (prevIndex) => (prevIndex + 1) % fragments.length

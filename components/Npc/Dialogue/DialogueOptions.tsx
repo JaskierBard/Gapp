@@ -17,6 +17,8 @@ export interface Props {
   missionsText: any;
   selectedNpc: string;
   endConversation: () => void;
+  addLog: (arg: string) => void;
+
 }
 
 export const DialogueOptions = (props: Props) => {
@@ -32,7 +34,6 @@ export const DialogueOptions = (props: Props) => {
   const [text, setText] = useState<string | null>(null);
   const [bezi, setBezi] = useState<string | null>(null);
 
-
   useEffect(() => {
     if (text) {
       setIsSpeaking(true);
@@ -43,21 +44,21 @@ export const DialogueOptions = (props: Props) => {
     setDialogLines(TrackDialogue(props.missionsText, conversationTrack));
   }, [isSpeaking, conversationTrack]);
 
-  const fillText = async (beziTalk: string, text: string, conversationTrack?: string) => {
+  const fillText = async (
+    beziTalk: string,
+    text: string,
+    conversationTrack?: string
+  ) => {
     setBezi(beziTalk);
     if (conversationTrack || conversationTrack === null) {
       setConversationTrack(conversationTrack);
     }
-
     setText(text);
-    
-    
   };
 
   const endSpeak = () => {
-    // setText(null);
-    console.log('koniec mówienia');
-
+    setBezi(null)
+    setText(null);
     setIsSpeaking(false);
   };
 
@@ -65,12 +66,11 @@ export const DialogueOptions = (props: Props) => {
     <View style={styles.container}>
       {isSpeaking ? (
         <NpcVoice
-        bezi={bezi ? bezi : "Nie mam ci nic do powiedzenia"}
-
+          bezi={bezi ? bezi : "Nie mam ci nic do powiedzenia"}
           text={text ? text : "Nie mam ci nic do powiedzenia"}
           selectedNpc={props.selectedNpc}
-          // speak={isSpeaking}
           endSpeak={endSpeak}
+          addLog={props.addLog}
         />
       ) : (
         <View style={styles.talkingArea}>

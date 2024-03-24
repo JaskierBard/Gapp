@@ -17,18 +17,30 @@ import { Console } from "./components/common/Console/Console";
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
+  const [flashConsole, setFlashConsole] = useState(false);
 
   const [logs, setLogs] = useState([""]);
 
   const addLog = (newLog: string) => {
     setLogs((prevLogs) => {
       const updatedLogs = [newLog, ...prevLogs.slice(0, 4)];
+      // console.log(updatedLogs)
       return updatedLogs;
     });
   };
 
+  useEffect(() => {
+    if (showConsole === false) {
+      (async () => {
+        setFlashConsole(true);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setFlashConsole(false);
+      })();
+    }
+  }, [logs]);
+
   const makeF2Visible = () => {
-    setShowConsole(!showConsole)
+    setShowConsole(!showConsole);
   };
 
   const loadFonts = async () => {
@@ -64,8 +76,9 @@ export default function App() {
       source={require("./assets/images/background.jpg")}
       style={background.image}
     >
-      <TabNavigator addLog={addLog} consoleVisible={makeF2Visible}/>
-      {showConsole && <Console text={logs} consoleVisible={makeF2Visible}/>}
+      <TabNavigator addLog={addLog} consoleVisible={makeF2Visible} />
+      {flashConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>}
+      {showConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>}
     </ImageBackground>
   );
 }

@@ -10,8 +10,13 @@ import {
 import { background } from "../Styles";
 import { SelectedNpc } from "./SelectedNpc";
 import { getMissionsCount, getNpc } from "../common/FirebaseService";
+export interface Props {
+  addLog: (arg: string) => void;
 
-export const NpcList = () => {
+}
+
+
+export const NpcList = (props:Props) => {
   const [sectedNpc, setSelectedNpc] = useState<string | null>(null);
   const [npcList, setNpcList] = useState<[string]>();
   const [npcWithMission, setNpcWithMission] = useState<{ [key: string]: any }>(
@@ -60,6 +65,7 @@ export const NpcList = () => {
       {sectedNpc ? (
         <View style={styles.npcContainer}>
           <SelectedNpc
+            addLog={props.addLog}
             selectedNpc={sectedNpc}
             endConversation={endConversation}
           />
