@@ -63,26 +63,26 @@ export const Daily = (props: Props) => {
               >
                 <Text style={styles.plusButton}>+</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.rectangleText}>
-                <Text style={styles.textTitle}>{element.title}</Text>
-                {element.left <= 0 ? (
-                  <>
+
+              {element.left <= 0 ? (
+                <TouchableOpacity style={styles.habbitDoneDiv}>
+                  <Text style={styles.textTitle}>{element.title}</Text>
+                  <Text style={styles.targetText}>Dzienny cel osiągnięty!</Text>
+                  {element.left < 0 && (
                     <Text style={styles.targetText}>
-                      Dzienny cel osiągnięty!{" "}
+                      dodatkowe {Math.abs(element.left)} razy!
                     </Text>
-                    <Text style={styles.targetText}>
-                      dodatkowe {Math.abs(element.left)} razy
-                    </Text>
-                  </>
-                ) : (
-                  <>
-                    <Text style={styles.targetText}>Dzienny cel: </Text>
-                    <Text style={styles.targetText}>
-                      pozostało {element.left} razy
-                    </Text>
-                  </>
-                )}
-              </TouchableOpacity>
+                  )}
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.habbitUndoneDiv}>
+                  <Text style={styles.textTitle}>{element.title}</Text>
+                  <Text style={styles.targetText}>Dzienny cel: </Text>
+                  <Text style={styles.targetText}>
+                    pozostało {element.left} razy
+                  </Text>
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => decreaseValue(element.id, date, element.left)}
@@ -111,11 +111,21 @@ const styles = StyleSheet.create({
     fontFamily: "gothic-font",
     color: "white",
   },
-
-  rectangleText: {
+  habbitDoneDiv: {
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 0.5,
+    backgroundColor: "rgba(0, 220, 0, 0.4)",
+    borderColor: "yellow",
+    height: "100%",
+    width: "60%",
+  },
+
+  habbitUndoneDiv: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 0.5,
+    backgroundColor: "rgba(255, 255, 255,",
     borderColor: "yellow",
     height: "100%",
     width: "60%",
