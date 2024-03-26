@@ -9,6 +9,7 @@ import { TaskDetails } from "./TaskDetails";
 import { background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";
 import { ActionButton } from "../common/Buttons/ActionButton";
+import { Daily } from "./DailyTasks";
 
 
 export interface Todo {
@@ -17,6 +18,16 @@ export interface Todo {
   status: string;
   description: string;
 }
+
+export interface Habbit {
+  id: string;
+  title: string;
+  target: number;
+  dates: any;
+  date: Date;
+}
+
+
 export interface Props {
   addLog: (arg: string) => void;
 }
@@ -25,6 +36,8 @@ export default function Tasks(props: Props) {
   const [undoneTodos, setUndoneTodos] = useState<Todo[]>([]);
   const [doneTodos, setDoneTodos] = useState<Todo[]>([]);
   const [failedTodos, setFailedTodos] = useState<Todo[]>([]);
+  const [habbits, setHabbits] = useState<Habbit[]>([]);
+
   const [details, setDetails] = useState<any>("");
   const [addTaskVisible, setAddTaskVisible] = useState<boolean>(false);
 
@@ -34,6 +47,8 @@ export default function Tasks(props: Props) {
 
   useEffect(() => {
     const todoRef = collection(FIRESTORE_DB, "todos");
+    const habbitsRef = collection(FIRESTORE_DB, "habbits");
+
 
     const subscriber = onSnapshot(todoRef, {
       next: (snapshot) => {
@@ -60,7 +75,27 @@ export default function Tasks(props: Props) {
         setFailedTodos(failedTodos);
       },
     });
-    return () => subscriber();
+
+    const getHabbits = onSnapshot(habbitsRef, {
+      next: (snapshot) => {
+        const habbits: Habbit[] = [];
+
+
+        snapshot.docs.forEach((doc) => {
+          const habbit: any = {
+            id: doc.id,
+            ...doc.data(),
+          };
+
+            habbits.push(habbit);
+    
+        });
+        setHabbits(habbits);    
+
+        
+      },
+    });
+    return () => {subscriber(), getHabbits()};
   }, []);
 
   const showTaskDetails = (data: any) => {
@@ -80,7 +115,7 @@ export default function Tasks(props: Props) {
       case "failed-task":
         return <CurrentTasks todos={failedTodos} show={showTaskDetails} />;
       case "information":
-        return <CurrentTasks todos={undoneTodos} show={showTaskDetails} />;
+        return <Daily habbits={habbits}/>;
       default:
         return <CurrentTasks todos={undoneTodos} show={showTaskDetails} />;
     }
@@ -126,7 +161,7 @@ export default function Tasks(props: Props) {
               style={missionStyles.information}
               onPress={() => pickComponent("information")}
             >
-              <Text style={missionStyles.text}>Informacje {"\n"}ogólne </Text>
+              <Text style={missionStyles.text}>Nawyki</Text>
             </TouchableOpacity>
             <View style={missionStyles.date}>
               <GetTimeNow />

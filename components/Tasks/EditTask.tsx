@@ -50,7 +50,7 @@ export const EditTask = (props: Props) => {
   };
 
   const editTodo = async () => {
-    editItem(props.details.id, title, description);
+    editItem(props.details.id, title);
     // props.cancel;
     setTitle("");
     setDescription("");

@@ -24,7 +24,6 @@ export default function App() {
   const addLog = (newLog: string) => {
     setLogs((prevLogs) => {
       const updatedLogs = [newLog, ...prevLogs.slice(0, 4)];
-      // console.log(updatedLogs)
       return updatedLogs;
     });
   };

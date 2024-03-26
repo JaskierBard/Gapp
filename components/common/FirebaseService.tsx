@@ -28,6 +28,8 @@ export const addItem = async (title: string, expires: Date | null) => {
   return docRef.id;
 };
 
+
+
 export const addMission = async (
   NPCname: string,
   mission: string,
@@ -55,6 +57,21 @@ export const editItem = async (id: string, title: string) => {
     status: "undone",
   });
 };
+
+
+export const editHabbitProgress = async (id: string, today: string, targetOrnewValue: number) => {
+  const ref = doc(FIRESTORE_DB, `habbits/${id}`);
+  const heroDoc = await getDoc(ref);
+  if (heroDoc.exists()) {
+    const currentDates = heroDoc.data()?.dates || [];
+    currentDates[today]=targetOrnewValue
+    await updateDoc(ref, {
+      dates: currentDates,
+    });
+  }
+};
+
+
 
 export const manageMissionStatus = async (id: string, decision: boolean) => {
   const ref = doc(FIRESTORE_DB, `missions/${id}`);
