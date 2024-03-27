@@ -54,7 +54,7 @@ const lines = [
   "W czym mogę ci pomóc?",
   ,
 ];
-export const TrackDialogue = (data: any, conversationTrack: string | null, selectedNpc:string) => {
+export const TrackDialogue = (data: any, conversationTrack: string | null, selectedNpc:string, oppression: any) => {
   const dialogLines: { text: any; action: any; conversationTrack: any }[] = [];
 
 
@@ -83,14 +83,17 @@ export const TrackDialogue = (data: any, conversationTrack: string | null, selec
       }
     });
     if (dialogLines ) {
-      // torment
+      let lvlOpression = 0
+
+      if (oppression["Co słychać?"]) {
+         lvlOpression = oppression["Co słychać?"]
+        } 
     
     dialogLines.push({
       text: "Co słychać?",
       action: async () => {
-        addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, "Co słychać?")
-        // return await fastResponse("Co słychać?", "about");
-        return "w pyte"
+        // addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, "Co słychać?")
+        return await fastResponse("Co słychać?", "about", lvlOpression);
       },
       conversationTrack: async () => {
         return null;

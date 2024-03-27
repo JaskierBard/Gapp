@@ -9,7 +9,7 @@ import {
 import { NpcVoice } from "./NpcVoice";
 import { DialogueLines } from "./DialogueLines";
 
-import { manageMissionStatus } from "../../common/FirebaseService";
+import { getOpression, manageMissionStatus } from "../../common/FirebaseService";
 import { fastResponse, shortTalkDown } from "../../common/AiMissions/MissionAi";
 import { TrackDialogue, acceptMission, doneMission } from "./TrackData";
 
@@ -23,6 +23,8 @@ export interface Props {
 
 export const DialogueOptions = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  // const [opression, setOpression] = useState<any>();
+
   const [dialogLines, setDialogLines] = useState<any>([
     { text: "Test", action: () => console.log("test") },
   ]);
@@ -41,7 +43,11 @@ export const DialogueOptions = (props: Props) => {
   }, [text]);
 
   useEffect(() => {
-    setDialogLines(TrackDialogue(props.missionsText, conversationTrack, props.selectedNpc));
+    (async () => {
+    const opression =await getOpression("g4tPE1itk3vJTDAj19PO",props.selectedNpc, props.selectedNpc);
+
+    setDialogLines(TrackDialogue(props.missionsText, conversationTrack, props.selectedNpc, opression));
+  })()
   }, [isSpeaking, conversationTrack]);
 
   const fillText = async (

@@ -10,17 +10,18 @@ const response = async (system: string, userInput: string) => {
   return res;
 };
 
-export const fastResponse = async (userInput: string, option: string) => {
+export const fastResponse = async (userInput: string, option: string, lvlOpression?: number) => {
   const defaultSystem =
     "Powiedz graczowi że jesteś zajęty  i nie możesz teraz rozmawiać";
   const thanksSystem =
     "Podziękuj krótko graczowi za przyjęcie misji lub wyraź zrozumienie jeśli odmówi";
   const askSystem = `Zapytaj na jakim etapie jest gracz wykonujący misję. Podaję treść misji którą wcześniej zleciłeś graczowi: ${userInput} -nie wchódź w szczegóły misji. Twoją odpowiedzią ma być lekko rozbudowane pytanie`;
- const aboutSystem = 'Opowiedz graczowi co u ciebie'
+ const aboutSystem = `Opowiedz graczowi co u ciebie ale w zależności od tego jak często już gracz cię o to pytał odpowiadaj inaczej. Gdzie przedział wartości to wartości od 0 do 10. Wartość '0' oznacza że gracz pyta po raz pierwszy dzisiejszego dnia, wartość '1' i więcej oznacza że pyta minimum 2 raz i możesz się zwracać do niego tak jakby już cie oto pytał ale nadal masz odpowiedzieć.  '5' to wartość graniczna i gracz cały czas zawraca ci głowę i masz go dosyć i możesz być w stosunku niego niemiły. Warość aktualna to: ${lvlOpression}. Nigdy nie podawaj wartości w odpowiedzi to bardzo ważne. Odpowiedźą ma być zdanie bazujące na podanej wartości`;
   switch (option) {
     case "thanks":
       return response(thanksSystem, userInput);
     case "about":
+      console.log(aboutSystem)
       return response(aboutSystem, userInput);
     case "ask":
       return response(askSystem, userInput);

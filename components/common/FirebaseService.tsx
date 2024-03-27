@@ -28,6 +28,18 @@ export const addItem = async (title: string, expires: Date | null) => {
   });
   return docRef.id;
 };
+export const getOpression = async (
+  heroID: string,
+  NpcName: string,
+  discourse: string
+) => {
+  const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
+  const heroDoc = await getDoc(heroRef)
+  const currentData = heroDoc.data()?.oppression || [];
+  // console.log(currentData[NpcName]);
+  return currentData[NpcName]
+};
+
 export const addOpression = async (
   heroID: string,
   NpcName: string,
@@ -44,11 +56,11 @@ export const addOpression = async (
         oppression: {
           ...currentData,
           [NpcName]: {
-            [discourse]: 1
+            [discourse]: 1,
           },
         },
       });
-    } else if (currentData[NpcName][discourse]=== undefined) {
+    } else if (currentData[NpcName][discourse] === undefined) {
       const updatedMissions = {
         ...currentData,
         [NpcName]: {
@@ -59,7 +71,7 @@ export const addOpression = async (
       await updateDoc(heroRef, {
         oppression: updatedMissions,
       });
-    }else{
+    } else {
       currentData[NpcName][discourse]++;
       const updatedMissions = {
         ...currentData,
@@ -72,12 +84,11 @@ export const addOpression = async (
         oppression: updatedMissions,
       });
     }
-   
   } else {
     console.log(`Dokument o ID ${heroID} nie istnieje.`);
   }
-  return heroDoc.id
-}
+  return heroDoc.id;
+};
 export const addMission = async (
   NPCname: string,
   mission: string,
