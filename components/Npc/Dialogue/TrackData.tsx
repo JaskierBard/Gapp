@@ -1,8 +1,12 @@
+import { fastResponse } from "../../common/AiMissions/MissionAi";
+import { addOpression } from "../../common/FirebaseService";
+
 export const acceptMission = [
   {
     text: "Zgoda",
     action: async () => {
-      return "fajnie że sie zgadzasz";
+      return await fastResponse("dobrze, wykonam zadanie", "thanks");
+
     },
   },
   {
@@ -14,8 +18,7 @@ export const acceptMission = [
   {
     text: "Odrzucam",
     action: async () => {
-      // setText(await fastResponse("nie zgadzam się", "thanks"));
-      return "szkoda że odrzucasz";
+      return await fastResponse("nie zgadzam się", "thanks");
     },
   },
 ];
@@ -24,7 +27,7 @@ export const doneMission = [
   {
     text: "Wykonałem zadanie!",
     action: async () => {
-      return "świetnie że wykonałeś zadanie oto twoja nagroda";
+      return await fastResponse("Wykonałem zadanie", "thanks");
     },
     conversationTrack: async () => {
       return null;
@@ -51,9 +54,10 @@ const lines = [
   "W czym mogę ci pomóc?",
   ,
 ];
-export const TrackDialogue = (data: any, conversationTrack: string | null) => {
+export const TrackDialogue = (data: any, conversationTrack: string | null, selectedNpc:string) => {
   const dialogLines: { text: any; action: any; conversationTrack: any }[] = [];
-  // console.log('ładowanie nowych linii dialogowych')
+
+
   if (conversationTrack === null) {
     data.forEach((element: any, index: number) => {
       if (data[index].isAccepted) {
@@ -78,15 +82,21 @@ export const TrackDialogue = (data: any, conversationTrack: string | null) => {
         });
       }
     });
+    if (dialogLines ) {
+      // torment
+    
     dialogLines.push({
       text: "Co słychać?",
       action: async () => {
-        return "Stare kury nie chcą zdychać!";
+        addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, "Co słychać?")
+        // return await fastResponse("Co słychać?", "about");
+        return "w pyte"
       },
       conversationTrack: async () => {
         return null;
       },
     });
+  }
 
     return dialogLines;
   } else {

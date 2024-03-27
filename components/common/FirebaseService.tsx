@@ -1,4 +1,5 @@
 import {
+  FieldValue,
   addDoc,
   collection,
   deleteDoc,
@@ -27,16 +28,63 @@ export const addItem = async (title: string, expires: Date | null) => {
   });
   return docRef.id;
 };
+export const addOpression = async (
+  heroID: string,
+  NpcName: string,
+  discourse: string
+) => {
+  const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
+  const heroDoc = await getDoc(heroRef);
 
-
-
+  if (heroDoc.exists()) {
+    const currentData = heroDoc.data()?.oppression || [];
+    // console.log(currentData[NpcName]);
+    if (currentData[NpcName] === undefined) {
+      await updateDoc(heroRef, {
+        oppression: {
+          ...currentData,
+          [NpcName]: {
+            [discourse]: 1
+          },
+        },
+      });
+    } else if (currentData[NpcName][discourse]=== undefined) {
+      const updatedMissions = {
+        ...currentData,
+        [NpcName]: {
+          ...currentData[NpcName],
+          [discourse]: 1,
+        },
+      };
+      await updateDoc(heroRef, {
+        oppression: updatedMissions,
+      });
+    }else{
+      currentData[NpcName][discourse]++;
+      const updatedMissions = {
+        ...currentData,
+        [NpcName]: {
+          ...currentData[NpcName],
+          [discourse]: currentData[NpcName][discourse],
+        },
+      };
+      await updateDoc(heroRef, {
+        oppression: updatedMissions,
+      });
+    }
+   
+  } else {
+    console.log(`Dokument o ID ${heroID} nie istnieje.`);
+  }
+  return heroDoc.id
+}
 export const addMission = async (
   NPCname: string,
   mission: string,
-  todoId: string,
+  todoId: string
 ) => {
-   const talkDown:string = await shortTalkDown(mission);
-   const missionAsk:string = await shortMissionAsk(mission);
+  const talkDown: string = await shortTalkDown(mission);
+  const missionAsk: string = await shortMissionAsk(mission);
 
   const docRef = await addDoc(collection(FIRESTORE_DB, "missions"), {
     NPCname: NPCname,
@@ -44,10 +92,9 @@ export const addMission = async (
     todoId: todoId,
     isAccepted: false,
     talkDown: talkDown,
-    missionAsk: missionAsk
+    missionAsk: missionAsk,
   });
   return docRef.id;
-
 };
 
 export const editItem = async (id: string, title: string) => {
@@ -58,30 +105,29 @@ export const editItem = async (id: string, title: string) => {
   });
 };
 
-
-export const editHabbitProgress = async (id: string, today: string, targetOrnewValue: number) => {
+export const editHabbitProgress = async (
+  id: string,
+  today: string,
+  targetOrnewValue: number
+) => {
   const ref = doc(FIRESTORE_DB, `habbits/${id}`);
   const heroDoc = await getDoc(ref);
   if (heroDoc.exists()) {
     const currentDates = heroDoc.data()?.dates || [];
-    currentDates[today]=targetOrnewValue
+    currentDates[today] = targetOrnewValue;
     await updateDoc(ref, {
       dates: currentDates,
     });
   }
 };
 
-
-
 export const manageMissionStatus = async (id: string, decision: boolean) => {
   const ref = doc(FIRESTORE_DB, `missions/${id}`);
   await updateDoc(ref, {
     isAccepted: decision,
-    isDone: false
+    isDone: false,
   });
 };
-
-
 
 export const addHeroMission = async (heroID: string, missionID: string) => {
   const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
@@ -99,7 +145,7 @@ export const addHeroMission = async (heroID: string, missionID: string) => {
   } else {
     console.log(`Dokument o ID ${heroID} nie istnieje.`);
   }
-  return heroDoc.id
+  return heroDoc.id;
 };
 
 export const getNpc = () => {
@@ -157,21 +203,30 @@ export const getMissionsCount = (
   });
 };
 
-
 export const getNpcMissions = async (heroID: string, NPCname: string) => {
   const docRef = collection(FIRESTORE_DB, "missions");
-  const q = query(docRef, where('NPCname', '==', NPCname));
+  const q = query(docRef, where("NPCname", "==", NPCname));
   try {
     const querySnapshot = await getDocs(q);
 
-    const missions: { id: string; isAccepted: boolean, mission: any, talkDown:string }[] = [];
+    const missions: {
+      id: string;
+      isAccepted: boolean;
+      mission: any;
+      talkDown: string;
+    }[] = [];
 
     querySnapshot.forEach((doc) => {
-        missions.push({ id: doc.id, isAccepted:doc.data().isAccepted, mission:doc.data().mission, talkDown:doc.data().talkDown});
+      missions.push({
+        id: doc.id,
+        isAccepted: doc.data().isAccepted,
+        mission: doc.data().mission,
+        talkDown: doc.data().talkDown,
+      });
     });
     return missions;
   } catch (error) {
-    console.error('Błąd pobierania misji:', error);
+    console.error("Błąd pobierania misji:", error);
     return [];
   }
 };
@@ -191,31 +246,23 @@ export const addManyDev = async (title: string) => {
   console.log(title);
 };
 
-
-
 export const getImage = async (folder: string, imageName: string) => {
   try {
     const storageRef = ref(FIREBASE_STORAGE, `${folder}/${imageName}`);
     const url = await getDownloadURL(storageRef);
-    return url
-
+    return url;
   } catch (error) {
     console.error("Błąd podczas pobierania danych:", error);
-  };
+  }
 };
-
-
 
 export const getAudio = async (folder: string, audioName: string) => {
   try {
     const storageRef = ref(FIREBASE_STORAGE, `${folder}/${audioName}`);
 
-
     const url = await getDownloadURL(storageRef);
-    return url
-
+    return url;
   } catch (error) {
     console.error("Błąd podczas pobierania danych:", error);
-  };
+  }
 };
-

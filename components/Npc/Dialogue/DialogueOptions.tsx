@@ -41,7 +41,7 @@ export const DialogueOptions = (props: Props) => {
   }, [text]);
 
   useEffect(() => {
-    setDialogLines(TrackDialogue(props.missionsText, conversationTrack));
+    setDialogLines(TrackDialogue(props.missionsText, conversationTrack, props.selectedNpc));
   }, [isSpeaking, conversationTrack]);
 
   const fillText = async (

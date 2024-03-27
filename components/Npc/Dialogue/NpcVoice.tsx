@@ -49,7 +49,7 @@ export const NpcVoice = (props: Props) => {
           Object.keys(finish).map(async (key, index) => {
             if (key === "isPlaying") { // do zmiany chyba
               if (Object.values(finish)[index] === true) {
-                console.log(Object.values(finish)[index]);
+                // console.log(Object.values(finish)[index]);
                 audioStarted = true;
               }
               await new Promise((resolve) => setTimeout(resolve, 3000));

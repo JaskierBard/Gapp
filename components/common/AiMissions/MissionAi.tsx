@@ -4,40 +4,45 @@ import aiGeneral from "./GeneralAI.json";
 import { getMissions, getNPCClass } from "./functions/getClass";
 import { param3, param3json, param4 } from "./parametersOpenAi";
 
-export const fastResponse = async (
-  answer: string,
-  option: string,
-) => {
-  const ask =
+const response = async (system: string, userInput: string) => {
+  const chat = new OpenAiChat(system);
+  const res = await chat.say(userInput, param3);
+  return res;
+};
+
+export const fastResponse = async (userInput: string, option: string) => {
+  const defaultSystem =
+    "Powiedz graczowi że jesteś zajęty  i nie możesz teraz rozmawiać";
+  const thanksSystem =
     "Podziękuj krótko graczowi za przyjęcie misji lub wyraź zrozumienie jeśli odmówi";
-  const ask2 = `Zapytaj na jakim etapie jest gracz wykonujący misję. Podaję treść misji którą wcześniej zleciłeś graczowi: ${answer} -nie wchódź w szczegóły misji. Twoją odpowiedzią ma być lekko rozbudowane pytanie`;
-  if (option === "thanks") {
-    const chat = new OpenAiChat(ask);
-    const res = await chat.say(answer, param3);
-    return res;
-  } else if (option === "status") {
-    const chat = new OpenAiChat(ask2);
-    const res = await chat.say(answer, param3);
-    return res;
+  const askSystem = `Zapytaj na jakim etapie jest gracz wykonujący misję. Podaję treść misji którą wcześniej zleciłeś graczowi: ${userInput} -nie wchódź w szczegóły misji. Twoją odpowiedzią ma być lekko rozbudowane pytanie`;
+ const aboutSystem = 'Opowiedz graczowi co u ciebie'
+  switch (option) {
+    case "thanks":
+      return response(thanksSystem, userInput);
+    case "about":
+      return response(aboutSystem, userInput);
+    case "ask":
+      return response(askSystem, userInput);
+    default:
+      return response(defaultSystem, userInput);
   }
 };
 
-export const shortTalkDown = async (missionsText:string) => {
+export const shortTalkDown = async (missionsText: string) => {
   const system =
     "Otrzymasz opis zlecanej misji. Bazując na niej masz stworzyć krótkie zdanie do osoby która zleciła ci wykonanie tej misji aby o niej porozmawiać. W pytaniu zawrzyj krótką informację tak aby osoba wiedziała czego dotyczy misja";
-    const chat = new OpenAiChat(system);
-    const res = await chat.say(missionsText, param3);
-    return res;
-
+  const chat = new OpenAiChat(system);
+  const res = await chat.say(missionsText, param3);
+  return res;
 };
 
-export const shortMissionAsk = async (missionsText:string) => {
+export const shortMissionAsk = async (missionsText: string) => {
   const system =
     "Jesteś bohaterem który przychodzi do npc i pyta go w jednym krótkim zdaniu zleceniodawce czy ma dla niego jakieś zadanie do wykonania";
-    const chat = new OpenAiChat(system);
-    const res = await chat.say(missionsText, param3);
-    return res;
-
+  const chat = new OpenAiChat(system);
+  const res = await chat.say(missionsText, param3);
+  return res;
 };
 
 export const categoryAI = async (todo: string) => {
