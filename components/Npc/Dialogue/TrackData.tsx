@@ -1,4 +1,4 @@
-import { fastResponse } from "../../common/AiMissions/MissionAi";
+import { aiDialogLinesCreator, fastResponse } from "../../common/AiMissions/MissionAi";
 import { addOpression } from "../../common/FirebaseService";
 
 export const acceptMission = [
@@ -54,9 +54,9 @@ const lines = [
   "W czym mogę ci pomóc?",
   ,
 ];
-export const TrackDialogue = (data: any, conversationTrack: string | null, selectedNpc:string, oppression: any) => {
+export const TrackDialogue = async(data: any, conversationTrack: string | null, selectedNpc:string, oppression: any) => {
   const dialogLines: { text: any; action: any; conversationTrack: any }[] = [];
-
+  
 
   if (conversationTrack === null) {
     data.forEach((element: any, index: number) => {
@@ -100,7 +100,6 @@ export const TrackDialogue = (data: any, conversationTrack: string | null, selec
       },
     });
   // }
-
     return dialogLines;
   } else {
     switch (conversationTrack) {

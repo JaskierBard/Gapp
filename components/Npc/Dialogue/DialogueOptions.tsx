@@ -14,7 +14,7 @@ import {
   getOpression,
   manageMissionStatus,
 } from "../../common/FirebaseService";
-import { fastResponse, shortTalkDown } from "../../common/AiMissions/MissionAi";
+import { aiDialogLinesCreator, fastResponse, shortTalkDown } from "../../common/AiMissions/MissionAi";
 import { TrackDialogue, acceptMission, doneMission } from "./TrackData";
 
 export interface Props {
@@ -42,8 +42,7 @@ export const DialogueOptions = (props: Props) => {
   useEffect(() => {
     (async () => {
       if (props.selectedNpc) {
-
-        setText(await fastResponse("Witaj", "hey"));
+        setText(await fastResponse("", "hey", 0 ,props.selectedNpc ));
       }
     })();
   }, []);
@@ -61,17 +60,22 @@ export const DialogueOptions = (props: Props) => {
         props.selectedNpc,
         props.selectedNpc
       );
-
-      setDialogLines(
-        TrackDialogue(
-          props.missionsText,
-          conversationTrack,
-          props.selectedNpc,
-          opression
-        )
-      );
+      if (isSpeaking==true) {
+        setDialogLines(
+           await aiDialogLinesCreator('Witaj, podróżniku. Co ciebie tu przywiodło? Czy masz ochotę porozmawiać przy kawałku mięsa i kufelu piwa??')
+          
+        );
+      }
+      // console.log(await TrackDialogue(
+      //   props.missionsText,
+      //   conversationTrack,
+      //   props.selectedNpc,
+      //   opression
+      // ))
+       
+  
     })();
-  }, [isSpeaking, conversationTrack]);
+  }, [isSpeaking]);
 
   const fillText = async (
     beziTalk: string,
@@ -93,7 +97,7 @@ export const DialogueOptions = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      {isSpeaking ? (
+      {isSpeaking && 
         <NpcVoice
           bezi={bezi ? bezi : "Witaj!"}
           text={text ? text : "Nie mam ci nic do powiedzenia"}
@@ -101,7 +105,7 @@ export const DialogueOptions = (props: Props) => {
           endSpeak={endSpeak}
           addLog={props.addLog}
         />
-      ) : (
+} 
         <View style={styles.talkingArea}>
           <FlatList
             data={dialogLines}
@@ -125,7 +129,7 @@ export const DialogueOptions = (props: Props) => {
             </TouchableOpacity>
           )}
         </View>
-      )}
+      
     </View>
   );
 };

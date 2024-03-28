@@ -2,7 +2,7 @@ import { OpenAiChat } from "./AiMissions";
 import characters from "./WorldDescription.json";
 import aiGeneral from "./GeneralAI.json";
 import { getMissions, getNPCClass } from "./functions/getClass";
-import { param3, param3json, param4 } from "./parametersOpenAi";
+import { param3, param3json, param4, param4json } from "./parametersOpenAi";
 import { addOpression } from "../FirebaseService";
 import { getDateToday, getTimeNow, getTimeOfDayMessage } from "../GetTimeNow";
 
@@ -16,7 +16,7 @@ export const fastResponse = async ( userInput: string, option: string, lvlOpress
   // if (selectedNpc) {
   //   addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, userInput)
   // }
-  console.log(selectedNpc)
+  // console.log(selectedNpc)
   const timeOfDayMessage = (getTimeOfDayMessage(aiGeneral.timeOfDay))
 
   const defaultSystem =
@@ -36,7 +36,7 @@ export const fastResponse = async ( userInput: string, option: string, lvlOpress
     case "ask":
       return response(askSystem, userInput);
       case "hey":
-        console.log(heySystem)
+        // console.log(heySystem)
         return response(heySystem, userInput);
     default:
       return response(defaultSystem, userInput);
@@ -110,9 +110,24 @@ export const categoryAI = async (todo: string) => {
 
 // planAI('todo')
 
-export const MissionAi = async (todo: string) => {
-  //     const chat  = new OpenAiChat(aiProps.Bosper.aboutYou)
-  //     const res = await chat.say(todo);
-  //    console.log(res);
-  //    return res;
+export const aiDialogLinesCreator = async (todo: string) => {
+
+  
+  const chat  = new OpenAiChat(`Jesteś najlepszym kreatorem dialogów do gier RPG. Twoim zadaniem jest na podstawie ostatniej wypowiedzi NPC i kontekstu rozmowy wygenerować od 1 do maksymalnie  4 różnych bardzo krótkich jednozdaniowych wypowiedzi bohatera tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa. Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `)
+      const res = await chat.say(todo, param4);
+     console.log((res));
+     const sentences: string[] = res.split('&');
+
+     // Utwórz strukturę JSON dla każdego zdania
+     const jsonData = sentences.map((sentence, index) => ({
+         text: sentence, // Zdanie wstawione w miejsce wypowiedzi
+         action: async () => {
+             return await fastResponse(sentence, "thanks"); // Działanie dla każdej wypowiedzi
+         }
+     }));
+
+     return jsonData
+ 
+  
+      
 };
