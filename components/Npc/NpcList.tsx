@@ -9,23 +9,22 @@ import {
 } from "react-native";
 import { background } from "../Styles";
 import { SelectedNpc } from "./SelectedNpc";
-import { getMissionsCount, getNpc } from "../common/FirebaseService";
+import { getNpcList } from "../../utils/firebase/firebaseNpc";
+import { getMissionsCount } from "../../utils/firebase/firebaseMission";
 export interface Props {
   addLog: (arg: string) => void;
-
 }
-
 
 export const NpcList = (props:Props) => {
   const [sectedNpc, setSelectedNpc] = useState<string | null>(null);
-  const [npcList, setNpcList] = useState<[string]>();
+  const [npcList, setNpcList] = useState<string[]>();
   const [npcWithMission, setNpcWithMission] = useState<{ [key: string]: any }>(
     {}
   );
 
   useEffect(() => {
     (async () => {
-      const npcs = getNpc();
+      const npcs = await getNpcList();
       setNpcList(npcs);
       setNpcWithMission(await getMissionsCount("g4tPE1itk3vJTDAj19PO"));
     })();
@@ -35,13 +34,13 @@ export const NpcList = (props:Props) => {
     setSelectedNpc(null);
   };
 
-  const renderNpc = ({ item }: any) => {
-    if (npcWithMission.hasOwnProperty(item)) {
+  const renderNpc = ({ npc }: any) => {
+    if (npcWithMission.hasOwnProperty(npc)) {
       return (
         <View>
-          <TouchableOpacity onPress={() => setSelectedNpc(item)}>
+          <TouchableOpacity onPress={() => setSelectedNpc(npc)}>
             <Text style={styles.important}>
-              {item} - Nowa Misja [{npcWithMission[item]}]
+              {npc} - Nowa Misja [{npcWithMission[npc]}]
             </Text>
           </TouchableOpacity>
         </View>
@@ -49,8 +48,8 @@ export const NpcList = (props:Props) => {
     } else {
       return (
         <View>
-          <TouchableOpacity onPress={() => setSelectedNpc(item)}>
-            <Text style={styles.talkingText}>{item}</Text>
+          <TouchableOpacity onPress={() => setSelectedNpc(npc)}>
+            <Text style={styles.talkingText}>{npc}</Text>
           </TouchableOpacity>
         </View>
       );

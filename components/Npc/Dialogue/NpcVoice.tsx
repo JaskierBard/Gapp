@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import * as Speech from "expo-speech";
 import { Audio } from "expo-av";
-import { getAudio } from "../../common/FirebaseService";
+import { getAudio } from "../../../utils/firebase/firebaseNpc";
 
 export interface Props {
   bezi: string;

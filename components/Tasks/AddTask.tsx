@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { main } from "../Styles";
-import { addHeroMission, addItem, addManyDev, addMission } from "../common/FirebaseService";
+import { addHeroMission, addItem, addManyDev, addMission } from "../../utils/firebase/firebaseNpc";
 import { formatDate } from "../common/FormatDate";
 import { Checkmark } from "../common/Checkmark";
 import { UndoButton } from "../common/Buttons/UndoButtons";

@@ -4,7 +4,7 @@ import * as NavigationBar from "expo-navigation-bar";
 import { GetTimeNow } from "../common/GetTimeNow";
 import React, { useEffect, useState } from "react";
 import { CurrentTasks } from "../CurrentTasks";
-import { FIRESTORE_DB } from "../../firebaseConfig";
+import { FIRESTORE_DB } from "../../utils/firebase/firebaseConfig";
 import { TaskDetails } from "./TaskDetails";
 import { background, missionStyles } from "../Styles";
 import { AddTask } from "./AddTask";

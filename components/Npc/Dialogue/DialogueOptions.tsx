@@ -10,12 +10,9 @@ import { NpcVoice } from "./NpcVoice";
 import { DialogueLines } from "./DialogueLines";
 
 import {
-  addOpression,
   getOpression,
-  manageMissionStatus,
-} from "../../common/FirebaseService";
-import { aiDialogLinesCreator, fastResponse, shortTalkDown } from "../../common/AiMissions/MissionAi";
-import { TrackDialogue, acceptMission, doneMission } from "./TrackData";
+} from "../../../utils/firebase/firebaseNpc";
+import { aiDialogLinesCreator, fastResponse } from "../../common/AiMissions/MissionAi";
 
 export interface Props {
   missionsText: any;
@@ -62,7 +59,7 @@ export const DialogueOptions = (props: Props) => {
       );
       if (isSpeaking==true) {
         setDialogLines(
-           await aiDialogLinesCreator('Witaj, podróżniku. Co ciebie tu przywiodło? Czy masz ochotę porozmawiać przy kawałku mięsa i kufelu piwa??')
+           await aiDialogLinesCreator('Witaj. Co ciebie tu przywiodło? Czy masz ochotę porozmawiać przy kawałku mięsa i kufelu piwa??', props.selectedNpc, 'kowal')
           
         );
       }

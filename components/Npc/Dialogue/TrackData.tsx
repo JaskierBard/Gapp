@@ -1,5 +1,5 @@
 import { aiDialogLinesCreator, fastResponse } from "../../common/AiMissions/MissionAi";
-import { addOpression } from "../../common/FirebaseService";
+import { addOpression } from "../../../utils/firebase/firebaseNpc";
 
 export const acceptMission = [
   {

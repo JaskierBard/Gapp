@@ -3,7 +3,7 @@ import characters from "./WorldDescription.json";
 import aiGeneral from "./GeneralAI.json";
 import { getMissions, getNPCClass } from "./functions/getClass";
 import { param3, param3json, param4, param4json } from "./parametersOpenAi";
-import { addOpression } from "../FirebaseService";
+import { addOpression } from "../../../utils/firebase/firebaseNpc";
 import { getDateToday, getTimeNow, getTimeOfDayMessage } from "../GetTimeNow";
 
 const response = async (system: string, userInput: string) => {
@@ -110,7 +110,7 @@ export const categoryAI = async (todo: string) => {
 
 // planAI('todo')
 
-export const aiDialogLinesCreator = async (todo: string) => {
+export const aiDialogLinesCreator = async (todo: string , NPCname:string, aboutNPC:string) => {
 
   
   const chat  = new OpenAiChat(`Jesteś najlepszym kreatorem dialogów do gier RPG. Twoim zadaniem jest na podstawie ostatniej wypowiedzi NPC i kontekstu rozmowy wygenerować od 1 do maksymalnie  4 różnych bardzo krótkich jednozdaniowych wypowiedzi bohatera tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa. Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `)

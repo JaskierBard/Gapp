@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import { main } from "../Styles";
-import { editItem } from "../common/FirebaseService";
+import { editItem } from "../../utils/firebase/firebaseNpc";
 import { Checkmark } from "../common/Checkmark";
 import { ActionButton } from "../common/Buttons/ActionButton";
 import { UndoButton } from "../common/Buttons/UndoButtons";

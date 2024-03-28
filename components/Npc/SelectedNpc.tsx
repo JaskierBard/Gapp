@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
-import { getImage, getNpcMissions } from "../common/FirebaseService";
+import { getImage } from "../../utils/firebase/firebaseNpc";
 import { DialogueOptions } from "./Dialogue/DialogueOptions";
+import { getNpcMissions } from "../../utils/firebase/firebaseMission";
 
 interface Props {
   selectedNpc: string;

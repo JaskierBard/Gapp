@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Habbit } from "./Tasks";
 import { getDateToday } from "../common/GetTimeNow";
-import { editHabbitProgress } from "../common/FirebaseService";
+import { editHabbitProgress } from "../../utils/firebase/firebaseHabbit";
 
 export interface Props {
   habbits: Habbit[];
