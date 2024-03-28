@@ -110,12 +110,11 @@ export const categoryAI = async (todo: string) => {
 
 // planAI('todo')
 
-export const aiDialogLinesCreator = async (todo: string , NPCname:string, aboutNPC:string) => {
+export const aiDialogLinesCreator = async (todo: string , NPCname:string, aboutNPC:any) => {
 
   
-  const chat  = new OpenAiChat(`Jesteś najlepszym kreatorem dialogów do gier RPG. Twoim zadaniem jest na podstawie ostatniej wypowiedzi NPC i kontekstu rozmowy wygenerować od 1 do maksymalnie  4 różnych bardzo krótkich jednozdaniowych wypowiedzi bohatera tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa. Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `)
+  const chat  = new OpenAiChat(`Jesteś najlepszym kreatorem dialogów do gier RPG. Twoim zadaniem jest na podstawie ostatniej wypowiedzi NPC i kontekstu rozmowy wygenerować od 1 do maksymalnie  4 różnych bardzo krótkich wypowiedzi (do 10 słów) bohatera tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa.Rozmawiasz  właśnie z postacią o imieniu ${NPCname} który zajmuje sie ${aboutNPC.opis} Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `)
       const res = await chat.say(todo, param4);
-     console.log((res));
      const sentences: string[] = res.split('&');
 
      // Utwórz strukturę JSON dla każdego zdania

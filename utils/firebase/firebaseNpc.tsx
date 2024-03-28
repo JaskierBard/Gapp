@@ -10,10 +10,7 @@ import {
 import { FIREBASE_STORAGE, FIRESTORE_DB } from "./firebaseConfig";
 import { getDownloadURL, ref } from "firebase/storage";
 
-
-export interface NPC {
-
-}
+export interface NPC {}
 
 export const getOpression = async (
   heroID: string,
@@ -21,10 +18,10 @@ export const getOpression = async (
   discourse: string
 ) => {
   const heroRef = doc(FIRESTORE_DB, `hero/${heroID}`);
-  const heroDoc = await getDoc(heroRef)
+  const heroDoc = await getDoc(heroRef);
   const currentData = heroDoc.data()?.oppression || [];
   // console.log(currentData[NpcName]);
-  return currentData[NpcName]
+  return currentData[NpcName];
 };
 
 export const addOpression = async (
@@ -77,45 +74,23 @@ export const addOpression = async (
   return heroDoc.id;
 };
 
-
-
-
-
 export const getNpcList = async (): Promise<string[]> => {
   const todoRef = collection(FIRESTORE_DB, "npc");
   const snapshot = await getDocs(todoRef);
   const documentIds: string[] = [];
-    snapshot.forEach((doc) => {
-      documentIds.push(doc.id);
-    })
-  return documentIds
-};
-
-
-
-
-export const getNpc = () => {
-  const todoRef = collection(FIRESTORE_DB, "npc");
-  const npcs: [string] = [""];
-
-  onSnapshot(todoRef, {
-    next: (snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        const npc: any = {
-          id: doc.id,
-          ...doc.data(),
-        };
-        npcs.push(npc.nazwa);
-        console.log(npc);
-      });
-    },
+  snapshot.forEach((doc) => {
+    documentIds.push(doc.id);
   });
-  return npcs;
+  return documentIds;
 };
 
-
-
-
+export const getNpc = async (id: string) => {
+  const heroRef = doc(FIRESTORE_DB, `npc/${id}`);
+  const heroDoc = await getDoc(heroRef);
+  const currentData = heroDoc.data() || [];
+  console.log((currentData));
+  return currentData;
+};
 
 export const addManyDev = async (title: string) => {
   await setDoc(doc(collection(FIRESTORE_DB, "npc"), title), {

@@ -34,13 +34,13 @@ export const NpcList = (props:Props) => {
     setSelectedNpc(null);
   };
 
-  const renderNpc = ({ npc }: any) => {
-    if (npcWithMission.hasOwnProperty(npc)) {
+  const renderNpc = ({ item }: any) => {
+    if (npcWithMission.hasOwnProperty(item)) {
       return (
         <View>
-          <TouchableOpacity onPress={() => setSelectedNpc(npc)}>
+          <TouchableOpacity onPress={() => setSelectedNpc(item)}>
             <Text style={styles.important}>
-              {npc} - Nowa Misja [{npcWithMission[npc]}]
+              {item} - Nowa Misja [{npcWithMission[item]}]
             </Text>
           </TouchableOpacity>
         </View>
@@ -48,8 +48,8 @@ export const NpcList = (props:Props) => {
     } else {
       return (
         <View>
-          <TouchableOpacity onPress={() => setSelectedNpc(npc)}>
-            <Text style={styles.talkingText}>{npc}</Text>
+          <TouchableOpacity onPress={() => setSelectedNpc(item)}>
+            <Text style={styles.talkingText}>{item}</Text>
           </TouchableOpacity>
         </View>
       );

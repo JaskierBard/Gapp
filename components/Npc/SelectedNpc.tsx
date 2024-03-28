@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
-import { getImage } from "../../utils/firebase/firebaseNpc";
+import { getImage, getNpc } from "../../utils/firebase/firebaseNpc";
 import { DialogueOptions } from "./Dialogue/DialogueOptions";
 import { getNpcMissions } from "../../utils/firebase/firebaseMission";
 
@@ -11,6 +11,8 @@ interface Props {
 }
 
 export const SelectedNpc = (props: Props) => {
+  const [npcDetails, setNpcDetails] = useState<Object>();
+
   const [missionsText, setMissionsText] = useState<any>(null);
   const [imageURL, setImageURL] = useState<string>();
 
@@ -19,6 +21,7 @@ export const SelectedNpc = (props: Props) => {
   useEffect(() => {
     (async () => {
       setImageURL(await getImage("npc", targetImageName));
+      setNpcDetails(await getNpc(props.selectedNpc))
       setMissionsText(
         await getNpcMissions("g4tPE1itk3vJTDAj19PO", props.selectedNpc)
       );
@@ -36,6 +39,8 @@ export const SelectedNpc = (props: Props) => {
           endConversation={props.endConversation}
           missionsText={missionsText}
           selectedNpc={props.selectedNpc}
+          npcDetails={npcDetails}
+
         />
       )}
     </>
