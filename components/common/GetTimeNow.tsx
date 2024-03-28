@@ -38,13 +38,49 @@ export const GetTimeNow = () => {
   );
 };
 
-
 export const getDateToday = () => {
   const date = new Date();
   const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-  const day = date.getDate().toString().padStart(2, '0'); 
-  
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate;
-}
+};
+
+export const getTimeNow = (format: string) => {
+  const date = new Date();
+
+  if (format === "hh:mm") {
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const formattedTime = `${hours}:${minutes}`;
+    return formattedTime;
+  }
+};
+
+export const getTimeOfDayMessage = (timeOfDay: any) => {
+  const time = getTimeNow("hh:mm");
+  if (time) {
+    for (const range in timeOfDay) {
+      const [start, end] = range.split("-");
+      const [startHour, startMinute] = start.split(":");
+      const [endHour, endMinute] = end.split(":");
+      const [hour, minute] = time.split(":");
+
+      const startTime = new Date();
+      startTime.setHours(Number(startHour), Number(startMinute), 0);
+      const endTime = new Date();
+      endTime.setHours(Number(endHour), Number(endMinute), 0);
+      const currentTime = new Date();
+      currentTime.setHours(Number(hour), Number(minute), 0);
+
+      if (currentTime >= startTime && currentTime <= endTime) {
+        console.log(timeOfDay[range]);
+        return timeOfDay[range];
+      }
+    }
+
+    return "";
+  }
+};

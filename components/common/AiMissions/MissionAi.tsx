@@ -3,6 +3,8 @@ import characters from "./WorldDescription.json";
 import aiGeneral from "./GeneralAI.json";
 import { getMissions, getNPCClass } from "./functions/getClass";
 import { param3, param3json, param4 } from "./parametersOpenAi";
+import { addOpression } from "../FirebaseService";
+import { getDateToday, getTimeNow, getTimeOfDayMessage } from "../GetTimeNow";
 
 const response = async (system: string, userInput: string) => {
   const chat = new OpenAiChat(system);
@@ -10,21 +12,32 @@ const response = async (system: string, userInput: string) => {
   return res;
 };
 
-export const fastResponse = async (userInput: string, option: string, lvlOpression?: number) => {
+export const fastResponse = async ( userInput: string, option: string, lvlOpression?: number, selectedNpc?: string) => {
+  // if (selectedNpc) {
+  //   addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, userInput)
+  // }
+  console.log(selectedNpc)
+  const timeOfDayMessage = (getTimeOfDayMessage(aiGeneral.timeOfDay))
+
   const defaultSystem =
-    "Powiedz graczowi że jesteś zajęty  i nie możesz teraz rozmawiać";
+    "Powiedz graczowi że jesteś zajęty i nie możesz teraz rozmawiać";
+    const heySystem =
+   
+`Jesteś NPC-em, który odpowiada na interakcję gracza ale tworząc swoją wypowieć ściśle według podanych faktów: ${timeOfDayMessage}  Znacie się, Widzicie się dziś pierwszy raz, (Dane pokazują tylko jak masz sie zachować, nie włączaj ich do swojej wypowiedzi) Tych słów nie wolno ci używać:  ${aiGeneral.dictionary.avoid} A jeśli pasuje to używaj tych: ${aiGeneral.dictionary.old}` 
   const thanksSystem =
     "Podziękuj krótko graczowi za przyjęcie misji lub wyraź zrozumienie jeśli odmówi";
   const askSystem = `Zapytaj na jakim etapie jest gracz wykonujący misję. Podaję treść misji którą wcześniej zleciłeś graczowi: ${userInput} -nie wchódź w szczegóły misji. Twoją odpowiedzią ma być lekko rozbudowane pytanie`;
- const aboutSystem = `Opowiedz graczowi co u ciebie ale w zależności od tego jak często już gracz cię o to pytał odpowiadaj inaczej. Gdzie przedział wartości to wartości od 0 do 10. Wartość '0' oznacza że gracz pyta po raz pierwszy dzisiejszego dnia, wartość '1' i więcej oznacza że pyta minimum 2 raz i możesz się zwracać do niego tak jakby już cie oto pytał ale nadal masz odpowiedzieć.  '5' to wartość graniczna i gracz cały czas zawraca ci głowę i masz go dosyć i możesz być w stosunku niego niemiły. Warość aktualna to: ${lvlOpression}. Nigdy nie podawaj wartości w odpowiedzi to bardzo ważne. Odpowiedźą ma być zdanie bazujące na podanej wartości`;
+ const aboutSystem = aiGeneral.general.vaseline + `Opowiedz graczowi co u ciebie ale w zależności od tego jak często już gracz cię o to pytał odpowiadaj inaczej.  przedział to wartości od 0 do 10. Wartość '0' oznacza że gracz pyta po raz pierwszy dzisiejszego dnia, wartość '1' i więcej oznacza że pyta minimum 2 raz i możesz się zwracać do niego tak jakby już cie oto pytał ale nadal masz odpowiedzieć.  '5' to wartość graniczna i gracz cały czas zawraca ci głowę i masz go dosyć i możesz być w stosunku niego niemiły. Warość aktualna to: ${lvlOpression}. Nigdy nie podawaj wartości w odpowiedzi to bardzo ważne. Odpowiedźą ma być zdanie bazujące na podanej wartości`;
   switch (option) {
     case "thanks":
       return response(thanksSystem, userInput);
     case "about":
-      console.log(aboutSystem)
       return response(aboutSystem, userInput);
     case "ask":
       return response(askSystem, userInput);
+      case "hey":
+        console.log(heySystem)
+        return response(heySystem, userInput);
     default:
       return response(defaultSystem, userInput);
   }

@@ -21,6 +21,8 @@ export const NpcVoice = (props: Props) => {
     switch (bezi) {
       case "Czy moglibyśmy porozmawiać o zadaniu, które mi zleciłeś?":
         return "co_do_tego_zadania.WAV";
+        case "Witaj!":
+        return "witaj.WAV";
       case "W czym mogę ci pomóc?":
         return "masz_dla_mnie_jakies_zadanie.WAV";
       case "Co słychać?":
@@ -113,7 +115,7 @@ export const NpcVoice = (props: Props) => {
         Speech.speak(fragments[currentFragmentIndex], {
           voice: "pl-pl-x-bmg-network",
           onDone: nextDialog,
-          rate: 1.4,
+          rate: 1.3,
         });
       }
     } catch (error) {

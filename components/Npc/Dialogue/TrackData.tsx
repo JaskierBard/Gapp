@@ -82,24 +82,24 @@ export const TrackDialogue = (data: any, conversationTrack: string | null, selec
         });
       }
     });
-    if (dialogLines ) {
+    // if (dialogLines) {
       let lvlOpression = 0
 
-      if (oppression["Co słychać?"]) {
-         lvlOpression = oppression["Co słychać?"]
-        } 
+      // if (oppression["Co słychać?"]) {
+      //    lvlOpression = oppression["Co słychać?"]
+      //   }
     
     dialogLines.push({
       text: "Co słychać?",
       action: async () => {
-        // addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, "Co słychać?")
-        return await fastResponse("Co słychać?", "about", lvlOpression);
+        addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, "Co słychać?")
+        return await fastResponse("Co słychać?", "about", lvlOpression, selectedNpc);
       },
       conversationTrack: async () => {
         return null;
       },
     });
-  }
+  // }
 
     return dialogLines;
   } else {

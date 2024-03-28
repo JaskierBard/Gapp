@@ -9,7 +9,11 @@ import {
 import { NpcVoice } from "./NpcVoice";
 import { DialogueLines } from "./DialogueLines";
 
-import { getOpression, manageMissionStatus } from "../../common/FirebaseService";
+import {
+  addOpression,
+  getOpression,
+  manageMissionStatus,
+} from "../../common/FirebaseService";
 import { fastResponse, shortTalkDown } from "../../common/AiMissions/MissionAi";
 import { TrackDialogue, acceptMission, doneMission } from "./TrackData";
 
@@ -18,7 +22,6 @@ export interface Props {
   selectedNpc: string;
   endConversation: () => void;
   addLog: (arg: string) => void;
-
 }
 
 export const DialogueOptions = (props: Props) => {
@@ -37,6 +40,15 @@ export const DialogueOptions = (props: Props) => {
   const [bezi, setBezi] = useState<string | null>(null);
 
   useEffect(() => {
+    (async () => {
+      if (props.selectedNpc) {
+
+        setText(await fastResponse("Witaj", "hey"));
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     if (text) {
       setIsSpeaking(true);
     }
@@ -44,10 +56,21 @@ export const DialogueOptions = (props: Props) => {
 
   useEffect(() => {
     (async () => {
-    const opression =await getOpression("g4tPE1itk3vJTDAj19PO",props.selectedNpc, props.selectedNpc);
+      const opression = await getOpression(
+        "g4tPE1itk3vJTDAj19PO",
+        props.selectedNpc,
+        props.selectedNpc
+      );
 
-    setDialogLines(TrackDialogue(props.missionsText, conversationTrack, props.selectedNpc, opression));
-  })()
+      setDialogLines(
+        TrackDialogue(
+          props.missionsText,
+          conversationTrack,
+          props.selectedNpc,
+          opression
+        )
+      );
+    })();
   }, [isSpeaking, conversationTrack]);
 
   const fillText = async (
@@ -63,7 +86,7 @@ export const DialogueOptions = (props: Props) => {
   };
 
   const endSpeak = () => {
-    setBezi(null)
+    setBezi(null);
     setText(null);
     setIsSpeaking(false);
   };
@@ -72,7 +95,7 @@ export const DialogueOptions = (props: Props) => {
     <View style={styles.container}>
       {isSpeaking ? (
         <NpcVoice
-          bezi={bezi ? bezi : "Nie mam ci nic do powiedzenia"}
+          bezi={bezi ? bezi : "Witaj!"}
           text={text ? text : "Nie mam ci nic do powiedzenia"}
           selectedNpc={props.selectedNpc}
           endSpeak={endSpeak}

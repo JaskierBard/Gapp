@@ -12,7 +12,7 @@ export const param3json: ChatCompletionCreateParamsBase = {
   };
 
   export const param3: ChatCompletionCreateParamsBase = {
-    temperature: 0.7,
+    temperature: 0.8,
     max_tokens: 1000,
     stream: false,
     model: "gpt-3.5-turbo-1106",
