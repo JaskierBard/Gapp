@@ -76,7 +76,7 @@ export const getTimeOfDayMessage = (timeOfDay: any) => {
       currentTime.setHours(Number(hour), Number(minute), 0);
 
       if (currentTime >= startTime && currentTime <= endTime) {
-        console.log(timeOfDay[range]);
+        // console.log(timeOfDay[range]);
         return timeOfDay[range];
       }
     }

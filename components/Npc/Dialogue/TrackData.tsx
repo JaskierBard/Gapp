@@ -93,7 +93,7 @@ export const TrackDialogue = async(data: any, conversationTrack: string | null, 
       text: "Co słychać?",
       action: async () => {
         addOpression("g4tPE1itk3vJTDAj19PO", selectedNpc, "Co słychać?")
-        return await fastResponse("Co słychać?", "about", lvlOpression, selectedNpc);
+        return await fastResponse("Co słychać?", "about","", lvlOpression, selectedNpc);
       },
       conversationTrack: async () => {
         return null;
@@ -108,7 +108,7 @@ export const TrackDialogue = async(data: any, conversationTrack: string | null, 
       case "acceptMission":
         return acceptMission;
       default:
-        null;
+        // return startTalking;
     }
   }
 };

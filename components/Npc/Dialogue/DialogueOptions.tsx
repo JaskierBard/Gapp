@@ -40,8 +40,8 @@ export const DialogueOptions = (props: Props) => {
 
   useEffect(() => {
     (async () => {
-      if (props.selectedNpc) {
-        setText(await fastResponse("", "hey", 0, props.selectedNpc));
+      if (props.selectedNpc && props.npcDetails) {
+        setText(await fastResponse("", "hey", "", 0, props.selectedNpc, props.npcDetails.charakter));
       }
     })();
   }, []);
@@ -61,7 +61,7 @@ export const DialogueOptions = (props: Props) => {
       );
       if (isSpeaking == true && text) {
         setDialogLines(
-          await aiDialogLinesCreator(text, props.selectedNpc, props.npcDetails)
+          await aiDialogLinesCreator(text, props.selectedNpc, props.npcDetails, props.missionsText)
         );
       }
       // console.log(await TrackDialogue(
