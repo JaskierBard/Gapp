@@ -41,7 +41,7 @@ export const DialogueOptions = (props: Props) => {
   useEffect(() => {
     (async () => {
       if (props.selectedNpc && props.npcDetails) {
-        setText(await fastResponse("", "hey", "", 0, props.selectedNpc, props.npcDetails.charakter));
+        // setText(await fastResponse("", "hey", "", 0, props.selectedNpc, props.npcDetails.charakter, props.npcDetails.opis));
       }
     })();
   }, []);

@@ -8,34 +8,46 @@ import { getDateToday, getTimeNow, getTimeOfDayMessage } from "../GetTimeNow";
 
 const response = async (system: string, userInput: string) => {
   const chat = new OpenAiChat(system);
-  const res = await chat.say(userInput, param3);
+  const res = await chat.say(userInput, param4);
   return res;
 };
 
-export const fastResponse = async ( userInput: string, option: string, mission?:string, lvlOpression?: number, selectedNpc?: string, NPCcharacter?:string) => {
-  const timeOfDayMessage = (getTimeOfDayMessage(aiGeneral.timeOfDay))
-  console.log(mission)
+export const fastResponse = async (
+  userInput: string,
+  option: string,
+  mission?: string,
+  lvlOpression?: number,
+  selectedNpc?: string,
+  NPCcharacter?: any,
+  NPCdescription?: string
+) => {
+  const timeOfDayMessage = getTimeOfDayMessage(aiGeneral.timeOfDay);
+  // console.log(mission)
   const defaultSystem =
     "Powiedz graczowi że jesteś zajęty i nie możesz teraz rozmawiać";
-    const heySystem =
-   
-`Jesteś NPC-em o imieniu ${selectedNpc}, który odpowiada na interakcję gracza ale tworząc swoją wypowiedź bardzo biorąc pod uwagę twój charakter:${NPCcharacter} oraz ściśle według podanych faktów: ${timeOfDayMessage}   Znacie się, Widzicie się dziś pierwszy raz, (Dane pokazują tylko jak masz sie zachować, nie włączaj ich do swojej wypowiedzi) Tych słów nie wolno ci używać:  ${aiGeneral.dictionary.avoid} A jeśli pasuje to używaj tych: ${aiGeneral.dictionary.old}` 
+  const heySystem = `Wcielasz się w postać o imieniu ${selectedNpc}, Wynik ma być odpowiedzią na interakcję gracza. Odpowiedz bardzo krótko biorąc pod uwagę swój charakter:${NPCcharacter} oraz opis postaci w którą się wcielasz: ${NPCdescription}. Weź również pod uwagę obecne fakty: 1,${timeOfDayMessage}  2. Znacie się,3. Widzicie się dziś pierwszy raz, (Dane pokazują tylko jak masz sie zachować, nie włączaj ich do swojej wypowiedzi) Tych słów nie wolno ci używać:  ${aiGeneral.dictionary.avoid} A jeśli pasuje to używaj tych: ${aiGeneral.dictionary.old}. Zawsze zwracaj się jako postać w którą się wcielasz. Cały output ma być bardzo krótką wypowiedzią NPC w którego się wcielasz w 1 osobie.`;
+
   const thanksSystem =
     "Podziękuj krótko graczowi za przyjęcie misji lub wyraź zrozumienie jeśli odmówi";
   const askSystem = `Zapytaj na jakim etapie jest gracz wykonujący misję. Podaję treść misji którą wcześniej zleciłeś graczowi: ${userInput} -nie wchódź w szczegóły misji. Twoją odpowiedzią ma być lekko rozbudowane pytanie`;
- const aboutSystem = aiGeneral.general.vaseline + `Opowiedz graczowi co u ciebie ale w zależności od tego jak często już gracz cię o to pytał odpowiadaj inaczej.  przedział to wartości od 0 do 10. Wartość '0' oznacza że gracz pyta po raz pierwszy dzisiejszego dnia, wartość '1' i więcej oznacza że pyta minimum 2 raz i możesz się zwracać do niego tak jakby już cie oto pytał ale nadal masz odpowiedzieć.  '5' to wartość graniczna i gracz cały czas zawraca ci głowę i masz go dosyć i możesz być w stosunku niego niemiły. Warość aktualna to: ${lvlOpression}. Nigdy nie podawaj wartości w odpowiedzi to bardzo ważne. Odpowiedźą ma być zdanie bazujące na podanej wartości`;
+  const aboutSystem =
+    aiGeneral.general.vaseline +
+    `Opowiedz graczowi co u ciebie ale w zależności od tego jak często już gracz cię o to pytał odpowiadaj inaczej.  przedział to wartości od 0 do 10. Wartość '0' oznacza że gracz pyta po raz pierwszy dzisiejszego dnia, wartość '1' i więcej oznacza że pyta minimum 2 raz i możesz się zwracać do niego tak jakby już cie oto pytał ale nadal masz odpowiedzieć.  '5' to wartość graniczna i gracz cały czas zawraca ci głowę i masz go dosyć i możesz być w stosunku niego niemiły. Warość aktualna to: ${lvlOpression}. Nigdy nie podawaj wartości w odpowiedzi to bardzo ważne. Odpowiedźą ma być zdanie bazujące na podanej wartości`;
   switch (option) {
     case "thanks":
       return response(thanksSystem, userInput);
     case "about":
       return response(aboutSystem, userInput);
-      case "mission":
+    case "mission":
       return mission;
     case "ask":
       return response(askSystem, userInput);
-      case "hey":
-        // console.log(heySystem)
-        return response(heySystem, userInput);
+    case "hey":
+      // console.log(heySystem)
+      return response(heySystem, userInput);
+    case "trade":
+      return console.log('trade');
+      // return <Trade></Trade>;
     default:
       return response(defaultSystem, userInput);
   }
@@ -108,41 +120,48 @@ export const categoryAI = async (todo: string) => {
 
 // planAI('todo')
 
-export const aiDialogLinesCreator = async (todo: string , NPCname:string, aboutNPC:any, mission:any) => {
-  const hasShop = true
-  const ile = []
-  const track: string[] = []
+export const aiDialogLinesCreator = async (
+  todo: string,
+  NPCname: string,
+  aboutNPC: any,
+  mission: any
+) => {
+  const hasShop = true;
+  const ile = [];
+  const track: string[] = [];
   mission.forEach((element: any, index: number) => {
     if (mission[index].isAccepted) {
-      console.log(element)
-      ile.push('Zapytaj sie czy możecie porozmawiać na temat tej misji którą właśnie wykonujesz: ' + element.mission)
-      track.push('ask')
-      }else {
-      ile.push('Zapytaj się czy ma coś dla ciebie do pracy')
-      track.push('mission')
-
-
+      console.log(element);
+      ile.push(
+        "Zapytaj sie czy możecie porozmawiać na temat tej misji którą właśnie wykonujesz: " +
+          element.mission
+      );
+      track.push("ask");
+    } else {
+      ile.push("Zapytaj się czy ma coś dla ciebie do pracy");
+      track.push("mission");
     }
-  })
+  });
   if (hasShop) {
-    ile.push('Zapytaj się możecie pohandlować')
-    track.push('trade')
+    ile.push("Zapytaj się czy możecie pohandlować");
+    track.push("trade");
   }
-  const chat  = new OpenAiChat(`Jesteś najlepszym kreatorem dialogów do gier RPG. Stwórz ${ile.length} bardzo krótkich zdań każde według wskazówki z tych danych: ${ile}  tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa.Rozmawiasz  właśnie z postacią o imieniu ${NPCname} który zajmuje sie ${aboutNPC.opis} Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `)
-  console.log(chat)
-      const res = await chat.say(todo, param4);
-     const sentences: string[] = res.split('&');
+  const chat = new OpenAiChat(
+    `Jesteś najlepszym kreatorem dialogów do gier RPG. Stwórz ${ile.length} bardzo krótkich zdań każde według wskazówki z tych danych: ${ile}  tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa.Rozmawiasz  właśnie z postacią o imieniu ${NPCname} który zajmuje sie ${aboutNPC.opis} Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `
+  );
+  console.log(chat);
+  const res = await chat.say(todo, param4);
+  const sentences: string[] = res.split("&");
 
-     const data = []
-     const jsonData = sentences.map((sentence, index) => ({
-         text: sentence, // Zdanie wstawione w miejsce wypowiedzi
-         action: async () => {
-             return await fastResponse(sentence, track[index], mission[index].mission); // Działanie dla każdej wypowiedzi
-         }
-     }));
+  const data = [];
+  const jsonData = sentences.map((sentence, index) => ({
+    text: sentence, // Zdanie wstawione w miejsce wypowiedzi
+    action: async () => {
+      return await fastResponse(sentence, track[index], mission[index].mission); // Działanie dla każdej wypowiedzi
+    },
+  }));
 
-     return jsonData
- 
-  
-      //Twoim zadaniem jest na podstawie ostatniej wypowiedzi NPC i kontekstu rozmowy wygenerować od 1 do maksymalnie  4 różnych bardzo krótkich wypowiedzi (do 10 słów)
+  return jsonData;
+
+  //Twoim zadaniem jest na podstawie ostatniej wypowiedzi NPC i kontekstu rozmowy wygenerować od 1 do maksymalnie  4 różnych bardzo krótkich wypowiedzi (do 10 słów)
 };
