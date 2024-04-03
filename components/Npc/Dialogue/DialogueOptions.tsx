@@ -27,9 +27,7 @@ export const DialogueOptions = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   // const [opression, setOpression] = useState<any>();
 
-  const [dialogLines, setDialogLines] = useState<any>([
-    { text: "Test", action: () => console.log("test") },
-  ]);
+  const [dialogLines, setDialogLines] = useState<any>([]);
 
   const [conversationTrack, setConversationTrack] = useState<string | null>(
     null
@@ -39,12 +37,18 @@ export const DialogueOptions = (props: Props) => {
   const [bezi, setBezi] = useState<string | null>(null);
 
   useEffect(() => {
+
+    if (conversationTrack === null) {
+
     (async () => {
+      console.log('Rozmowa inicjująca')
+
       if (props.selectedNpc && props.npcDetails) {
-        // setText(await fastResponse("", "hey", "", 0, props.selectedNpc, props.npcDetails.charakter, props.npcDetails.opis));
+        setText(await fastResponse("", "hey", "", 0, props.selectedNpc, props.npcDetails.charakter, props.npcDetails.opis));
       }
     })();
-  }, []);
+  }
+  }, [conversationTrack]);
 
   useEffect(() => {
     if (text) {
@@ -54,22 +58,12 @@ export const DialogueOptions = (props: Props) => {
 
   useEffect(() => {
     (async () => {
-      const opression = await getOpression(
-        "g4tPE1itk3vJTDAj19PO",
-        props.selectedNpc,
-        props.selectedNpc
-      );
       if (isSpeaking == true && text) {
         setDialogLines(
-          await aiDialogLinesCreator(text, props.selectedNpc, props.npcDetails, props.missionsText)
+          await aiDialogLinesCreator(text, props.selectedNpc, props.npcDetails, props.missionsText, conversationTrack)
         );
       }
-      // console.log(await TrackDialogue(
-      //   props.missionsText,
-      //   conversationTrack,
-      //   props.selectedNpc,
-      //   opression
-      // ))
+     
     })();
   }, [isSpeaking]);
 

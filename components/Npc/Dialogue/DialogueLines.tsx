@@ -10,8 +10,9 @@ export interface Props {
 export const DialogueLines = (props:Props) => {
   const dialogLine = Object.values(props.line)[0] ? Object.values(props.line)[0] : "bład";
   const executeAction = async (beziTalk: string, action: any, conversationTrack?:any) => {
+    // console.log(conversationTrack)
     if (conversationTrack) {
-        props.fillText(beziTalk ,await action(), await conversationTrack())
+        props.fillText(beziTalk ,await action(), conversationTrack)
 
     } else {
         props.fillText(beziTalk ,await action())

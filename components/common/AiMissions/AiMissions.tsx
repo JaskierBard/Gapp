@@ -5,7 +5,7 @@ import {
   ChatCompletionCreateParamsBase,
 } from "openai/resources/chat/completions";
 import { Completions } from "openai/resources";
-import { countPrice35 } from "./functions/getCosts";
+import { countPrice35, countPrice4 } from "./functions/getCosts";
 
 
 
@@ -61,7 +61,7 @@ export class OpenAiChat {
     
     if ('usage' in data) {
       const usageData = (data as ChatCompletion).usage;
-      countPrice35(usageData)
+      countPrice4(usageData)
     }
     // console.log(typeof(s))
 
