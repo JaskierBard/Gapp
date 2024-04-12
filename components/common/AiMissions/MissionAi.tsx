@@ -21,8 +21,15 @@ export const fastResponse = async (
   NPCcharacter?: any,
   NPCdescription?: string
 ) => {
+  console.log(track + ' track')
+  const fightResult = "wygrał" // przegrał
   const timeOfDayMessage = getTimeOfDayMessage(aiGeneral.timeOfDay);
-  // console.log(mission)
+  // TODO: zapis aktualnej rozmowy i w chmurze zapis skrótu o czym była rozmowa wcześniej
+  // TODO: głos w tle gdy wejdzie sie na dane miejsce, np. plac wisielców: herold uwaga uwaga
+  //
+  const defeatSystem = "Gracz " + fightResult + " w uczciwej walce, odnieś się do tego" //walka była dobra ale już się skończyła
+  const assaultSystem = "Gracz podstępem cię zaatakował i " + fightResult + " jesteś zły" //wulgarne nastawienie, zgłoszenie do lorda Andre? Onara?
+  //
   const defaultSystem =
     "Powiedz graczowi że jesteś zajęty i nie możesz teraz rozmawiać";
   const heySystem = `Wcielasz się w postać o imieniu ${selectedNpc}, Wynik ma być odpowiedzią na interakcję gracza. Odpowiedz bardzo krótko biorąc pod uwagę swój charakter:${NPCcharacter} oraz opis postaci w którą się wcielasz: ${NPCdescription}. Weź również pod uwagę obecne fakty: 1,${timeOfDayMessage}  2. Znacie się,3. Widzicie się dziś pierwszy raz, (Dane pokazują tylko jak masz sie zachować, nie włączaj ich do swojej wypowiedzi) Tych słów nie wolno ci używać:  ${aiGeneral.dictionary.avoid} A jeśli pasuje to używaj tych: ${aiGeneral.dictionary.old}. Zawsze zwracaj się jako postać w którą się wcielasz. Cały output ma być bardzo krótką wypowiedzią NPC w którego się wcielasz w 1 osobie.`;
@@ -48,9 +55,7 @@ export const fastResponse = async (
     case "hey":
       // console.log(heySystem)
       return response(heySystem, userInput);
-    case "trade":
-      return console.log('trade');
-      // return <Trade></Trade>;
+    
     default:
       return response(defaultSystem, userInput);
   }
@@ -131,10 +136,12 @@ export const aiDialogLinesCreator = async (
   conversationTrack: string | null
 ) => {
   const hasShop = true;
+  const teacher: string | null = "łucznictwo lub skradanie się";
+
   const ile = [];
   const track: string[] = [];
   console.log(conversationTrack);
-  if (conversationTrack===null) {
+  if (conversationTrack===null || conversationTrack==='welcome') {
     mission.forEach((element: any, index: number) => {
       if (mission[index].isAccepted) {
         ile.push(
@@ -148,8 +155,12 @@ export const aiDialogLinesCreator = async (
       }
     });
     if (hasShop) {
-      ile.push("Zapytaj się czy możecie pohandlować");
+      ile.push("Chcesz pohandlować");
       track.push("trade");
+    }
+    if (teacher) {
+      ile.push("Zapytaj czego może cię nauczyć");
+      track.push("learning");
     }
   } else if (conversationTrack === "ask") {
     ile.push("Wykonałeś zadanie");
@@ -157,9 +168,8 @@ export const aiDialogLinesCreator = async (
   }
  
   const chat = new OpenAiChat(
-    `Jesteś najlepszym kreatorem dialogów do gier RPG. Stwórz ${ile.length} bardzo krótkich zdanie/zdań każde według wskazówki z tych danych: ${ile}  tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa.Rozmawiasz  właśnie z postacią o imieniu ${NPCname} który  ${aboutNPC.opis} Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `
+    `Jesteś najlepszym kreatorem dialogów do gier RPG. Stwórz ${ile.length} bardzo krótkich zdanie/zdań jeśli to możliwe to może być nawet jedno lub kilka słów na dany temat, każde według wskazówki z tych danych: ${ile}  tak aby gracz mógł zdecydować w którym kierunku ma iść rozmowa.Rozmawiasz  właśnie z postacią o imieniu ${NPCname} który  ${aboutNPC.opis} Wypowiadaj się zawsze w pierwszej osobie jako bohater. Zdania oddziel znakiem & to bardzo ważne `
   );
-console.log(chat)
   const res = await chat.say(todo, param4);
   const sentences: string[] = res.split("&");
 

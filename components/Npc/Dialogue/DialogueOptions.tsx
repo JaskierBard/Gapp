@@ -19,6 +19,7 @@ export interface Props {
   npcDetails: any;
   missionsText: any;
   selectedNpc: string;
+  addAction: (action:string) => void;
   endConversation: () => void;
   addLog: (arg: string) => void;
 }
@@ -26,6 +27,7 @@ export interface Props {
 export const DialogueOptions = (props: Props) => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   // const [opression, setOpression] = useState<any>();
+  const [basicDialogLines, setBasicDialogLines] = useState<any>();
 
   const [dialogLines, setDialogLines] = useState<any>([]);
 
@@ -37,8 +39,11 @@ export const DialogueOptions = (props: Props) => {
   const [bezi, setBezi] = useState<string | null>(null);
 
   useEffect(() => {
+    if (basicDialogLines) {
+      setDialogLines(basicDialogLines)
+    }
 
-    if (conversationTrack === null) {
+    if (conversationTrack === null && !basicDialogLines) {
 
     (async () => {
       console.log('Rozmowa inicjująca')
@@ -59,9 +64,13 @@ export const DialogueOptions = (props: Props) => {
   useEffect(() => {
     (async () => {
       if (isSpeaking == true && text) {
+        const data = await aiDialogLinesCreator(text, props.selectedNpc, props.npcDetails, props.missionsText, conversationTrack)
         setDialogLines(
-          await aiDialogLinesCreator(text, props.selectedNpc, props.npcDetails, props.missionsText, conversationTrack)
+          data
         );
+        if (conversationTrack===null) {
+          setBasicDialogLines(data);
+        }
       }
      
     })();
@@ -100,11 +109,11 @@ export const DialogueOptions = (props: Props) => {
           <FlatList
             data={dialogLines}
             renderItem={({ item, index }) => (
-              <DialogueLines line={item} fillText={fillText} />
+              <DialogueLines line={item} fillText={fillText} addAction={props.addAction}/>
             )}
             keyExtractor={(item, index) => index.toString()}
           />
-          {!text ? (
+          {!conversationTrack ? (
             <TouchableOpacity onPress={props.endConversation}>
               <Text style={styles.text}>Koniec</Text>
             </TouchableOpacity>

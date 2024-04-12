@@ -3,6 +3,7 @@ import { View, StyleSheet, Image } from "react-native";
 import { getImage, getNpc } from "../../utils/firebase/firebaseNpc";
 import { DialogueOptions } from "./Dialogue/DialogueOptions";
 import { getNpcMissions } from "../../utils/firebase/firebaseMission";
+import {Trade} from "./Trade/Trade";
 
 interface Props {
   selectedNpc: string;
@@ -15,13 +16,18 @@ export const SelectedNpc = (props: Props) => {
 
   const [missionsText, setMissionsText] = useState<any>(null);
   const [imageURL, setImageURL] = useState<string>();
+  const [currentAction, setCurrentAction] = useState<string | null>();
 
   const targetImageName = `${props.selectedNpc}.jpg`;
+
+  const actions = (action: string | null) => {
+    setCurrentAction(action);
+  };
 
   useEffect(() => {
     (async () => {
       setImageURL(await getImage("npc", targetImageName));
-      setNpcDetails(await getNpc(props.selectedNpc))
+      setNpcDetails(await getNpc(props.selectedNpc));
       setMissionsText(
         await getNpcMissions("g4tPE1itk3vJTDAj19PO", props.selectedNpc)
       );
@@ -30,18 +36,22 @@ export const SelectedNpc = (props: Props) => {
 
   return (
     <>
-      {imageURL && (
-        <Image source={{ uri: imageURL }} style={styles.npcImage} />
-      )}
+      {imageURL && <Image source={{ uri: imageURL }} style={styles.npcImage} />}
       {missionsText && (
-        <DialogueOptions
-        addLog={props.addLog}
-          endConversation={props.endConversation}
-          missionsText={missionsText}
-          selectedNpc={props.selectedNpc}
-          npcDetails={npcDetails}
-
-        />
+        <View style={styles.npcContainer}>
+          {currentAction ? (
+            <Trade end={actions}/>
+          ) : (
+            <DialogueOptions
+              addLog={props.addLog}
+              endConversation={props.endConversation}
+              addAction={actions}
+              missionsText={missionsText}
+              selectedNpc={props.selectedNpc}
+              npcDetails={npcDetails}
+            />
+          )}
+        </View>
       )}
     </>
   );
@@ -49,10 +59,9 @@ export const SelectedNpc = (props: Props) => {
 
 const styles = StyleSheet.create({
   npcContainer: {
-    // position: "absolute",
-
-    width: "94%",
-    // height: '10%',
+    position: "absolute",
+    width: "100%",
+    height: '100%',
   },
   npcImage: {
     // position: "absolute",

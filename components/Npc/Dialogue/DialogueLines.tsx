@@ -3,6 +3,7 @@ import { TouchableOpacity, StyleSheet, Text } from "react-native";
 export interface Props {
     line: any
     fillText: (beziTalk :string, data:any , conversationTrack?:any) => void;
+    addAction: (action:string) => void;
 
   }
 
@@ -10,7 +11,6 @@ export interface Props {
 export const DialogueLines = (props:Props) => {
   const dialogLine = Object.values(props.line)[0] ? Object.values(props.line)[0] : "bład";
   const executeAction = async (beziTalk: string, action: any, conversationTrack?:any) => {
-    // console.log(conversationTrack)
     if (conversationTrack) {
         props.fillText(beziTalk ,await action(), conversationTrack)
 
@@ -25,7 +25,13 @@ export const DialogueLines = (props:Props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        executeAction(dialogLine as string ,Object.values(props.line)[1], Object.values(props.line)[2]);
+        if (Object.values(props.line)[2] === "trade") {
+          console.log('clicked')
+          props.addAction('trade')
+        } else {
+          executeAction(dialogLine as string ,Object.values(props.line)[1], Object.values(props.line)[2]);
+
+        }
         // setID(props.missionsText[index].id);
       }}
     >
