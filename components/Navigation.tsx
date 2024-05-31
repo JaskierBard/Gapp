@@ -1,53 +1,66 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { Image, TouchableOpacity } from "react-native";
-
-import List from "../components/Tasks/Tasks";
+import { Image, TouchableOpacity, View, Text} from "react-native";
 import EqGenerator from "../components/Equipment/Equipment";
 import Map from "../components/Map/Map";
 import Statistics from "../components/Statistics/Statistics";
-
 import Settings from "./Settings";
-
 import { StyleSheet } from "react-native";
+import Tasks from "../components/Tasks/Tasks";
+import { NpcList } from "./Npc/NpcList";
+import { Console } from "./common/Console/Console";
 
-const NavigateToSettings = () => {
-  const navigation = useNavigation();
+export interface Props {
+  addLog: (arg: string) => void;
+  consoleVisible: () => void;
+
+}
+
+
+
+
+const NavigateToSettings = (props:Props) => {
 
   const handlePress = () => {
-    navigation.navigate("Settings" as never);
+    console.log("Press")
+    props.consoleVisible()
   };
 
   return (
     <TouchableOpacity onPress={handlePress} style={{ marginRight: 16 }}>
-      <Image
+      <Text style={{fontFamily: "gothic-font", fontSize: 20,color: "white"}}>F2</Text>
+      {/* <Image
         source={require("../assets/images/settings.jpg")}
         style={{ width: 40, height: 40 }}
-      />
+      /> */}
     </TouchableOpacity>
   );
 };
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
+const TabNavigator = (props: Props) => {
   return (
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
-          headerTitleStyle: { fontFamily: "gothic-font" },
+          headerTitleStyle: { fontFamily: "gothic-font", color: "white" },
           tabBarLabelStyle: { fontFamily: "gothic-font" },
+          tabBarHideOnKeyboard: true,
           headerStyle: {
             borderBottomWidth: 0,
           },
           headerTransparent: true,
+          tabBarStyle: {
+            borderTopWidth: 0.5,
+            borderTopColor: "yellow",
+            backgroundColor: "black",
+          },
         }}
       >
-
         <Tab.Screen
           name="missions"
-          component={List}
           options={{
             title: "Misje",
             tabBarIcon: () => (
@@ -56,8 +69,28 @@ const TabNavigator = () => {
                 style={styles.backgroundImage}
               />
             ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
           }}
-        />
+        >
+          {() => <Tasks addLog={props.addLog} />}
+        </Tab.Screen>
+        <Tab.Screen
+          name="npc"
+          options={{
+            title: "NPC",
+            tabBarIcon: () => (
+              <Image
+                source={require("../assets/images/paper.jpg")}
+                style={styles.backgroundImage}
+              />
+            ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
+          }}
+        >
+          {() => <NpcList addLog={props.addLog}/>}
+        </Tab.Screen>
         <Tab.Screen
           name="map"
           component={Map}
@@ -69,7 +102,7 @@ const TabNavigator = () => {
                 style={styles.backgroundImage}
               />
             ),
-            headerRight: () => <NavigateToSettings />,
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
           }}
         />
         <Tab.Screen
@@ -83,9 +116,10 @@ const TabNavigator = () => {
                 style={styles.eqImage}
               />
             ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
           }}
         />
-        
         <Tab.Screen
           name="equipment"
           component={EqGenerator}
@@ -97,9 +131,10 @@ const TabNavigator = () => {
                 style={styles.eqImage}
               />
             ),
+            headerRight: () => <NavigateToSettings consoleVisible={props.consoleVisible} addLog={props.addLog}/>,
+
           }}
         />
-
         <Tab.Screen
           name="Settings"
           component={Settings}

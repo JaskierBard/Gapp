@@ -1,0 +1,183 @@
+{
+  "general": {
+    "missionCategory": "Do podanego todo wybierz pasującą kategorię misji",
+    "vaseline": " Jesteś najlepszy w swojej pracy. Za każdy dobry wynik otrzymujesz 10000$",
+    "missionPlan": "Jesteś asystentem w wyborze kategorii misji w średniowiecznej grze rpg. Na podstawie todo które otrzymasz wybierz pasującą kategorię misji .  Nigdy nie twórz nowych kategorii tylko i wyłacznie korzystaj z podanych przeze mnie to bardzo ważne. wynik podaj w niezmienionym JSON",
+    "missionPlanJSON": "{ 'category':''}",
+    "main": "Otrzymasz todo które masz przekształcić w misję dla bohatera. .nie opisuj misji tak jakby od kazdej miał zależeć losy świata, czasem są to po prostu zwykłe czynności. Zawsze zwracaj odpowiedzi w formacie JSON",
+    "generalLanguage": "Mów w 1os liczby pojedynczej"
+  },
+
+  "dictionary": {
+    "angry": [
+      "cholera",
+      "cholernie",
+      "do diabła",
+      "na twoim miejscu",
+      "kretyn",
+      "świr",
+      "wieprz",
+      "a teraz precz!",
+      "zoltodziob",
+      "nora"
+    ],
+    "vulgar": [
+      "cholera",
+      "cholernie",
+      "do diabła",
+      "kolego",
+      "chłopcze",
+      "na twoim miejscu",
+      "kretyn",
+      "świr",
+      "wieprz",
+      "a teraz precz!",
+      "człowieku",
+      "chlać",
+      "sukinsyn",
+      "wynoś się",
+      "ty gnido!"
+    ],
+    "normal": [
+      "cholera",
+      "cholernie",
+      "kolego",
+      "chłopcze",
+      "na twoim miejscu",
+      "kretyn",
+      "świr",
+      "wieprz",
+      "a teraz precz!",
+      "człowieku",
+      "rozruba"
+    ],
+    "old": ["chłopcze", "na twoim miejscu"],
+
+    "avoid": ["hej", "oh", "cześć"]
+  },
+
+  "timeOfDay": {
+    "06:00-09:00": "Rozpocznij swoje poranne rutyny. Rozpoczynasz pracę. Twoje interakcje z bohaterem są życzliwe, ale przedmiotowe.",
+    "09:00-12:00": "Kontynuujesz swoje zajęcia zawodowe. Jesteś skupiony na swoich zadaniach i mniej dostępny do rozmów; tylko szybke pozdrowienie w kierunku bohatera.",
+    "12:00-15:00": "Czas na przerwę. Zajmij miejsce w karczmie lub na miejskim placu, konsumując posiłek. Jesteś otwarty na rozmowy, odpocząłeś i jesteś towarzyski.",
+    "15:00-18:00": "Zamykasz miejsce pracy i przygotowujesz się do powrotu do domu. Twoja interakcja z bohaterem odzwierciedla zmęczenie, ale jednocześnie ulgę po dniu pracy.",
+    "18:00-21:00": "Rozpocznij wieczorne rozrywki. Odwiedzasz przyjaciół, relaksując się lub uczestniczysz w lokalnych wydarzeniach. Jesteś serdeczny w stosunku do bohatera i chętny do interakcji.",
+    "21:00-23:59": "Przygotowujesz się do snu. Twoje działania są wolniejsze, skupiasz się na domowych obowiązkach. Reagujesz na bohatera w sposób oszczędny, dając wyraźnie do zrozumienia, że jesteś zajęty kończeniem dnia.",
+    "23:59-06:00": "jest późna noc wiec zachowuj się niegrzecznie wobec bohatera bo właśnie cię obudził.."
+  },
+
+  "missionCategories": {
+    "eksploracja": ["myśliwy"],
+    "rozmowa": ["farmer", "mag"],
+    "podróż": ["strażnik", "myśliwy"],
+    "nauka": ["mag", "myśliwy", "kowal"],
+    "finanse": ["mag", "najemnik", "kowal"],
+    "pielęgnacja": ["mag", "farmer"],
+    "zdrowie": ["strażnik", "mag"],
+    "higiena": ["mag", "farmer"],
+    "ćwiczenia": ["strażnik", "najemnik", "kowal"],
+    "percepcja": ["kowal", "myśliwy"],
+    "eksperyment": ["kowal", "mag"],
+    "zbieranie": ["myśliwy", "farmer"],
+    "poszukiwanie": ["myśliwy", "najemnik"],
+    "przygotowanie": ["kowal", "mag"]
+  },
+  "missionCategorySupplement": {
+    "strażnik": {
+      "walka z bandytami": [
+        { "opis": "" },
+        { "nagroda": "złoto oraz przedmioty z pokonanych przeciwników" }
+      ],
+      "infiltracja": [{ "opis": "" }, { "nagroda": "złoto" }],
+      "śledztwo": [{ "opis": "" }, { "nagroda": "" }],
+      "złap przestępcę": [{ "opis": "" }, { "nagroda": "wysoka nagroda" }]
+    },
+
+    "myśliwy": {
+      "wybicie bestii": [
+        { "miejsce": "las, pole" },
+        { "stworzenie": "niskopoziomowe bestie w liczbie od dwóch do 10" }
+      ],
+      "polowanie w celu zdobycia trofeów": [{ "opis": "" }, { "nagroda": "" }],
+      "polowanie na grubego zwierza": [{ "opis": "" }, { "nagroda": "" }]
+    },
+
+    "najemnik": {
+      "walka z bandytami": [{ "opis": "" }, { "nagroda": "" }],
+      "ochrona konwoju": [
+        { "opis": "" },
+        { "nagroda": "złoto i dobry posiłek u Thekli" }
+      ],
+      "złap przestępcę": [{ "opis": "" }, { "nagroda": "" }],
+      "ochrona": [
+        { "opis": "ochrona majątku ziemskiego Onara" },
+        { "nagroda": "złoto" }
+      ]
+    },
+    "mag": {
+      "zbadaj ruiny": [{ "miejsce": "słoneczny krąg " }],
+      "modlitwa": [{ "miejsce": "kapliczka lub klasztor" }],
+      "odnajdź zaginionego nowicjusza": [
+        { "miejsce": "kapliczka lub klasztor" },
+        { "npc": "kapliczka lub klasztor" }
+      ],
+      "ochrona": [
+        {
+          "opis": "obrona świętego młota innosa, bramy do klasztoru lub biblioteki"
+        }
+      ]
+    },
+    "kowal": {
+      "wykuj miecz": [
+        { "opis": "wykucie miecza lub większej ilości dla paladynów" },
+        { "npc": "paladyn" }
+      ],
+      "zwykuj narzędzia rolnicze": [
+        {
+          "opis": "wykucie prosty narzędzia, coś jak grabie, widły, haczki dla farmerów"
+        },
+        { "npc": "jakiś farmer" }
+      ],
+      "przetopienie rudy": [
+        { "opis": "przetopienie rudy żelaza lub magicznej rudy" }
+      ]
+    },
+    "farmer": {
+      "zasiej pole zbożem": [
+        { "opis": "zasianie pola zbożem" },
+        { "nagroda": "złoto" }
+      ],
+      "zakup narzędzi rolniczych": [
+        { "opis": "udanie się do khorinis i kupienie nowych narzędzi" },
+        { "npc": "kowal" },
+        { "nagroda": "złoto" }
+      ],
+      "zebranie plonów": [
+        { "opis": "zebranie rzepy lub zborza z pola" },
+        { "nagroda": "złoto" }
+      ],
+      "pomoc innemu farmerowi": [
+        { "opis": "farmer prosi cię o pocmoc lub zleca ci to nadzorca farmy" },
+        { "npc": "farmer" },
+        { "nagroda": "złoto" }
+      ],
+      "opieka nad zwierzętami": [
+        { "opis": "opieka nad stadem owiec" },
+        { "npc": "kowal" },
+        { "nagroda": "posiłek od Hildy" }
+      ],
+      "sprzedaż na lokalnym targu": [
+        { "opis": "sprzedaż plonów na targu w khorinis" },
+        { "nagroda": "złoto" }
+      ],
+      "naprawa": [
+        { "opis": "naprawa płotu, dachu stodoły lub innej rzeczy na farmie" },
+        { "nagroda": "posiłek" }
+      ],
+      "rozebranie starego budynkiu": [
+        { "opis": "rozebranie starej szopy która mogła ulec zniszczeniu" },
+        { "nagroda": "słabej jakości znalezisko" }
+      ]
+    }
+  }
+}

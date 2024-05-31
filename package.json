@@ -9,12 +9,18 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.0.0",
+    "@react-native-community/datetimepicker": "^7.6.2",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "expo": "~50.0.3",
+    "expo-asset": "^9.0.2",
+    "expo-av": "^13.10.5",
     "expo-font": "^11.10.2",
+    "expo-navigation-bar": "~2.8.1",
+    "expo-speech": "~11.7.0",
     "expo-splash-screen": "^0.26.4",
     "expo-status-bar": "~1.11.1",
-    "firebase": "^10.7.2",
+    "firebase": "10.7.1",
     "openai": "^4.25.0",
     "react": "18.2.0",
     "react-native": "0.73.2"

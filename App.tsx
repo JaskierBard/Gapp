@@ -1,12 +1,46 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import TabNavigator from "./components/Navigation";
+import * as NavigationBar from "expo-navigation-bar";
+import { background } from "./components/Styles";
+import { Console } from "./components/common/Console/Console";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
+  const [showConsole, setShowConsole] = useState(false);
+  const [flashConsole, setFlashConsole] = useState(false);
+
+  const [logs, setLogs] = useState([""]);
+
+  const addLog = (newLog: string) => {
+    setLogs((prevLogs) => {
+      const updatedLogs = [newLog, ...prevLogs.slice(0, 4)];
+      return updatedLogs;
+    });
+  };
+
+  useEffect(() => {
+    if (showConsole === false) {
+      (async () => {
+        setFlashConsole(true);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setFlashConsole(false);
+      })();
+    }
+  }, [logs]);
+
+  const makeF2Visible = () => {
+    setShowConsole(!showConsole);
+  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -19,7 +53,8 @@ export default function App() {
       try {
         await SplashScreen.preventAutoHideAsync();
         await loadFonts();
-        // Dodaj inne operacje inicjalizacyjne, jeśli są potrzebne
+        NavigationBar.setVisibilityAsync("hidden");
+        await NavigationBar.setBehaviorAsync("inset-swipe");
 
         setIsAppReady(true);
       } catch (error) {
@@ -36,19 +71,13 @@ export default function App() {
     return <Text>Loading...</Text>;
   }
   return (
-    <TabNavigator/>
+    <ImageBackground
+      source={require("./assets/images/background.jpg")}
+      style={background.image}
+    >
+      <TabNavigator addLog={addLog} consoleVisible={makeF2Visible} />
+      {flashConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>}
+      {showConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>}
+    </ImageBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontFamily: "gothic-font",
-    fontSize: 22,
-  },
-});

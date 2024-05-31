@@ -36,4 +36,5 @@ yarn-error.*
 
 
 # important 
-config.ts
+aiConfig.ts
+firebaseConfig.ts
