@@ -13,6 +13,9 @@ import TabNavigator from "./components/Navigation";
 import * as NavigationBar from "expo-navigation-bar";
 import { background } from "./components/Styles";
 import { Console } from "./components/common/Console/Console";
+import { MainScreen } from "./screens/MainScreen";
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
@@ -51,10 +54,10 @@ export default function App() {
   useEffect(() => {
     const prepareApp = async () => {
       try {
-        await SplashScreen.preventAutoHideAsync();
+        // await SplashScreen.preventAutoHideAsync();
         await loadFonts();
-        NavigationBar.setVisibilityAsync("hidden");
-        await NavigationBar.setBehaviorAsync("inset-swipe");
+        // NavigationBar.setVisibilityAsync("hidden");
+        // await NavigationBar.setBehaviorAsync("inset-swipe");
 
         setIsAppReady(true);
       } catch (error) {
@@ -72,12 +75,18 @@ export default function App() {
   }
   return (
     <ImageBackground
-      source={require("./assets/images/background.jpg")}
-      style={background.image}
-    >
-      <TabNavigator addLog={addLog} consoleVisible={makeF2Visible} />
+    source={require("./assets/images/background.jpg")}
+    style={background.image}
+  >
+    <StatusBar style="light"/>
+    <SafeAreaView>
+   
+      <MainScreen/>
+      {/* <TabNavigator addLog={addLog} consoleVisible={makeF2Visible} />
       {flashConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>}
-      {showConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>}
+      {showConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>} */}
+    </SafeAreaView>
     </ImageBackground>
+
   );
 }

@@ -38,7 +38,7 @@ export const background = StyleSheet.create({
   image: {
     position: 'absolute',
     width: width ,
-    height: (height * 1.1),
+    height: (height * 1.055),
         // height: (height * 1.055),
 
     // resizeMode: 'cover',
@@ -120,15 +120,15 @@ export const missionStyles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 0.5,
     borderColor: "yellow",
-    justifyContent: 'flex-end', // Umieść tekst na dole
-    alignItems: 'flex-end',     // Umieść tekst po prawej stronie
+    justifyContent: 'center', // Umieść tekst na dole
+    alignItems: 'center',     // Umieść tekst po prawej stronie
     padding: 10,    
   },
   failture: {
     height: "20%",
     position: "relative",
     flex: 1,
-    justifyContent: 'flex-end', // Umieść tekst na dole
+    justifyContent: 'center', // Umieść tekst na dole
     alignItems: 'center',     // Umieść tekst po prawej stronie
     padding: 10,        borderBottomWidth: 0.5,
     borderColor: "yellow",
@@ -137,8 +137,8 @@ export const missionStyles = StyleSheet.create({
     height: "20%",
     position: "relative",
     flex: 1,
-    justifyContent: 'flex-end', // Umieść tekst na dole
-    alignItems: 'flex-end',     // Umieść tekst po prawej stronie
+    justifyContent: 'center', // Umieść tekst na dole
+    alignItems: 'center',     // Umieść tekst po prawej stronie
     padding: 10,        borderBottomWidth: 0.5,
     borderColor: "yellow",
   },

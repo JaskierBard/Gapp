@@ -5,7 +5,6 @@ import { Image, TouchableOpacity, View, Text} from "react-native";
 import EqGenerator from "../components/Equipment/Equipment";
 import Map from "../components/Map/Map";
 import Statistics from "../components/Statistics/Statistics";
-import Settings from "./Settings";
 import { StyleSheet } from "react-native";
 import Tasks from "../components/Tasks/Tasks";
 import { NpcList } from "./Npc/NpcList";
@@ -135,16 +134,7 @@ const TabNavigator = (props: Props) => {
 
           }}
         />
-        <Tab.Screen
-          name="Settings"
-          component={Settings}
-          options={{
-            title: "Ustawienia",
-            tabBarButton: () => null,
-            tabBarLabel: "",
-            tabBarItemStyle: { height: 0, width: 0 },
-          }}
-        />
+        
       </Tab.Navigator>
     </NavigationContainer>
   );

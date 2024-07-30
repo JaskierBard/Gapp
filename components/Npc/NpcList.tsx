@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     width: "94%",
     height: 600,
     borderRadius: 5,
-    top: 170,
+    top: 120,
     left: "3%",
     position: "relative",
     shadowColor: "wheat",
