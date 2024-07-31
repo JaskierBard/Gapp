@@ -1,14 +1,27 @@
 import { BlurView } from "expo-blur";
-import { View, StyleSheet, Text, Image, TouchableOpacity, ImageBackground } from "react-native";
+import { View, StyleSheet, Text, Image, ImageBackground } from "react-native";
 import { Dimensions } from "react-native";
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/Navigation';
 import { EquipmentSnippet } from "../components/MainScreenComponents/EquipmentSnippet";
+import { useEffect, useState } from "react";
+import { fetchData } from "../api/fetchData";
+
 
 
 const { width, height } = Dimensions.get("window");
 
 export const MainScreen = () => {
+  const [data, setData] = useState<Object>()
+  useEffect(() =>{
+    (async () => {
+      try {
+        const data = await fetchData('player/get');
+        setData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+    console.log(data);
+  },[])
 
   return (
     <ImageBackground
@@ -18,7 +31,6 @@ export const MainScreen = () => {
     <View style={styles.container}>
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
-        tint="light"
         intensity={30}
         style={styles.blurContainer}
       >
@@ -29,7 +41,6 @@ export const MainScreen = () => {
 
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
-        tint="light"
         intensity={30}
         style={styles.blurContainer}
       >
@@ -39,7 +50,6 @@ export const MainScreen = () => {
       </BlurView>
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
-        tint="light"
         intensity={30}
         style={styles.blurContainer}
       >
@@ -51,7 +61,6 @@ export const MainScreen = () => {
 
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
-        tint="light"
         intensity={30}
         style={styles.blurContainer}
       >
@@ -71,7 +80,6 @@ export const MainScreen = () => {
         />
         <BlurView
           experimentalBlurMethod="dimezisBlurView"
-          tint="light"
           intensity={30}
           style={styles.blurMap}
         >
@@ -91,26 +99,7 @@ export const MainScreen = () => {
   );
 };
 
-export const eqStyles = StyleSheet.create({
-  eqContainer: {
-    
-    height: (height * 20) / 100,
-    width: (width * 44) / 100,
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    // padding: 3,
 
-  },
-  itemContainer: {
-    backgroundColor: "red",
-    height: "43%",
-    width: "43%",
-    margin:5,
-    borderRadius: 10,
-  },
-});
 
 export const styles = StyleSheet.create({
   backgroundImage: {

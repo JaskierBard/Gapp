@@ -1,9 +1,5 @@
-import {
-  ImageBackground,
-  Dimensions,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ImageBackground, Dimensions, StyleSheet, View } from "react-native";
+import { EquipmentCeil } from "../components/common/EquipmentCeil";
 
 const { width } = Dimensions.get("window");
 export default function Equipment() {
@@ -16,10 +12,7 @@ export default function Equipment() {
     >
       <View style={eqStyles.equipment}>
         {items.map((item, index) => (
-          <View key={index} style={eqStyles.ceil}></View>
-        ))}
-        {Array.from({ length: 30 - items.length }, (value, index) => (
-          <View key={index} style={eqStyles.ceil}></View>
+          <EquipmentCeil key={index} index={index} character={""} />
         ))}
       </View>
     </ImageBackground>
