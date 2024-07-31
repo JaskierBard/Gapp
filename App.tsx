@@ -1,49 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import {
-  Dimensions,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
-import TabNavigator from "./components/Navigation";
-import * as NavigationBar from "expo-navigation-bar";
-import { background } from "./components/Styles";
-import { Console } from "./components/common/Console/Console";
-import { MainScreen } from "./screens/MainScreen";
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import Navigation from "./navigation/Navigation";
+import { MainScreen } from "./screens/MainScreen";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
-  const [showConsole, setShowConsole] = useState(false);
-  const [flashConsole, setFlashConsole] = useState(false);
-
-  const [logs, setLogs] = useState([""]);
-
-  const addLog = (newLog: string) => {
-    setLogs((prevLogs) => {
-      const updatedLogs = [newLog, ...prevLogs.slice(0, 4)];
-      return updatedLogs;
-    });
-  };
-
-  useEffect(() => {
-    if (showConsole === false) {
-      (async () => {
-        setFlashConsole(true);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setFlashConsole(false);
-      })();
-    }
-  }, [logs]);
-
-  const makeF2Visible = () => {
-    setShowConsole(!showConsole);
-  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -54,11 +19,7 @@ export default function App() {
   useEffect(() => {
     const prepareApp = async () => {
       try {
-        // await SplashScreen.preventAutoHideAsync();
         await loadFonts();
-        // NavigationBar.setVisibilityAsync("hidden");
-        // await NavigationBar.setBehaviorAsync("inset-swipe");
-
         setIsAppReady(true);
       } catch (error) {
         console.warn("Error while preparing the app:", error);
@@ -73,20 +34,25 @@ export default function App() {
   if (!isAppReady) {
     return <Text>Loading...</Text>;
   }
-  return (
-    <ImageBackground
-    source={require("./assets/images/background.jpg")}
-    style={background.image}
-  >
-    <StatusBar style="light"/>
-    <SafeAreaView>
-   
-      <MainScreen/>
-      {/* <TabNavigator addLog={addLog} consoleVisible={makeF2Visible} />
-      {flashConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>}
-      {showConsole && <Console text={logs} consoleVisible={makeF2Visible}  flashConsole={flashConsole}/>} */}
-    </SafeAreaView>
-    </ImageBackground>
 
+  return (
+    
+
+      <SafeAreaView style={styles.container}>
+      <Navigation />
+
+      </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+   backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent', // Przezroczystość tła
+  },
+ 
+});

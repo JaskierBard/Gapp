@@ -12,9 +12,12 @@
     "@expo/vector-icons": "^14.0.0",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/bottom-tabs": "^6.5.11",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/stack": "^6.4.1",
     "expo": "^51.0.9",
     "expo-asset": "~10.0.6",
     "expo-av": "~14.0.5",
+    "expo-blur": "~13.0.2",
     "expo-font": "~12.0.6",
     "expo-navigation-bar": "~3.0.4",
     "expo-speech": "~12.0.2",
@@ -24,8 +27,8 @@
     "openai": "^4.25.0",
     "react": "18.2.0",
     "react-native": "0.74.1",
-    "expo-blur": "~13.0.2",
-    "react-native-safe-area-context": "4.10.5"
+    "react-native-safe-area-context": "4.10.5",
+    "react-native-screens": "3.31.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

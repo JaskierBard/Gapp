@@ -1,11 +1,20 @@
 import { BlurView } from "expo-blur";
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, TouchableOpacity, ImageBackground } from "react-native";
 import { Dimensions } from "react-native";
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../navigation/Navigation';
+import { EquipmentSnippet } from "../components/MainScreenComponents/EquipmentSnippet";
+
 
 const { width, height } = Dimensions.get("window");
 
 export const MainScreen = () => {
+
   return (
+    <ImageBackground
+    source={require("../assets/images/background.jpg")}
+    style={styles.backgroundImage}
+  >
     <View style={styles.container}>
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
@@ -38,19 +47,8 @@ export const MainScreen = () => {
           <Text>Task</Text>
         </View>
       </BlurView>
-      <BlurView
-        experimentalBlurMethod="dimezisBlurView"
-        tint="light"
-        intensity={30}
-        style={styles.blurContainer}
-      >
-        <View style={eqStyles.eqContainer}>
-          <View style={eqStyles.itemContainer}></View>
-          <View style={eqStyles.itemContainer}></View>
-          <View style={eqStyles.itemContainer}></View>
-          <View style={eqStyles.itemContainer}></View>
-        </View>
-      </BlurView>
+      <EquipmentSnippet/>
+
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
         tint="light"
@@ -88,18 +86,22 @@ export const MainScreen = () => {
         </BlurView>
       </View>
     </View>
+    </ImageBackground>
+
   );
 };
 
-const eqStyles = StyleSheet.create({
+export const eqStyles = StyleSheet.create({
   eqContainer: {
+    
     height: (height * 20) / 100,
     width: (width * 44) / 100,
     display: "flex",
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 3,
+    // padding: 3,
+
   },
   itemContainer: {
     backgroundColor: "red",
@@ -110,20 +112,27 @@ const eqStyles = StyleSheet.create({
   },
 });
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    // resizeMode: 'cover',
+  },
   container: {
-    width: (width * 100) / 100,
-    height: (height * 100) / 100,
+    width: '100%',
+    height: '100%',
     display: "flex",
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
-    // marginTop: 30,
+    marginTop: 30,
+    padding: 20,
+    backgroundColor: 'transparent', // Upewnij się, że tło jest przezroczyste, aby tło główne było widoczne
   },
   blurContainer: {
     borderRadius: 15,
     marginBottom: 10,
+    backgroundColor: 'transparent', // Upewnij się, że tło jest przezroczyste
+
     overflow: "hidden",
   },
   blurMap: {
@@ -144,9 +153,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   smallContainer: {
-    height: (width * 44) / 100,
+    height: (height * 20) / 100,
     width: (width * 44) / 100,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   backgroundPicture: {
     alignItems: "flex-end",
