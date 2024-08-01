@@ -4,23 +4,36 @@ import { Dimensions } from "react-native";
 import { EquipmentSnippet } from "../components/MainScreenComponents/EquipmentSnippet";
 import { useEffect, useState } from "react";
 import { fetchData } from "../api/fetchData";
+import { StatisticsSnippet } from "../components/MainScreenComponents/StatisticsSnipet";
 
-
+export interface Statistics {
+  destination: object;
+  parameters: {
+    staminaPoints: number;
+    manaPoints: number;
+    healthPoints: number;
+    maxManaPoints: number;
+    maxHealthPoints: number;
+    maxStaminaPoints: number;
+  };
+  missions: object;
+  equipment: object;
+}
 
 const { width, height } = Dimensions.get("window");
 
 export const MainScreen = () => {
-  const [data, setData] = useState<Object>()
+  const [data, setData] = useState<Statistics|null>(null)
   useEffect(() =>{
     (async () => {
       try {
         const data = await fetchData('player/get');
-        setData(data);
+        // console.log(data.statistic);
+        setData(data.statistic);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
-    console.log(data);
   },[])
 
   return (
@@ -58,21 +71,10 @@ export const MainScreen = () => {
         </View>
       </BlurView>
       <EquipmentSnippet/>
+      {data ? <StatisticsSnippet statistics={data} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
 
-      <BlurView
-        experimentalBlurMethod="dimezisBlurView"
-        intensity={30}
-        style={styles.blurContainer}
-      >
-        <View style={styles.smallContainer}>
-          <Text>Bezimienny</Text>
-          <Text>poziom 22</Text>
 
-          <Text>stany:</Text>
-          <Text>upojenie alkoholowe</Text>
-          <Text>przerażenie</Text>
-        </View>
-      </BlurView>
+     
       <View style={styles.bigContainer}>
         <Image
           source={require("../assets/images/khorinis.png")}

@@ -5,7 +5,8 @@ export const fetchData = async (endpoint: string) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const res = await response.json();
-      return JSON.stringify(res);
+      return res
+      // return JSON.stringify(res);
     } catch (error) {
       console.error('Error:', error);
       throw error;
