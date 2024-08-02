@@ -40,7 +40,6 @@ export default function App() {
 
       <SafeAreaView style={styles.container}>
       <Navigation />
-
       </SafeAreaView>
   );
 }

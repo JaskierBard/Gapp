@@ -5,6 +5,7 @@ import { EquipmentSnippet } from "../components/MainScreenComponents/EquipmentSn
 import { useEffect, useState } from "react";
 import { fetchData } from "../api/fetchData";
 import { StatisticsSnippet } from "../components/MainScreenComponents/StatisticsSnipet";
+import Dice from "../components/common/Dice";
 
 export interface Statistics {
   destination: object;
@@ -48,7 +49,7 @@ export const MainScreen = () => {
         style={styles.blurContainer}
       >
         <View style={styles.bigContainer}>
-          <Text>Task</Text>
+          <Dice/>
         </View>
       </BlurView>
 
