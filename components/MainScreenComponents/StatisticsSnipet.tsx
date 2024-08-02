@@ -13,7 +13,6 @@ interface Props {
 
 export const StatisticsSnippet = ({statistics}:Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  console.log(statistics)
   return (
     <TouchableOpacity onPress={() => navigation.navigate("Equipment")}>
        <BlurView
@@ -49,6 +48,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "transparent",
     overflow: "hidden",
+    borderColor: 'gray', 
+    borderWidth: 1,
   },
   smallContainer: {
     height: (height * 20) / 100,

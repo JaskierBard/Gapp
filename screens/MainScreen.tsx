@@ -25,12 +25,17 @@ const { width, height } = Dimensions.get("window");
 
 export const MainScreen = () => {
   const [data, setData] = useState<Statistics|null>(null)
+  const [equipment, setEquipment] = useState<any>(null)
+
+  
   useEffect(() =>{
     (async () => {
       try {
         const data = await fetchData('player/get');
         // console.log(data.statistic);
         setData(data.statistic);
+        setEquipment(data.equipment);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -52,7 +57,7 @@ export const MainScreen = () => {
           <Dice/>
         </View>
       </BlurView>
-
+     
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
         intensity={30}
@@ -71,7 +76,7 @@ export const MainScreen = () => {
           <Text>Task</Text>
         </View>
       </BlurView>
-      <EquipmentSnippet/>
+      {equipment ? <EquipmentSnippet equipment={equipment} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
       {data ? <StatisticsSnippet statistics={data} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
 
 
@@ -124,7 +129,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
     backgroundColor: 'transparent', // Upewnij się, że tło jest przezroczyste
-
+    borderColor: 'gray', 
+    borderWidth: 1,
     overflow: "hidden",
   },
   blurMap: {
@@ -136,13 +142,13 @@ export const styles = StyleSheet.create({
   smallMapContainer: {
     height: (height * 20) / 100,
     width: (width * 90) / 100,
-    // right: 0,
   },
   bigContainer: {
     height: (height * 20) / 100,
     width: (width * 90) / 100,
     borderRadius: 10,
     overflow: "hidden",
+    
   },
   smallContainer: {
     height: (height * 20) / 100,

@@ -12,7 +12,7 @@ export default function Equipment() {
     >
       <View style={eqStyles.equipment}>
         {items.map((item, index) => (
-          <EquipmentCeil key={index} index={index} character={""} />
+          <EquipmentCeil key={index} index={index} image={'ok'} quantity={1} />
         ))}
       </View>
     </ImageBackground>
