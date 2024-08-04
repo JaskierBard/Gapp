@@ -11,9 +11,11 @@ interface Props {
 }
 
 export const EquipmentSnippet = ({ equipment }: Props) => {
+ 
+  console.log('eq' +equipment)
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Equipment")}>
+    <TouchableOpacity onPress={() => navigation.navigate("Equipment", equipment)}>
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
         intensity={30}

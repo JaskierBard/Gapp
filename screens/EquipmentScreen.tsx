@@ -2,18 +2,28 @@ import { ImageBackground, Dimensions, StyleSheet, View } from "react-native";
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
 
 const { width } = Dimensions.get("window");
-export default function Equipment() {
-  const items = Array.from({ length: 30 }, (_, index) => index);
 
+export default function Equipment({route}:any) {
+  const equipment = route.params;
+
+
+  const items = Array.from({ length: 30 }, (_, index) => index);
   return (
     <ImageBackground
       source={require("../assets/images/background.jpg")}
       style={eqStyles.backgroundImage}
     >
       <View style={eqStyles.equipment}>
-        {items.map((item, index) => (
-          <EquipmentCeil key={index} index={index} image={'ok'} quantity={1} />
-        ))}
+        {equipment.map((item:any, index:any) => (
+          <EquipmentCeil
+              key={index}
+              index={index}
+              image={item.image}
+              quantity={item.quantity}
+            />        ))}
+            {Array.from({ length: 30 - equipment.length }, (value, index) => (
+            <View key={index} style={eqStyles.ceil}></View>
+          ))}
       </View>
     </ImageBackground>
   );
@@ -25,7 +35,7 @@ const eqStyles = StyleSheet.create({
     width: (width * 90.1) / 100,
     height: (width * 108) / 100,
     marginBottom: 110,
-    flexDirection: "row", // Ustawienie kierunku flexbox na rząd
+    flexDirection: "row",
     flexWrap: "wrap",
     marginTop: 100,
     marginLeft: (width * 5) / 100,

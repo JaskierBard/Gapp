@@ -15,7 +15,7 @@ const Navigation = () => (
   <NavigationContainer>
     <Stack.Navigator  screenOptions={{
         headerShown: false,
-        cardStyle: { backgroundColor: 'transparent' }, // Ustawienie tła przezroczystego dla kart
+        // cardStyle: { backgroundColor: 'transparent' }, 
       }}>
       <Stack.Screen name="Home" component={MainScreen} />
       <Stack.Screen name="Equipment" component={EquipmentScreen} />

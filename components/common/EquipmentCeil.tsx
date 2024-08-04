@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const EquipmentCeil = ({ index, image, quantity }: Props) => {
-  console.log(image);
+  // console.log(image);
   return (
     <View key={index} style={styles.ceil}>
       
