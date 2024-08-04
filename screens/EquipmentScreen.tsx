@@ -1,11 +1,16 @@
-import { ImageBackground, Dimensions, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  Dimensions,
+  StyleSheet,
+  View,
+  ScrollView,
+} from "react-native";
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
 
 const { width } = Dimensions.get("window");
 
-export default function Equipment({route}:any) {
+export default function Equipment({ route }: any) {
   const equipment = route.params;
-
 
   const items = Array.from({ length: 30 }, (_, index) => index);
   return (
@@ -14,29 +19,37 @@ export default function Equipment({route}:any) {
       style={eqStyles.backgroundImage}
     >
       <View style={eqStyles.equipment}>
-        {equipment.map((item:any, index:any) => (
-          <EquipmentCeil
-              key={index}
-              index={index}
-              image={item.image}
-              quantity={item.quantity}
-            />        ))}
+        <ScrollView style={eqStyles.scrollView}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {equipment.map((item: any, index: any) => (
+              <EquipmentCeil
+                key={index}
+                index={index}
+                image={item.image}
+                quantity={item.quantity}
+              />
+            ))}
             {Array.from({ length: 30 - equipment.length }, (value, index) => (
-            <View key={index} style={eqStyles.ceil}></View>
-          ))}
+              <View key={index} style={eqStyles.ceil}></View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
     </ImageBackground>
   );
 }
 
 const eqStyles = StyleSheet.create({
+  scrollView: {
+    height: (width * 108) / 100,
+    width: (width * 90.1) / 100,
+  },
   equipment: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     width: (width * 90.1) / 100,
     height: (width * 108) / 100,
     marginBottom: 110,
-    flexDirection: "row",
-    flexWrap: "wrap",
+
     marginTop: 100,
     marginLeft: (width * 5) / 100,
   },
