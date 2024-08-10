@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   ScrollView,
+  FlatList,
 } from "react-native";
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
 
@@ -11,29 +12,33 @@ const { width } = Dimensions.get("window");
 
 export default function Equipment({ route }: any) {
   const equipment = route.params;
-
-  const items = Array.from({ length: 30 }, (_, index) => index);
+  const renderItem = ({ item, index }: any) => (
+    <EquipmentCeil
+      key={index}
+      index={index}
+      image={item.image}
+      quantity={item.quantity}
+    />
+  );
+  const emptyCells = Array.from({ length: 30 - equipment.length }, (_, index) => (
+    <View key={`empty-${index}`} style={eqStyles.ceil}></View>
+  ));
+  
   return (
     <ImageBackground
       source={require("../assets/images/background.jpg")}
       style={eqStyles.backgroundImage}
     >
-      <View style={eqStyles.equipment}>
-        <ScrollView style={eqStyles.scrollView}>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {equipment.map((item: any, index: any) => (
-              <EquipmentCeil
-                key={index}
-                index={index}
-                image={item.image}
-                quantity={item.quantity}
-              />
-            ))}
-            {Array.from({ length: 30 - equipment.length }, (value, index) => (
-              <View key={index} style={eqStyles.ceil}></View>
-            ))}
-          </View>
-        </ScrollView>
+  
+        <View style={eqStyles.equipment}>
+        <FlatList
+          data={equipment}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          numColumns={5}
+          ListFooterComponent={<View>{emptyCells}</View>}
+          // contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
+        />
       </View>
     </ImageBackground>
   );
