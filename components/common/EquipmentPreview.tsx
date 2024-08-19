@@ -13,10 +13,13 @@ export default function ItemPreview({ itemInfo }: Props) {
       {itemInfo ? (
         <View style={styles.container}>
           <Text style={[text.medium, styles.title]}>{itemInfo.name}</Text>
-          <View style={styles.infoLine}>
-            <Text style={text.medium}>obrażenia:</Text>
-            <Text style={text.medium}>{itemInfo.damage.cut}</Text>
-          </View>
+          {itemInfo.damage && (
+            <View style={styles.infoLine}>
+              <Text style={text.medium}>obrażenia:</Text>
+              <Text style={text.medium}>{itemInfo.damage.cut}</Text>
+            </View>
+          )}
+
           <View style={[styles.infoLine]}>
             <Text style={text.medium}>Wartość: </Text>
             <Text style={text.medium}>{itemInfo.price}</Text>
