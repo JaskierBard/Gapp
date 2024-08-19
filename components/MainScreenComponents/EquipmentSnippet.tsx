@@ -22,14 +22,14 @@ export const EquipmentSnippet = ({ equipment }: Props) => {
         style={styles.blurContainer}
       >
         <View style={eqStyles.eqContainer}>
-          {equipment.map((item: any, index: any) => (
+          {/* {equipment.map((item: any, index: any) => (
             <EquipmentCeil
               key={index}
               index={index}
               image={item.image}
               quantity={item.quantity}
             />
-          ))}
+          ))} */}
           {Array.from({ length: 4 - equipment.length }, (value, index) => (
             <View key={index} style={eqStyles.ceil}></View>
           ))}

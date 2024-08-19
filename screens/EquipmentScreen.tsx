@@ -3,57 +3,68 @@ import {
   Dimensions,
   StyleSheet,
   View,
-  ScrollView,
   FlatList,
 } from "react-native";
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
+import { useState } from "react";
+import ItemPreview from "../components/common/EquipmentPreview";
 
 const { width } = Dimensions.get("window");
 
 export default function Equipment({ route }: any) {
+  const [itemInfo, setItemInfo] = useState<any>("");
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
   const equipment = route.params;
+
+  const itemPreview = (index: number) => {
+    const clickedItem = equipment[index];
+    setSelectedIndex(index);
+    setItemInfo(clickedItem);
+  };
+
   const renderItem = ({ item, index }: any) => (
     <EquipmentCeil
       key={index}
       index={index}
       image={item.image}
       quantity={item.quantity}
+      onPress={itemPreview}
+      isSelected={index === selectedIndex}
     />
   );
-  const emptyCells = Array.from({ length: 30 - equipment.length }, (_, index) => (
-    <View key={`empty-${index}`} style={eqStyles.ceil}></View>
-  ));
-  
+
+  const roundToFive = (num: number) => Math.ceil(num / 5) * 5;
+
+  const emptyCells = Array.from(
+    { length: roundToFive(equipment.length) - equipment.length },
+    (_, index) => <View key={`empty-${index}`} style={eqStyles.ceil}></View>
+  );
+
   return (
     <ImageBackground
       source={require("../assets/images/background.jpg")}
       style={eqStyles.backgroundImage}
     >
-  
-        <View style={eqStyles.equipment}>
+      <View style={eqStyles.equipment}>
         <FlatList
-          data={equipment}
+          data={[...equipment, ...emptyCells]}
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderItem}
           numColumns={5}
-          ListFooterComponent={<View>{emptyCells}</View>}
-          // contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
         />
       </View>
+      <ItemPreview itemInfo={itemInfo}></ItemPreview>
     </ImageBackground>
   );
 }
 
 const eqStyles = StyleSheet.create({
-  scrollView: {
-    height: (width * 108) / 100,
-    width: (width * 90.1) / 100,
-  },
   equipment: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     width: (width * 90.1) / 100,
     height: (width * 108) / 100,
-    marginBottom: 110,
+    marginBottom: 50,
 
     marginTop: 100,
     marginLeft: (width * 5) / 100,
@@ -63,7 +74,7 @@ const eqStyles = StyleSheet.create({
     height: (width * 18) / 100,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderColor: "grey",
-    borderWidth: 1, // Dodanie szerokości obramowania
+    borderWidth: 1,
   },
   backgroundImage: {
     flex: 1,
