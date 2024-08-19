@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { fetchData } from "../api/fetchData";
 import { StatisticsSnippet } from "../components/MainScreenComponents/StatisticsSnipet";
 import Dice from "../components/common/Dice";
+import { MapSnippet } from "../components/MainScreenComponents/MapSnippet";
 
 export interface Statistics {
   destination: object;
@@ -78,29 +79,12 @@ export const MainScreen = () => {
       </BlurView>
       {equipment ? <EquipmentSnippet equipment={equipment} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
       {data ? <StatisticsSnippet statistics={data} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
+      {equipment ? <MapSnippet equipment={equipment} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
+
 
 
      
-      <View style={styles.bigContainer}>
-        <Image
-          source={require("../assets/images/khorinis.png")}
-          style={styles.backgroundPicture}
-        />
-        <BlurView
-          experimentalBlurMethod="dimezisBlurView"
-          intensity={30}
-          style={styles.blurMap}
-        >
-          <View style={styles.smallMapContainer}>
-            <Text>Khorinis</Text>
-            <Text>Dolne Miasto</Text>
-            <Text></Text>
-            <Text>deszczowo</Text>
-            <Text>Późne popołudnie</Text>
-            <Text>zagrożenie - niskie</Text>
-          </View>
-        </BlurView>
-      </View>
+   
     </View>
     </ImageBackground>
 

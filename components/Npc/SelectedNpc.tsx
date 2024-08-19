@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, Text } from "react-native";
 import { getImage, getNpc } from "../../utils/firebase/firebaseNpc";
 import { DialogueOptions } from "./Dialogue/DialogueOptions";
 import { getNpcMissions } from "../../utils/firebase/firebaseMission";
-import {Trade} from "./Trade/Trade";
+// import {Trade} from "./Trade/Trade";
 
 interface Props {
   selectedNpc: string;
@@ -40,7 +40,8 @@ export const SelectedNpc = (props: Props) => {
       {missionsText && (
         <View style={styles.npcContainer}>
           {currentAction ? (
-            <Trade end={actions}/>
+            <Text>Deleted</Text>
+            // <Trade end={actions}/>
           ) : (
             <DialogueOptions
               addLog={props.addLog}
