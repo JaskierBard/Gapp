@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { View, Text, Dimensions, Image, StyleSheet } from "react-native";
 import { text } from "../../themes/fonts";
+import TranscationButton from "./TranscationButton";
 const { width } = Dimensions.get("window");
 
 interface Props {
   itemInfo: any;
+  transactionType?: string
 }
 
-export default function ItemPreview({ itemInfo }: Props) {
+export default function ItemPreview({ itemInfo, transactionType }: Props) {
   return (
     <>
       {itemInfo ? (
@@ -24,7 +26,7 @@ export default function ItemPreview({ itemInfo }: Props) {
             <Text style={text.medium}>Wartość: </Text>
             <Text style={text.medium}>{itemInfo.price}</Text>
           </View>
-
+          <TranscationButton id={itemInfo.id} itemType={itemInfo.type} price={itemInfo.price} transactionType={transactionType}/>
           <Image source={{ uri: itemInfo.image }} style={styles.image} />
         </View>
       ) : (

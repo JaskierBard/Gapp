@@ -17,6 +17,7 @@ const { width } = Dimensions.get("window");
 export default function TradeScreen({ route }: any) {
   const [NpcEquipment, setNpcEquipment] = useState<any>("");
   const [itemInfo, setItemInfo] = useState<any>("");
+  const [transactionType, setTransactionType] = useState<string>("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const equipment = route.params;
@@ -35,13 +36,14 @@ export default function TradeScreen({ route }: any) {
   }, []);
 
   const itemPreview = (index: number, type: string) => {
-    const clickedItem = type == "hero" ? equipment[index] : NpcEquipment[index];
+    const clickedItem = type == "sell" ? equipment[index] : NpcEquipment[index];
+    setTransactionType(type)
     console.log(clickedItem);
     setSelectedIndex(index);
     setItemInfo(clickedItem);
   };
 
-  const renderItem = ({ item, index }: any, type: "npc" | "hero") => (
+  const renderItem = ({ item, index }: any, type: "buy" | "sell") => (
     <EquipmentCeil
       key={index}
       index={index}
@@ -80,7 +82,7 @@ export default function TradeScreen({ route }: any) {
           <FlatList
             data={[...NpcEquipment, ...emptyCellsNpc]}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={(props) => renderItem(props, "npc")}
+            renderItem={(props) => renderItem(props, "buy")}
             numColumns={5}
           />
         ) : (
@@ -92,7 +94,7 @@ export default function TradeScreen({ route }: any) {
           />
         )}
       </View>
-      <ItemPreview itemInfo={itemInfo}></ItemPreview>
+      <ItemPreview itemInfo={itemInfo} transactionType={transactionType}></ItemPreview>
 
       <View style={eqStyles.equipmentShort}>
         <Text style={text.medium}>Bezimienny</Text>
@@ -100,7 +102,7 @@ export default function TradeScreen({ route }: any) {
         <FlatList
           data={[...equipment, ...emptyCells]}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={(props) => renderItem(props, "hero")}
+          renderItem={(props) => renderItem(props, "sell")}
           numColumns={5}
         />
       </View>
