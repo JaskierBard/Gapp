@@ -7,6 +7,7 @@ interface Props {
   price: number;
   itemType: string;
   transactionType?: string;
+  tradeSucces: () => void;
 }
 
 export default function TransactionButton({
@@ -14,6 +15,7 @@ export default function TransactionButton({
   itemType,
   price,
   transactionType,
+  tradeSucces
 }: Props) {
   const [confirm, setConfirm] = useState(false);
 
@@ -34,6 +36,8 @@ export default function TransactionButton({
     ).then((response: any) => {
       console.log("Server response:", response);
     });
+    tradeSucces();
+
   };
   return (
     <>

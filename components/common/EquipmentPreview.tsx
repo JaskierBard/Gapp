@@ -7,9 +7,16 @@ const { width } = Dimensions.get("window");
 interface Props {
   itemInfo: any;
   transactionType?: string
+  tradeSucces: () => void;
+
 }
 
-export default function ItemPreview({ itemInfo, transactionType }: Props) {
+
+
+export default function ItemPreview({ itemInfo,tradeSucces, transactionType }: Props) {
+
+
+
   return (
     <>
       {itemInfo ? (
@@ -26,7 +33,7 @@ export default function ItemPreview({ itemInfo, transactionType }: Props) {
             <Text style={text.medium}>Wartość: </Text>
             <Text style={text.medium}>{itemInfo.price}</Text>
           </View>
-          <TranscationButton id={itemInfo.id} itemType={itemInfo.type} price={itemInfo.price} transactionType={transactionType}/>
+          {transactionType && <TranscationButton id={itemInfo.id} itemType={itemInfo.type} price={itemInfo.price} transactionType={transactionType} tradeSucces={tradeSucces}/>}
           <Image source={{ uri: itemInfo.image }} style={styles.image} />
         </View>
       ) : (

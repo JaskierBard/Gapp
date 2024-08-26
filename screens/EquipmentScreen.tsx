@@ -54,7 +54,7 @@ export default function Equipment({ route }: any) {
           numColumns={5}
         />
       </View>
-      <ItemPreview itemInfo={itemInfo}></ItemPreview>
+      <ItemPreview itemInfo={itemInfo} tradeSucces={()=> 'ok'}></ItemPreview>
     </ImageBackground>
   );
 }

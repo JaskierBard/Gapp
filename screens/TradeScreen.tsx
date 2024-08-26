@@ -16,29 +16,50 @@ const { width } = Dimensions.get("window");
 
 export default function TradeScreen({ route }: any) {
   const [NpcEquipment, setNpcEquipment] = useState<any>("");
+  const [playerEquipment, setPlayerEquipment] = useState<any>([]);
+
   const [itemInfo, setItemInfo] = useState<any>("");
   const [transactionType, setTransactionType] = useState<string>("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const equipment = route.params;
+  const tradeSucces = () => {
+    if (transactionType === "sell") {
+      setNpcEquipment([...NpcEquipment, itemInfo]);
+      const result: any[] = Object.values(playerEquipment).filter(
+        (item: any) => {
+          return item.id !== itemInfo.id;
+        }
+      );
+      setPlayerEquipment(result);
+    } else {
+      setPlayerEquipment([...playerEquipment, itemInfo]);
+      const result: any[] = Object.values(NpcEquipment).filter(
+        (item: any) => {
+          return item.id !== itemInfo.id;
+        }
+      );
+      setNpcEquipment(result);
+    }
+    setItemInfo('')
+    setSelectedIndex(null)
+  };
 
   useEffect(() => {
     (async () => {
       try {
         const data = await fetchData("player/get_npc");
         setNpcEquipment(data.equipment);
-        console.log((data.equipment).length);
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     })();
+    setPlayerEquipment(route.params);
   }, []);
 
   const itemPreview = (index: number, type: string) => {
-    const clickedItem = type == "sell" ? equipment[index] : NpcEquipment[index];
-    setTransactionType(type)
-    console.log(clickedItem);
+    const clickedItem =
+      type == "sell" ? playerEquipment[index] : NpcEquipment[index];
+    setTransactionType(type);
     setSelectedIndex(index);
     setItemInfo(clickedItem);
   };
@@ -57,7 +78,7 @@ export default function TradeScreen({ route }: any) {
   const roundToFive = (num: number) => Math.ceil(num / 5) * 5;
 
   const emptyCells = Array.from(
-    { length: roundToFive(equipment.length) - equipment.length },
+    { length: roundToFive(playerEquipment.length) - playerEquipment.length },
     (_, index) => <View key={`empty-${index}`} style={eqStyles.ceil}></View>
   );
 
@@ -94,13 +115,17 @@ export default function TradeScreen({ route }: any) {
           />
         )}
       </View>
-      <ItemPreview itemInfo={itemInfo} transactionType={transactionType}></ItemPreview>
+      <ItemPreview
+        itemInfo={itemInfo}
+        transactionType={transactionType}
+        tradeSucces={tradeSucces}
+      ></ItemPreview>
 
       <View style={eqStyles.equipmentShort}>
         <Text style={text.medium}>Bezimienny</Text>
 
         <FlatList
-          data={[...equipment, ...emptyCells]}
+          data={[...playerEquipment, ...emptyCells]}
           keyExtractor={(item, index) => index.toString()}
           renderItem={(props) => renderItem(props, "sell")}
           numColumns={5}
