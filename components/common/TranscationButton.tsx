@@ -8,6 +8,8 @@ interface Props {
   itemType: string;
   transactionType?: string;
   tradeSucces: () => void;
+  heroGold?: number;
+  npcGold?: number;
 }
 
 export default function TransactionButton({
@@ -15,7 +17,9 @@ export default function TransactionButton({
   itemType,
   price,
   transactionType,
-  tradeSucces
+  tradeSucces,
+  heroGold,
+  npcGold,
 }: Props) {
   const [confirm, setConfirm] = useState(false);
 
@@ -33,23 +37,41 @@ export default function TransactionButton({
       "pc_rockefeller",
       "Bosper",
       price,
-      transactionType,
+      transactionType
     ).then((response: any) => {
       console.log("Server response:", response);
     });
     tradeSucces();
-
   };
   return (
     <>
       {!confirm ? (
-        <View style={styles.button}>
-          <TouchableOpacity onPress={() => confirmTransaction()}>
-            <Text style={{ color: "white" }}>
-              {transactionType == "buy" ? "Kup" : "Sprzedaj"} za:
-              {transactionType == "buy" ? price : price}sz. złota
-            </Text>
-          </TouchableOpacity>
+        <View >
+          {transactionType === "buy" ? (
+            heroGold && heroGold > price ? (
+              <TouchableOpacity onPress={() => confirmTransaction()} style={styles.button}>
+                <Text style={{ color: "white" }}>
+                  Kup za: {price} sz. złota
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity disabled style={styles.buttonDisabled}>
+                <Text style={{ color: "white" }}>Masz za mało złota</Text>
+              </TouchableOpacity>
+            )
+          ) : (
+            npcGold && npcGold > price ? (
+              <TouchableOpacity onPress={() => confirmTransaction()} style={styles.button}>
+                <Text style={{ color: "white" }}>
+                  Sprzedaj za: {price} sz. złota
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity disabled style={styles.buttonDisabled}>
+                <Text style={{ color: "white" }}>Kupiec ma mało złota</Text>
+              </TouchableOpacity>
+            )
+          )}
         </View>
       ) : (
         <View style={styles.timeButton}>
@@ -65,6 +87,14 @@ export default function TransactionButton({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "green",
+    padding: 5,
+    borderColor: "white",
+    borderWidth: 1,
+    width: "50%",
+    borderRadius: 5,
+  },
+  buttonDisabled: {
+    backgroundColor: "gray",
     padding: 5,
     borderColor: "white",
     borderWidth: 1,

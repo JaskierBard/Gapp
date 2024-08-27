@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
 import { useEffect, useState } from "react";
-import ItemPreview from "../components/common/EquipmentPreview";
+import ItemPreview from "../components/common/ItemPreview";
 import { fetchData } from "../utils/fetchData";
 import { text } from "../themes/fonts";
 import { sortEquipment } from "../utils/sortEquipment";
@@ -120,6 +120,8 @@ export default function TradeScreen({ route }: any) {
         itemInfo={itemInfo}
         transactionType={transactionType}
         tradeSucces={tradeSucces}
+        heroGold={playerEquipment.find((item: any) => item.id === 900)?.quantity}
+        npcGold={NpcEquipment.find((item: any) => item.id === 900)?.quantity}
       ></ItemPreview>
 
       <View style={eqStyles.equipmentShort}>

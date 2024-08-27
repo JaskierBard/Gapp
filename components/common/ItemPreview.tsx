@@ -6,17 +6,19 @@ const { width } = Dimensions.get("window");
 
 interface Props {
   itemInfo: any;
-  transactionType?: string
+  transactionType?: string;
   tradeSucces: () => void;
-
+  heroGold?: number;
+  npcGold?: number;
 }
 
-
-
-export default function ItemPreview({ itemInfo, tradeSucces, transactionType }: Props) {
-
-
-
+export default function ItemPreview({
+  itemInfo,
+  tradeSucces,
+  transactionType,
+  heroGold,
+  npcGold
+}: Props) {
   return (
     <>
       {itemInfo ? (
@@ -33,7 +35,17 @@ export default function ItemPreview({ itemInfo, tradeSucces, transactionType }: 
             <Text style={text.medium}>Wartość: </Text>
             <Text style={text.medium}>{itemInfo.price}</Text>
           </View>
-          {(transactionType && itemInfo.id !== 900) && <TranscationButton id={itemInfo.id} itemType={itemInfo.type} price={itemInfo.price} transactionType={transactionType} tradeSucces={tradeSucces}/>}
+          {transactionType && itemInfo.id !== 900 && (
+            <TranscationButton
+              id={itemInfo.id}
+              itemType={itemInfo.type}
+              price={itemInfo.price}
+              transactionType={transactionType}
+              tradeSucces={tradeSucces}
+              heroGold={heroGold}
+              npcGold={npcGold}
+            />
+          )}
           <Image source={{ uri: itemInfo.image }} style={styles.image} />
         </View>
       ) : (
