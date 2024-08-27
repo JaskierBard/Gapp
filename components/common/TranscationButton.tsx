@@ -5,6 +5,7 @@ import { fetchData, transactionData } from "../../utils/fetchData";
 interface Props {
   id: string;
   price: number;
+  npcName: string;
   itemType: string;
   transactionType?: string;
   tradeSucces: () => void;
@@ -16,6 +17,7 @@ export default function TransactionButton({
   id,
   itemType,
   price,
+  npcName,
   transactionType,
   tradeSucces,
   heroGold,
@@ -35,7 +37,7 @@ export default function TransactionButton({
       id,
       itemType,
       "pc_rockefeller",
-      "Bosper",
+      npcName,
       price,
       transactionType
     ).then((response: any) => {

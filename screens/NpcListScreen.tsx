@@ -17,8 +17,7 @@ export interface Props {
 }
 
 export const NpcList = ({ route }: any) => {
-  const [sectedNpc, setSelectedNpc] = useState<string | null>();
-  const [npcList, setNpcList] = useState<string[]>(["Lobart - handel test"]);
+  const [npcList, setNpcList] = useState<string[]>(["Bosper", "Bengar"]);
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const equipment = route.params;
@@ -27,8 +26,8 @@ export const NpcList = ({ route }: any) => {
     return (
       <View>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Trade', equipment)}
-        >
+onPress={() => navigation.navigate('Trade', { equipment, item })}
+>
           <Text style={styles.talkingText}>{item}</Text>
         </TouchableOpacity>
       </View>

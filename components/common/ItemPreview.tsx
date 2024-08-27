@@ -6,6 +6,7 @@ const { width } = Dimensions.get("window");
 
 interface Props {
   itemInfo: any;
+  npcName: string;
   transactionType?: string;
   tradeSucces: () => void;
   heroGold?: number;
@@ -14,6 +15,7 @@ interface Props {
 
 export default function ItemPreview({
   itemInfo,
+  npcName,
   tradeSucces,
   transactionType,
   heroGold,
@@ -38,6 +40,7 @@ export default function ItemPreview({
           {transactionType && itemInfo.id !== 900 && (
             <TranscationButton
               id={itemInfo.id}
+              npcName={npcName}
               itemType={itemInfo.type}
               price={itemInfo.price}
               transactionType={transactionType}

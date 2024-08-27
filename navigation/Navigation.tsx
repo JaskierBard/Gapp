@@ -10,7 +10,7 @@ export type RootStackParamList = {
   Home: undefined;
   Equipment: undefined;
   NpcList:undefined;
-  Trade: undefined;
+  Trade: { equipment: any; item: any };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
