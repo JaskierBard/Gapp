@@ -18,8 +18,8 @@ export const transactionData = async (
   itemType: string,
   userId: string,
   seller: string,
+  price: number,
   transactionType?: string,
-
 ) => {
   try {
     const response = await fetch(
@@ -34,6 +34,7 @@ export const transactionData = async (
           itemType: itemType,
           userId: userId,
           seller: seller,
+          price: price,
           transactionType: transactionType,
         }),
       }

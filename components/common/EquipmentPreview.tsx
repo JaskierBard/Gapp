@@ -13,7 +13,7 @@ interface Props {
 
 
 
-export default function ItemPreview({ itemInfo,tradeSucces, transactionType }: Props) {
+export default function ItemPreview({ itemInfo, tradeSucces, transactionType }: Props) {
 
 
 
@@ -33,7 +33,7 @@ export default function ItemPreview({ itemInfo,tradeSucces, transactionType }: P
             <Text style={text.medium}>Wartość: </Text>
             <Text style={text.medium}>{itemInfo.price}</Text>
           </View>
-          {transactionType && <TranscationButton id={itemInfo.id} itemType={itemInfo.type} price={itemInfo.price} transactionType={transactionType} tradeSucces={tradeSucces}/>}
+          {(transactionType && itemInfo.id !== 900) && <TranscationButton id={itemInfo.id} itemType={itemInfo.type} price={itemInfo.price} transactionType={transactionType} tradeSucces={tradeSucces}/>}
           <Image source={{ uri: itemInfo.image }} style={styles.image} />
         </View>
       ) : (

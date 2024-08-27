@@ -3,10 +3,11 @@ import { View, StyleSheet, Text, Image, ImageBackground } from "react-native";
 import { Dimensions } from "react-native";
 import { EquipmentSnippet } from "../components/MainScreenComponents/EquipmentSnippet";
 import { useEffect, useState } from "react";
-import { fetchData } from "../api/fetchData";
+import { fetchData } from "../utils/fetchData";
 import { StatisticsSnippet } from "../components/MainScreenComponents/StatisticsSnipet";
 import Dice from "../components/common/Dice";
 import { MapSnippet } from "../components/MainScreenComponents/MapSnippet";
+import { sortEquipment } from "../utils/sortEquipment";
 
 export interface Statistics {
   destination: object;
@@ -33,15 +34,21 @@ export const MainScreen = () => {
     (async () => {
       try {
         const data = await fetchData('player/get');
-        // console.log(data.statistic);
         setData(data.statistic);
-        setEquipment(data.equipment);
+        const changedItemsValue = data.equipment.map((element:any) => {
+          const heroItemValue = Math.ceil(element.price/10)
+          element.price = heroItemValue
+          return element
+        });
+        setEquipment(sortEquipment(changedItemsValue));
 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
   },[])
+
+  
 
   return (
     <ImageBackground

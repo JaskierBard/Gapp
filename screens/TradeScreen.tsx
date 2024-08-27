@@ -9,46 +9,44 @@ import {
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
 import { useEffect, useState } from "react";
 import ItemPreview from "../components/common/EquipmentPreview";
-import { fetchData } from "../api/fetchData";
+import { fetchData } from "../utils/fetchData";
 import { text } from "../themes/fonts";
+import { sortEquipment } from "../utils/sortEquipment";
+import { updateEquipmentsAfterTransactions } from "../utils/updateEquipmentsAfterTransactions";
 
 const { width } = Dimensions.get("window");
 
+export type transactionType = "sell" | "buy";
+
 export default function TradeScreen({ route }: any) {
-  const [NpcEquipment, setNpcEquipment] = useState<any>("");
+  const [NpcEquipment, setNpcEquipment] = useState<any>([]);
   const [playerEquipment, setPlayerEquipment] = useState<any>([]);
 
   const [itemInfo, setItemInfo] = useState<any>("");
-  const [transactionType, setTransactionType] = useState<string>("");
+  const [transactionType, setTransactionType] = useState<
+    transactionType | undefined
+  >(undefined);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const tradeSucces = () => {
-    if (transactionType === "sell") {
-      setNpcEquipment([...NpcEquipment, itemInfo]);
-      const result: any[] = Object.values(playerEquipment).filter(
-        (item: any) => {
-          return item.id !== itemInfo.id;
-        }
-      );
-      setPlayerEquipment(result);
-    } else {
-      setPlayerEquipment([...playerEquipment, itemInfo]);
-      const result: any[] = Object.values(NpcEquipment).filter(
-        (item: any) => {
-          return item.id !== itemInfo.id;
-        }
-      );
-      setNpcEquipment(result);
-    }
-    setItemInfo('')
-    setSelectedIndex(null)
+    const [updatedPlayerEquipment, updatedNpcEquipment] = updateEquipmentsAfterTransactions(
+      playerEquipment,
+      NpcEquipment,
+      itemInfo,
+      transactionType
+    );
+
+    setPlayerEquipment(updatedPlayerEquipment);
+    setNpcEquipment(updatedNpcEquipment);
+    setItemInfo("");
+    setSelectedIndex(null);
   };
 
   useEffect(() => {
     (async () => {
       try {
         const data = await fetchData("player/get_npc");
-        setNpcEquipment(data.equipment);
+        setNpcEquipment(sortEquipment(data.equipment));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -56,7 +54,7 @@ export default function TradeScreen({ route }: any) {
     setPlayerEquipment(route.params);
   }, []);
 
-  const itemPreview = (index: number, type: string) => {
+  const itemPreview = (index: number, type: transactionType) => {
     const clickedItem =
       type == "sell" ? playerEquipment[index] : NpcEquipment[index];
     setTransactionType(type);
@@ -64,7 +62,7 @@ export default function TradeScreen({ route }: any) {
     setItemInfo(clickedItem);
   };
 
-  const renderItem = ({ item, index }: any, type: "buy" | "sell") => (
+  const renderItem = ({ item, index }: any, type: transactionType) => (
     <EquipmentCeil
       key={index}
       index={index}
@@ -97,7 +95,10 @@ export default function TradeScreen({ route }: any) {
       style={eqStyles.backgroundImage}
     >
       <View style={eqStyles.equipmentShort}>
-        <Text style={text.medium}>Bosper</Text>
+        <Text style={text.medium}>
+          Bosper złoto:{" "}
+          {NpcEquipment.find((item: any) => item.id === 900)?.quantity}
+        </Text>
 
         {NpcEquipment ? (
           <FlatList
@@ -122,7 +123,10 @@ export default function TradeScreen({ route }: any) {
       ></ItemPreview>
 
       <View style={eqStyles.equipmentShort}>
-        <Text style={text.medium}>Bezimienny</Text>
+        <Text style={text.medium}>
+          Bezimienny złoto:{" "}
+          {playerEquipment.find((item: any) => item.id === 900)?.quantity}
+        </Text>
 
         <FlatList
           data={[...playerEquipment, ...emptyCells]}

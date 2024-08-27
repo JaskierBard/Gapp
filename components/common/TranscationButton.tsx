@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import { fetchData, transactionData } from "../../api/fetchData";
+import { fetchData, transactionData } from "../../utils/fetchData";
 
 interface Props {
   id: string;
@@ -32,7 +32,8 @@ export default function TransactionButton({
       itemType,
       "pc_rockefeller",
       "Bosper",
-      transactionType
+      price,
+      transactionType,
     ).then((response: any) => {
       console.log("Server response:", response);
     });
@@ -46,7 +47,7 @@ export default function TransactionButton({
           <TouchableOpacity onPress={() => confirmTransaction()}>
             <Text style={{ color: "white" }}>
               {transactionType == "buy" ? "Kup" : "Sprzedaj"} za:
-              {transactionType == "buy" ? price : price / 10}sz. złota
+              {transactionType == "buy" ? price : price}sz. złota
             </Text>
           </TouchableOpacity>
         </View>
