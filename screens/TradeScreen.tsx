@@ -13,6 +13,7 @@ import { fetchData } from "../utils/fetchData";
 import { text } from "../themes/fonts";
 import { sortEquipment } from "../utils/sortEquipment";
 import { updateEquipmentsAfterTransactions } from "../utils/updateEquipmentsAfterTransactions";
+import { EquipmentEmptyCeil } from "../components/common/EquipmentEmptyCeil";
 
 const { width } = Dimensions.get("window");
 
@@ -27,6 +28,7 @@ export default function TradeScreen({ route }: any) {
     transactionType | undefined
   >(undefined);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const { equipment, item } = route.params;
 
   const tradeSucces = () => {
     const [updatedPlayerEquipment, updatedNpcEquipment] = updateEquipmentsAfterTransactions(
@@ -45,13 +47,13 @@ export default function TradeScreen({ route }: any) {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchData("player/get_npc");
+        const data = await fetchData(`player/get_npc?npcName=${item}`);
         setNpcEquipment(sortEquipment(data.equipment));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     })();
-    setPlayerEquipment(route.params);
+    setPlayerEquipment(equipment);
   }, []);
 
   const itemPreview = (index: number, type: transactionType) => {
@@ -73,21 +75,7 @@ export default function TradeScreen({ route }: any) {
     />
   );
 
-  const roundToFive = (num: number) => Math.ceil(num / 5) * 5;
-
-  const emptyCells = Array.from(
-    { length: roundToFive(playerEquipment.length) - playerEquipment.length },
-    (_, index) => <View key={`empty-${index}`} style={eqStyles.ceil}></View>
-  );
-
-  const emptyCellsNpc = Array.from(
-    { length: roundToFive(NpcEquipment.length) - NpcEquipment.length },
-    (_, index) => <View key={`empty-${index}`} style={eqStyles.ceil}></View>
-  );
-
-  const emptyEqCells = Array.from({ length: 15 }, (_, index) => ({
-    key: `empty-${index}`,
-  }));
+  
 
   return (
     <ImageBackground
@@ -100,24 +88,18 @@ export default function TradeScreen({ route }: any) {
           {NpcEquipment.find((item: any) => item.id === 900)?.quantity}
         </Text>
 
-        {NpcEquipment ? (
+        {NpcEquipment && (
           <FlatList
-            data={[...NpcEquipment, ...emptyCellsNpc]}
+            data={[...NpcEquipment, ...EquipmentEmptyCeil(NpcEquipment.length)]}
             keyExtractor={(item, index) => index.toString()}
             renderItem={(props) => renderItem(props, "buy")}
-            numColumns={5}
-          />
-        ) : (
-          <FlatList
-            data={emptyEqCells}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={() => <View style={eqStyles.ceil}></View>}
             numColumns={5}
           />
         )}
       </View>
       <ItemPreview
         itemInfo={itemInfo}
+        npcName={item}
         transactionType={transactionType}
         tradeSucces={tradeSucces}
         heroGold={playerEquipment.find((item: any) => item.id === 900)?.quantity}
@@ -131,7 +113,7 @@ export default function TradeScreen({ route }: any) {
         </Text>
 
         <FlatList
-          data={[...playerEquipment, ...emptyCells]}
+          data={[...playerEquipment, ...EquipmentEmptyCeil(playerEquipment.length)]}
           keyExtractor={(item, index) => index.toString()}
           renderItem={(props) => renderItem(props, "sell")}
           numColumns={5}
