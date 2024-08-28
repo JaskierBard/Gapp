@@ -19,4 +19,10 @@ export const text = StyleSheet.create({
     ...FONT, 
     fontSize: 12,
   },
+  description: {
+    ...FONT,
+    fontSize: 9,
+    paddingBottom: 5,
+    color: "lightgray",
+  }
 });
