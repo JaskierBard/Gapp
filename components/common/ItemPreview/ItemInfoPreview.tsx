@@ -1,12 +1,10 @@
 import { View, Text } from "react-native";
 import { text } from "../../../themes/fonts";
-import { equipmentStyles } from "../../../themes/equipment";
-
-
+import { equipmentPreviewStyles, equipmentStyles } from "../../../themes/equipment";
 
 interface Props {
   data: { [key: string]: number };
-  description:  { [key: string]: string };
+  description: { [key: string]: string };
 }
 
 export const ItemInfoPreview = ({ data, description }: Props) => {
@@ -17,7 +15,7 @@ export const ItemInfoPreview = ({ data, description }: Props) => {
       {Object.entries(description).map(
         ([key, value]) =>
           data[key] > 0 && (
-            <View key={key} style={equipmentStyles.infoLine}>
+            <View key={key} style={equipmentPreviewStyles.infoLine}>
               <Text style={text.small}>{value}</Text>
               <Text style={text.small}>{data[key]}</Text>
             </View>

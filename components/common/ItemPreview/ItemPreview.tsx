@@ -1,7 +1,10 @@
-import { View, Text, Dimensions, Image, StyleSheet } from "react-native";
+import { View, Text, Image } from "react-native";
 import { text } from "../../../themes/fonts";
 import TranscationButton from "../TranscationButton";
-import { equipmentStyles } from "../../../themes/equipment";
+import {
+  equipmentPreviewStyles,
+  equipmentStyles,
+} from "../../../themes/equipment";
 import { ItemInfoPreview } from "./ItemInfoPreview";
 import {
   additionalBonusTypes,
@@ -32,14 +35,14 @@ export default function ItemPreview({
   return (
     <>
       {itemInfo ? (
-        <View style={equipmentStyles.container}>
-          <Text style={[text.medium, equipmentStyles.title]}>
+        <View style={equipmentPreviewStyles.container}>
+          <Text style={[text.medium, equipmentPreviewStyles.title]}>
             {itemInfo.name}
           </Text>
 
-          <View style={equipmentStyles.itemInfo}>
+          <View style={equipmentPreviewStyles.itemInfo}>
             {itemInfo.description && (
-              <View style={equipmentStyles.infoLine}>
+              <View style={equipmentPreviewStyles.infoLine}>
                 <Text style={text.description}>{itemInfo.description}</Text>
               </View>
             )}
@@ -61,11 +64,7 @@ export default function ItemPreview({
               description={restoreTypes}
             />
           </View>
-          <View style={[equipmentStyles.infoLine, { bottom: 0 }]}>
-            <Text style={text.small}>Wartość: </Text>
-            <Text style={text.small}>{itemInfo.price}</Text>
-          </View>
-          {transactionType && itemInfo.id !== 900 && (
+          {transactionType && itemInfo.id !== 900 ? (
             <TranscationButton
               id={itemInfo.id}
               npcName={npcName}
@@ -76,14 +75,19 @@ export default function ItemPreview({
               heroGold={heroGold}
               npcGold={npcGold}
             />
+          ) : (
+            <View style={[equipmentPreviewStyles.infoLine, { bottom: 0 }]}>
+              <Text style={text.small}>Wartość: </Text>
+              <Text style={text.small}>{itemInfo.price}</Text>
+            </View>
           )}
           <Image
             source={{ uri: itemInfo.image }}
-            style={equipmentStyles.image}
+            style={equipmentPreviewStyles.image}
           />
         </View>
       ) : (
-        <View style={equipmentStyles.container}></View>
+        <View style={equipmentPreviewStyles.container}></View>
       )}
     </>
   );

@@ -1,12 +1,5 @@
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Image,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-const { width } = Dimensions.get("window");
+import { Image, Text, TouchableOpacity } from "react-native";
+import { equipmentCeilStyles } from "../../themes/equipment";
 
 interface Props {
   index: number;
@@ -30,50 +23,15 @@ export const EquipmentCeil = ({
       onPress={() => onPress && onPress(index)}
       key={index}
       style={[
-        isSelected ? styles.clickedCeil : styles.ceil,
-        isEquipped ? styles.equippedCeil : styles.ceil,
+        equipmentCeilStyles.ceil, 
+        isEquipped && equipmentCeilStyles.equippedCeil, 
+        isSelected && equipmentCeilStyles.clickedCeil,
       ]}
     >
-      <Image source={{ uri: image }} style={styles.image} />
-      <Text style={styles.text}>{quantity == 1 ? "" : quantity}</Text>
+      <Image source={{ uri: image }} style={equipmentCeilStyles.image} />
+      <Text style={equipmentCeilStyles.text}>
+        {quantity == 1 ? "" : quantity}
+      </Text>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  ceil: {
-    width: (width * 18) / 100, //
-    height: (width * 18) / 100,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    borderColor: "grey",
-    borderWidth: 1,
-    overflow: "hidden",
-  },
-  equippedCeil: {
-    width: (width * 18) / 100,
-    height: (width * 18) / 100,
-    backgroundColor: "rgba(255, 0, 0, 0.2)",
-    borderColor: "grey",
-    borderWidth: 1,
-    overflow: "hidden",
-  },
-  clickedCeil: {
-    width: (width * 18) / 100, //
-    height: (width * 18) / 100,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    borderColor: "blue",
-    borderWidth: 1,
-    overflow: "hidden",
-  },
-  image: {
-    resizeMode: "contain",
-    width: 70,
-    height: 70,
-  },
-  text: {
-    position: "absolute",
-    color: "white",
-    bottom: 2,
-    right: 2,
-  },
-});
