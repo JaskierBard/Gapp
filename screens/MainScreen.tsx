@@ -20,6 +20,7 @@ export interface Statistics {
     maxStaminaPoints: number;
   };
   missions: object;
+  equipped: object;
   equipment: object;
 }
 
@@ -84,7 +85,7 @@ export const MainScreen = () => {
           <Text>Task</Text>
         </View>
       </BlurView>
-      {equipment ? <EquipmentSnippet equipment={equipment} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
+      {equipment && data ? <EquipmentSnippet equipment={equipment} equipped={data.equipped}/> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
       {data ? <StatisticsSnippet statistics={data} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
       {equipment ? <MapSnippet equipment={equipment} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
 

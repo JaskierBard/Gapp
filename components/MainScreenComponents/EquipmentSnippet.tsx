@@ -8,14 +8,15 @@ const { width, height } = Dimensions.get("window");
 
 interface Props {
   equipment: any;
+  equipped: any;
 }
 
-export const EquipmentSnippet = ({ equipment }: Props) => {
+export const EquipmentSnippet = ({ equipment, equipped }: Props) => {
  
   // console.log('eq' +equipment)
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Equipment", equipment)}>
+    <TouchableOpacity onPress={() => navigation.navigate("Equipment", {equipment, equipped})}>
       <BlurView
         experimentalBlurMethod="dimezisBlurView"
         intensity={30}

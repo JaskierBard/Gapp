@@ -15,24 +15,31 @@ export default function Equipment({ route }: any) {
   const [itemInfo, setItemInfo] = useState<any>("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const equipment = route.params;
-
+  const {equipment, equipped} = route.params;
+console.log(equipped, 'okkk')
   const itemPreview = (index: number) => {
     const clickedItem = equipment[index];
     setSelectedIndex(index);
     setItemInfo(clickedItem);
   };
 
-  const renderItem = ({ item, index }: any) => (
-    <EquipmentCeil
+  const renderItem = ({ item, index }: any) => {
+    let isEquipped = false;
+    Object.values(equipped).find(equippedId =>{
+      if (equippedId === item.id) {
+        isEquipped = true;
+      }
+    })
+    return (<EquipmentCeil
       key={index}
       index={index}
       image={item.image}
       quantity={item.quantity}
       onPress={itemPreview}
       isSelected={index === selectedIndex}
-    />
-  );
+      isEquipped= {isEquipped}
+    />)
+  };
 
   const roundToFive = (num: number) => Math.ceil(num / 5) * 5;
 
@@ -54,7 +61,7 @@ export default function Equipment({ route }: any) {
           numColumns={5}
         />
       </View>
-      <ItemPreview itemInfo={itemInfo} tradeSucces={()=> 'ok'}></ItemPreview>
+      <ItemPreview itemInfo={itemInfo} tradeSucces={() => 'ok'} npcName={""}></ItemPreview>
     </ImageBackground>
   );
 }

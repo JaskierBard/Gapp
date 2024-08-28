@@ -14,12 +14,12 @@ interface Props {
   image: string;
   onPress?: (index: number) => void;
   isSelected?: boolean;
+  isEquipped?: boolean;
 }
 
-export const EquipmentCeil = ({ index, image, quantity, onPress, isSelected }: Props) => {
-  // console.log(isSelected)
+export const EquipmentCeil = ({ index, image, quantity, onPress, isSelected, isEquipped }: Props) => {
   return (
-    <TouchableOpacity onPress={() => onPress && onPress(index)} key={index} style={isSelected ? styles.clickedCeil : styles.ceil}>
+    <TouchableOpacity onPress={() => onPress && onPress(index)} key={index} style={[isSelected ? styles.clickedCeil : styles.ceil, isEquipped ? styles.equippedCeil : styles.ceil]}>
       <Image source={{ uri: image }} style={styles.image} />
       <Text style={styles.text}>{quantity == 1 ? "" : quantity}</Text>
     </TouchableOpacity>
@@ -31,6 +31,14 @@ const styles = StyleSheet.create({
     width: (width * 18) / 100, //
     height: (width * 18) / 100,
     backgroundColor: "rgba(0, 0, 0, 0.3)",
+    borderColor: "grey",
+    borderWidth: 1,
+    overflow: "hidden",
+  },
+  equippedCeil: {
+    width: (width * 18) / 100, 
+    height: (width * 18) / 100,
+    backgroundColor: "rgba(255, 0, 0, 0.2)",
     borderColor: "grey",
     borderWidth: 1,
     overflow: "hidden",

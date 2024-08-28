@@ -8,7 +8,7 @@ import TradeScreen from '../screens/TradeScreen';
 
 export type RootStackParamList = {
   Home: undefined;
-  Equipment: undefined;
+  Equipment: { equipment: any; equipped: any };
   NpcList:undefined;
   Trade: { equipment: any; item: any };
 };
