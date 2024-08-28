@@ -16,7 +16,6 @@ export default function Equipment({ route }: any) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const {equipment, equipped} = route.params;
-console.log(equipped, 'okkk')
   const itemPreview = (index: number) => {
     const clickedItem = equipment[index];
     setSelectedIndex(index);
@@ -72,7 +71,6 @@ const eqStyles = StyleSheet.create({
     width: (width * 90.1) / 100,
     height: (width * 108) / 100,
     marginBottom: 50,
-
     marginTop: 100,
     marginLeft: (width * 5) / 100,
   },

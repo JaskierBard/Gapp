@@ -7,7 +7,7 @@ import { fetchData } from "../utils/fetchData";
 import { StatisticsSnippet } from "../components/MainScreenComponents/StatisticsSnipet";
 import Dice from "../components/common/Dice";
 import { MapSnippet } from "../components/MainScreenComponents/MapSnippet";
-import { sortEquipment } from "../utils/sortEquipment";
+import { sortEquipment } from "../utils/equipment/sortEquipment";
 
 export interface Statistics {
   destination: object;
@@ -87,7 +87,7 @@ export const MainScreen = () => {
       </BlurView>
       {equipment && data ? <EquipmentSnippet equipment={equipment} equipped={data.equipped}/> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
       {data ? <StatisticsSnippet statistics={data} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
-      {equipment ? <MapSnippet equipment={equipment} /> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
+      {equipment && data ? <MapSnippet equipment={equipment} equipped={data.equipped}/> : <Text style={{color: 'white'}}>Ładowanie...</Text>}
 
 
 

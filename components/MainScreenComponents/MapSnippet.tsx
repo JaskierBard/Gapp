@@ -1,5 +1,4 @@
 import { BlurView } from "expo-blur";
-import React from "react";
 import {
   View,
   StyleSheet,
@@ -10,11 +9,10 @@ import {
 } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/Navigation";
-import { EquipmentCeil } from "../common/EquipmentCeil";
-import { NpcList } from "../Npc/NpcList";
+
 const { width, height } = Dimensions.get("window");
 
-export const MapSnippet = ({equipment}:any) => {
+export const MapSnippet = ({equipment, equipped}:any) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
     <View style={styles.bigContainer}>
@@ -28,7 +26,7 @@ export const MapSnippet = ({equipment}:any) => {
         style={styles.blurMap}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("NpcList", equipment)}
+          onPress={() => navigation.navigate("NpcList", {equipment, equipped})}
         >
           <View style={styles.smallMapContainer}>
             <Text>Khorinis</Text>

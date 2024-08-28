@@ -1,5 +1,5 @@
 import { transactionType } from "../screens/TradeScreen";
-import { sortEquipment } from "./sortEquipment";
+import { sortEquipment } from "./equipment/sortEquipment";
 
 interface Equipment {
   id: number;

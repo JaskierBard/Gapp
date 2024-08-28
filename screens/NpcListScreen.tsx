@@ -8,10 +8,9 @@ import {
   FlatList,
 } from "react-native";
 import { RootStackParamList } from "../navigation/Navigation";
-
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-
 import { background } from "../components/Styles";
+
 export interface Props {
   addLog: (arg: string) => void;
 }
@@ -20,14 +19,16 @@ export const NpcList = ({ route }: any) => {
   const [npcList, setNpcList] = useState<string[]>(["Bosper", "Bengar"]);
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const equipment = route.params;
+  const { equipment, equipped } = route.params;
 
   const renderNpc = ({ item }: any) => {
     return (
       <View>
         <TouchableOpacity
-onPress={() => navigation.navigate('Trade', { equipment, item })}
->
+          onPress={() =>
+            navigation.navigate("Trade", { equipment, item, equipped })
+          }
+        >
           <Text style={styles.talkingText}>{item}</Text>
         </TouchableOpacity>
       </View>
@@ -60,13 +61,7 @@ const styles = StyleSheet.create({
     height: 600,
     borderRadius: 5,
     top: 120,
-    // left: "3%",
     position: "relative",
-    // shadowColor: "wheat",
-    // shadowOffset: { width: 0, height: 0 },
-    // shadowOpacity: 1.9,
-    // shadowRadius: 10,
-    // elevation: 10,
   },
   npcImage: {
     width: "100%",

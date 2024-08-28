@@ -9,8 +9,8 @@ import TradeScreen from '../screens/TradeScreen';
 export type RootStackParamList = {
   Home: undefined;
   Equipment: { equipment: any; equipped: any };
-  NpcList:undefined;
-  Trade: { equipment: any; item: any };
+  NpcList:{ equipment: any; equipped: any};
+  Trade: { equipment: any; equipped: any, item: any };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

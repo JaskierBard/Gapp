@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 import ItemPreview from "../components/common/ItemPreview/ItemPreview";
 import { fetchData } from "../utils/fetchData";
 import { text } from "../themes/fonts";
-import { sortEquipment } from "../utils/sortEquipment";
+import { sortEquipment } from "../utils/equipment/sortEquipment";
 import { updateEquipmentsAfterTransactions } from "../utils/updateEquipmentsAfterTransactions";
 import { EquipmentEmptyCeil } from "../components/common/EquipmentEmptyCeil";
+import { filterHiddenCells } from "../utils/equipment/filterHiddenCells";
 
 const { width } = Dimensions.get("window");
 
@@ -28,15 +29,16 @@ export default function TradeScreen({ route }: any) {
     transactionType | undefined
   >(undefined);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const { equipment, item } = route.params;
+  const { equipment, equipped, item } = route.params;
 
   const tradeSucces = () => {
-    const [updatedPlayerEquipment, updatedNpcEquipment] = updateEquipmentsAfterTransactions(
-      playerEquipment,
-      NpcEquipment,
-      itemInfo,
-      transactionType
-    );
+    const [updatedPlayerEquipment, updatedNpcEquipment] =
+      updateEquipmentsAfterTransactions(
+        playerEquipment,
+        NpcEquipment,
+        itemInfo,
+        transactionType
+      );
 
     setPlayerEquipment(updatedPlayerEquipment);
     setNpcEquipment(updatedNpcEquipment);
@@ -53,7 +55,7 @@ export default function TradeScreen({ route }: any) {
         console.error("Error fetching data:", error);
       }
     })();
-    setPlayerEquipment(equipment);
+    setPlayerEquipment(filterHiddenCells(equipment, equipped));
   }, []);
 
   const itemPreview = (index: number, type: transactionType) => {
@@ -64,18 +66,24 @@ export default function TradeScreen({ route }: any) {
     setItemInfo(clickedItem);
   };
 
-  const renderItem = ({ item, index }: any, type: transactionType) => (
-    <EquipmentCeil
-      key={index}
-      index={index}
-      image={item.image}
-      quantity={item.quantity}
-      onPress={() => itemPreview(index, type)}
-      isSelected={index === selectedIndex}
-    />
-  );
+  const renderItem = ({ item, index }: any, type: transactionType) => {
+    const isEquipped = Object.values(equipped).some(
+      (equippedId) => equippedId === item.id
+    );
+    if (isEquipped) return null;
 
-  
+    return (
+      <EquipmentCeil
+        key={index}
+        index={index}
+        image={item.image}
+        quantity={item.quantity}
+        onPress={() => itemPreview(index, type)}
+        isSelected={index === selectedIndex}
+      />
+    );
+  };
+
 
   return (
     <ImageBackground
@@ -102,7 +110,9 @@ export default function TradeScreen({ route }: any) {
         npcName={item}
         transactionType={transactionType}
         tradeSucces={tradeSucces}
-        heroGold={playerEquipment.find((item: any) => item.id === 900)?.quantity}
+        heroGold={
+          playerEquipment.find((item: any) => item.id === 900)?.quantity
+        }
         npcGold={NpcEquipment.find((item: any) => item.id === 900)?.quantity}
       ></ItemPreview>
 
@@ -113,7 +123,10 @@ export default function TradeScreen({ route }: any) {
         </Text>
 
         <FlatList
-          data={[...playerEquipment, ...EquipmentEmptyCeil(playerEquipment.length)]}
+          data={[
+            ...playerEquipment,
+            ...EquipmentEmptyCeil(playerEquipment.length),
+          ]}
           keyExtractor={(item, index) => index.toString()}
           renderItem={(props) => renderItem(props, "sell")}
           numColumns={5}
