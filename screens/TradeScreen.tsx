@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
 import { useEffect, useState } from "react";
-import ItemPreview from "../components/common/ItemPreview";
+import ItemPreview from "../components/common/ItemPreview/ItemPreview";
 import { fetchData } from "../utils/fetchData";
 import { text } from "../themes/fonts";
 import { sortEquipment } from "../utils/sortEquipment";

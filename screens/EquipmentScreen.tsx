@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { EquipmentCeil } from "../components/common/EquipmentCeil";
 import { useState } from "react";
-import ItemPreview from "../components/common/ItemPreview";
+import ItemPreview from "../components/common/ItemPreview/ItemPreview";
 
 const { width } = Dimensions.get("window");
 
