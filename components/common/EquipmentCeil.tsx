@@ -5,7 +5,7 @@ interface Props {
   index: number;
   quantity: number;
   image: string;
-  onPress?: (index: number) => void;
+  onPress?: (index: number, equipped:boolean | undefined) => void;
   isSelected?: boolean;
   isEquipped?: boolean;
 }
@@ -20,7 +20,7 @@ export const EquipmentCeil = ({
 }: Props) => {
   return (
     <TouchableOpacity
-      onPress={() => onPress && onPress(index)}
+      onPress={() => onPress && onPress(index, isEquipped)}
       key={index}
       style={[
         equipmentCeilStyles.ceil, 

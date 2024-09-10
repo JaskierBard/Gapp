@@ -1,6 +1,6 @@
 export const fetchData = async (endpoint: string) => {
   try {
-    const response = await fetch(`http://192.168.0.108:3001/${endpoint}`);
+    const response = await fetch(`http://192.168.0.110:3001/${endpoint}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -19,11 +19,11 @@ export const transactionData = async (
   userId: string,
   seller: string,
   price: number,
-  transactionType?: string,
+  transactionType?: string
 ) => {
   try {
     const response = await fetch(
-      `http://192.168.0.108:3001/player/transaction`,
+      `http://192.168.0.110:3001/player/transaction`,
       {
         method: "POST",
         headers: {
@@ -39,6 +39,32 @@ export const transactionData = async (
         }),
       }
     );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+export const manageEquipped = async (itemId: string, itemType: string, action: 'equip' | 'unequip') => {
+  try {
+    const response = await fetch(`http://192.168.0.110:3001/player/equip`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: "pc_rockefeller",
+        action: action,
+        itemId: itemId,
+        itemType: itemType,
+      }),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

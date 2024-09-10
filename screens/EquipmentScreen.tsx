@@ -4,9 +4,11 @@ import { useState } from "react";
 import ItemPreview from "../components/common/ItemPreview/ItemPreview";
 import { equipmentStyles } from "../themes/equipment";
 import { EquipmentEmptyCeil } from "../components/common/EquipmentEmptyCeil";
+import EquipButton from "../components/common/EquipButton";
 
 export default function Equipment({ route }: any) {
   const [itemInfo, setItemInfo] = useState<any>("");
+
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const { equipment, equipped } = route.params;
@@ -23,6 +25,7 @@ export default function Equipment({ route }: any) {
       if (equippedId === item.id) {
         isEquipped = true;
       }
+
     });
     return (
       <EquipmentCeil
@@ -55,6 +58,8 @@ export default function Equipment({ route }: any) {
         tradeSucces={() => "ok"}
         npcName={""}
       ></ItemPreview>
+                 <EquipButton itemInfo={itemInfo} equipped={equipped}/>
+
     </ImageBackground>
   );
 }

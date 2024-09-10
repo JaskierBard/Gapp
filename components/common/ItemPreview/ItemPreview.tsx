@@ -30,8 +30,8 @@ export default function ItemPreview({
   transactionType,
   heroGold,
   npcGold,
+  
 }: Props) {
-  console.log(itemInfo);
   return (
     <>
       {itemInfo ? (

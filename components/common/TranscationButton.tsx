@@ -58,7 +58,7 @@ export default function TransactionButton({
               </TouchableOpacity>
             ) : (
               <TouchableOpacity disabled style={styles.buttonDisabled}>
-                <Text style={{ color: "white" }}>Masz za mało złota</Text>
+                <Text style={{ color: "white" }}>Masz za mało złota ({price})</Text>
               </TouchableOpacity>
             )
           ) : (
@@ -70,7 +70,7 @@ export default function TransactionButton({
               </TouchableOpacity>
             ) : (
               <TouchableOpacity disabled style={styles.buttonDisabled}>
-                <Text style={{ color: "white" }}>Kupiec ma mało złota</Text>
+                <Text style={{ color: "white" }}>Kupiec ma mało złota ({price})</Text>
               </TouchableOpacity>
             )
           )}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderColor: "white",
     borderWidth: 1,
-    width: "50%",
+    width: "60%",
     borderRadius: 5,
   },
   timeButton: {
