@@ -9,12 +9,13 @@ const { width, height } = Dimensions.get("window");
 
 interface Props {
   statistics: Statistics;
+  equipped: any
 }
 
-export const StatisticsSnippet = ({statistics}:Props) => {
+export const StatisticsSnippet = ({statistics, equipped}:Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Equipment")}>
+    <TouchableOpacity onPress={() => navigation.navigate("Statistics", {statistics, equipped})}>
        <BlurView
         experimentalBlurMethod="dimezisBlurView"
         intensity={30}
@@ -28,7 +29,7 @@ export const StatisticsSnippet = ({statistics}:Props) => {
           <Text>upojenie alkoholowe</Text>
           <Text>przerażenie</Text>
           <View style={styles.barContainer}>
-          <BarDisplay type={'hitpoints'} value={statistics.parameters.healthPoints} max={statistics.parameters.maxHealthPoints} />
+          <BarDisplay type={'hitpoints'} value={statistics.parameters.hitpoints} max={statistics.parameters.maxHitpoints} />
           </View>
         </View>
       </BlurView>

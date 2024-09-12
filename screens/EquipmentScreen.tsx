@@ -14,9 +14,14 @@ export default function Equipment({ route }: any) {
   const { equipment, equipped } = route.params;
 
   const itemPreview = (index: number) => {
-    const clickedItem = equipment[index];
-    setSelectedIndex(index);
-    setItemInfo(clickedItem);
+    if (index < equipment.length) {
+      const clickedItem = equipment[index];
+      setSelectedIndex(index);
+      setItemInfo(clickedItem);
+    } else {
+      setSelectedIndex(null);
+      setItemInfo("");
+    }
   };
 
   const renderItem = ({ item, index }: any) => {
@@ -25,7 +30,6 @@ export default function Equipment({ route }: any) {
       if (equippedId === item.id) {
         isEquipped = true;
       }
-
     });
     return (
       <EquipmentCeil
@@ -58,8 +62,7 @@ export default function Equipment({ route }: any) {
         tradeSucces={() => "ok"}
         npcName={""}
       ></ItemPreview>
-                 <EquipButton itemInfo={itemInfo} equipped={equipped}/>
-
+      <EquipButton itemInfo={itemInfo} equipped={equipped} />
     </ImageBackground>
   );
 }

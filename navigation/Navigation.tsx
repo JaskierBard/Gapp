@@ -5,10 +5,12 @@ import EquipmentScreen from '../screens/EquipmentScreen';
 import { MainScreen } from '../screens/MainScreen';
 import { NpcList } from '../screens/NpcListScreen';
 import TradeScreen from '../screens/TradeScreen';
+import StatisticsScreen from '../screens/StatisticsScreen';
 
 export type RootStackParamList = {
   Home: undefined;
   Equipment: { equipment: any; equipped: any };
+  Statistics: { statistics: any; equipped: any};
   NpcList:{ equipment: any; equipped: any};
   Trade: { equipment: any; equipped: any, item: any };
 };
@@ -23,6 +25,7 @@ const Navigation = () => (
       }}>
       <Stack.Screen name="Home" component={MainScreen} />
       <Stack.Screen name="Equipment" component={EquipmentScreen} />
+      <Stack.Screen name="Statistics" component={StatisticsScreen} />
       <Stack.Screen name="NpcList" component={NpcList} />
       <Stack.Screen name="Trade" component={TradeScreen} />
 

@@ -1,6 +1,8 @@
+import { ipAdress } from "../aiConfig";
+
 export const fetchData = async (endpoint: string) => {
   try {
-    const response = await fetch(`http://192.168.0.110:3001/${endpoint}`);
+    const response = await fetch(`${ipAdress}/${endpoint}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -23,7 +25,7 @@ export const transactionData = async (
 ) => {
   try {
     const response = await fetch(
-      `http://192.168.0.110:3001/player/transaction`,
+      `${ipAdress}/player/transaction`,
       {
         method: "POST",
         headers: {
@@ -53,7 +55,7 @@ export const transactionData = async (
 
 export const manageEquipped = async (itemId: string, itemType: string, action: 'equip' | 'unequip') => {
   try {
-    const response = await fetch(`http://192.168.0.110:3001/player/equip`, {
+    const response = await fetch(`${ipAdress}/player/equip`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
