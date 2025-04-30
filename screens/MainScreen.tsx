@@ -9,6 +9,8 @@ import Dice from "../components/common/Dice";
 import { MapSnippet } from "../components/MainScreenComponents/MapSnippet";
 import { sortEquipment } from "../utils/equipment/sortEquipment";
 import { getEquipmentBonuses } from "../utils/equipment/getEquipmentBonuses";
+import Tasks from "../components/Tasks/Tasks";
+import { text } from "../themes/fonts";
 
 export interface Statistics {
   destination: object;
@@ -39,6 +41,7 @@ export const MainScreen = () => {
     (async () => {
       try {
         const data = await fetchData("player/get");
+        // console.log('data:' + {data.})
         setData(data.statistic);
         const changedItemsValue = data.equipment.map((element: any) => {
           const heroItemValue = Math.ceil(element.price / 10);
@@ -80,7 +83,7 @@ export const MainScreen = () => {
           style={styles.blurContainer}
         >
           <View style={styles.smallContainer}>
-            <Text>Task</Text>
+            {/* <Tasks props={}/> */}
           </View>
         </BlurView>
         <BlurView
@@ -151,6 +154,7 @@ export const styles = StyleSheet.create({
     width: (width * 90) / 100,
     borderRadius: 10,
     overflow: "hidden",
+    
   },
   smallContainer: {
     height: (height * 20) / 100,

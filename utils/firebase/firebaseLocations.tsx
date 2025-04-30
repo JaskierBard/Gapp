@@ -1,5 +1,5 @@
 import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { FIREBASE_STORAGE } from "./firebaseConfig";
+import { FIREBASE_STORAGE } from "../../firebaseConfig";
 const locations = ['bengars_farm','down_town','sekobs_farm','lobarts_farm','port_district','xardas_tower']
 
 export const getLocationImages = async (folder: string) => {

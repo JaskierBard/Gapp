@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import { shortMissionAsk, shortTalkDown } from "../../components/common/AiMissions/MissionAi";
-import { FIRESTORE_DB } from "./firebaseConfig";
+import { FIRESTORE_DB } from "../../firebaseConfig";
 
 export const getNpcMissions = async (heroID: string, NPCname: string) => {
     const docRef = collection(FIRESTORE_DB, "missions");

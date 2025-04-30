@@ -6,6 +6,7 @@ import * as Font from "expo-font";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Navigation from "./navigation/Navigation";
 import { MainScreen } from "./screens/MainScreen";
+import { text } from "./themes/fonts";
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);

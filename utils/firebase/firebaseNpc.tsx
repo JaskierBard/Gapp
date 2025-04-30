@@ -7,7 +7,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { FIREBASE_STORAGE, FIRESTORE_DB } from "./firebaseConfig";
+import { FIREBASE_STORAGE, FIRESTORE_DB } from "../../firebaseConfig";
 import { getDownloadURL, ref } from "firebase/storage";
 
 export interface NPC {}

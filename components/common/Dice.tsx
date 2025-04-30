@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
+import { text } from "../../themes/fonts";
 
 export default function Dice() {
   const [value, setValue] = useState<number | string>("");
@@ -68,8 +69,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text: {
+    ...text.large,
     color: "lightgrey",
-    fontWeight: "400",
+    // fontWeight: "400",
     fontSize: 20,
     transform: [{ rotate: "-25deg" }],
   },

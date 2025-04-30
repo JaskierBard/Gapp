@@ -2,7 +2,10 @@ import { ipAdress } from "../aiConfig";
 
 export const fetchData = async (endpoint: string) => {
   try {
+    // console.log(endpoint)
+    // console.log(`${ipAdress}/${endpoint}`)
     const response = await fetch(`${ipAdress}/${endpoint}`);
+    console.log(response)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

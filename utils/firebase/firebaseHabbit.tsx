@@ -1,5 +1,5 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { FIRESTORE_DB } from "./firebaseConfig";
+import { FIRESTORE_DB } from "../../firebaseConfig";
 
 export const editHabbitProgress = async (
     id: string,

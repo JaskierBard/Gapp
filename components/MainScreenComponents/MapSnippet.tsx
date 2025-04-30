@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/Navigation";
+import { GetTimeNow } from "../common/GetTimeNow";
+import { text } from "../../themes/fonts";
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,7 +19,7 @@ export const MapSnippet = ({equipment, equipped}:any) => {
   return (
     <View style={styles.bigContainer}>
       <Image
-        source={require("../../assets/images/khorinis.png")}
+        source={require("../../assets/images/khorinis.webp")}
         style={styles.backgroundPicture}
       />
       <BlurView
@@ -26,11 +28,13 @@ export const MapSnippet = ({equipment, equipped}:any) => {
         style={styles.blurMap}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("NpcList", {equipment, equipped})}
+          // onPress={() => navigation.navigate("NpcList", {equipment, equipped})}
+          onPress={() => navigation.navigate("Map")}
+
         >
           <View style={styles.smallMapContainer}>
-            <Text>Khorinis</Text>
-            <Text>Dolne Miasto</Text>
+            <Text style={text.medium}>Khorinis - Dolne Miasto </Text>
+            <Text>{GetTimeNow()}</Text>
             <Text></Text>
             <Text>deszczowo</Text>
             <Text>Późne popołudnie</Text>
@@ -91,8 +95,8 @@ const styles = StyleSheet.create({
   backgroundPicture: {
     alignItems: "flex-end",
     position: "absolute", // pozwala na precyzyjne ustawienie
-    left: -550, // przesunięcie w poziomie
-    top: -550, // przesunięcie w pionie
+    left: -250, // przesunięcie w poziomie
+    top: -350, // przesunięcie w pionie
     width: 1000, // szerokość obrazu
     height: 1000, // wysokość obrazu
   },
