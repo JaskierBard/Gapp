@@ -16,12 +16,12 @@ export const BarDisplay: React.FC<ProgressBarProps> = ({
 
   const images = {
     hitpoints: {
-      bar: require("../../assets/images/bars/hp.png"),
-      liquid: require("../../assets/images/bars/liquid.png"),
+      bar: require("../../assets/images/bars/hp.webp"),
+      liquid: require("../../assets/images/bars/liquid.webp"),
     },
     mana: {
-      bar: require("../../assets/images/bars/mana.png"),
-      liquid: require("../../assets/images/bars/liquid_blue.png"),
+      bar: require("../../assets/images/bars/mana.webp"),
+      liquid: require("../../assets/images/bars/liquid_blue.webp"),
     },
   };
 

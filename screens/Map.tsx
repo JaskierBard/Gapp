@@ -13,9 +13,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
-// const { width, height } = Dimensions.get("window")
-const imageWidth = 1300; // 2600 / 2
-const imageHeight = 940; // 1880 / 2
+const imageWidth = 800; 
+const imageHeight = 627;
 
 export const Map: React.FC = () => {
   const translateX = useSharedValue(0);
@@ -75,7 +74,7 @@ export const Map: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: "#000",
   },
 });
